@@ -6,6 +6,7 @@ const { v4: uuidv4 } = require('uuid');
 const mongoose = require('mongoose');
 const methodOverride = require('method-override');
 require('dotenv').config();
+const fileUpload = require('express-fileupload')
 
 const app = express();
 
@@ -15,7 +16,7 @@ mongoose.connect('mongodb://localhost:27017/accounts',(err)=>{
         console.log("Could not connect to database");
     }
 });
-
+app.use(fileUpload())
 // override the method in form
 app.use(methodOverride('_method'));
 
@@ -55,6 +56,7 @@ app.use(
 
 // app.use('/',require('./server/routes/router'));
 app.use('/',require('./server/routes/userRouter'));
+app.use('/',require('./server/routes/router'))
 
 app.listen(port,()=>{
     console.log(`Server is running at http://localhost:${port}`);

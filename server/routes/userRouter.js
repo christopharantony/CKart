@@ -8,7 +8,7 @@ userRoute.get('/',(req,res)=>{
     if (req.session.isUserLogin) {
         console.log();
         // res.status(200).render('user_home',{name:userDb.name})
-        res.status(200).render('landing')
+        res.status(200).render('Home')
     } else {
         req.session.isUserLogin=false
         res.status(200).render('landing')

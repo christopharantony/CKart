@@ -21,7 +21,7 @@ exports.Create = (req,res)=>{
             if (user.password.length>7) {
                 user.save(user)
             .then(()=>{
-                res.status(201).redirect('/')
+                res.status(201).render('user_login',{error:false})
             })
             .catch(err=>{
                 console.log(err.message);
@@ -43,7 +43,7 @@ exports.Find = async(req,res)=>{
         req.session.isUserLogin = true;
         console.log(userDb);
         // res.render('user_home',{name:userDb.name})
-        res.status(200).render('landing')
+        res.status(200).render('Home')
     }else{
         res.render('user_login',{error:true})
     }
@@ -90,7 +90,7 @@ exports.find = (req,res)=>{
                 req.session.isAdminLogin=true;
                 res.status(200).render('admin_home',{users:data})
             }else{
-                res.status(401).render('admin_login',{error:true})
+                res.status(401).render('admin_login',{error:"Invalid Username or Password"})
             }
         }
     })

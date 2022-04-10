@@ -1,0 +1,126 @@
+
+a{
+    text-decoration: none;
+}
+
+
+#header{
+    color: white;
+    background: #4C45CF;
+    padding: 1em;
+}
+#container {
+    max-width: 1024px;
+    margin: auto;
+    padding: 5rem 1rem;
+}
+.border-shadow{
+    padding: 0.5rem 1rem;
+    border: 1px solid #badee0;
+    box-shadow: 1px 3px 10px #b8dee0;
+}
+.nav-brand{
+    color: white;
+    font-weight: bold;
+}
+.nav-brand:hover{
+    color: aliceblue;
+}
+
+.d-flex{
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.justify-between{
+    justify-content: space-between;
+}
+
+.text-center{
+    text-align: center;
+}
+.box-nav{
+    margin-bottom: 1rem;
+}
+#main.container form{
+    margin: 2rem 0;
+}
+table{
+    border-spacing: 0px;
+    width: 100%;
+}
+
+.tbody tr:hover{
+    background-color: aqua;
+}
+.thead{
+    color: aliceblue;
+    background-color: darkslategray;
+}
+
+/* Add user */
+.new_user{
+    max-width: 786px;
+    margin: auto;
+}
+
+.form-group{
+    display: flex;
+    margin: .5rem 0;
+}
+.form-group input[type="text"] {
+    width: 100%;
+    padding: 0.5rem 1rem;
+    margin: 0.5rem 0;
+    border-radius: .3rem;
+}
+.form-group input[type="email"] {
+    width: 100%;
+    padding: 0.5rem 1rem;
+    margin: 0.5rem 0;
+    border-radius: .3rem;
+}
+.form-group input[type="password"] {
+    width: 100%;
+    padding: 0.5rem 1rem;
+    margin: 0.5rem 0;
+    border-radius: .3rem;
+}
+.form-group_w input[type="text"] {
+    width: 100%;
+    padding: 0.5rem 1rem;
+    margin: 0.5rem 0;
+    border-radius: .3rem;
+    border-color: red;
+}
+.form-group_w input[type="password"] {
+    width: 100%;
+    padding: 0.5rem 1rem;
+    margin: 0.5rem 0;
+    border-radius: .3rem;
+    border-color: red;
+}
+.radio{
+    margin: 0rem 2rem;
+}
+.save_btn{
+    color: white;
+    width: 100%;
+    padding: 1rem;
+    background-color: #4C45CF;
+    border: none;
+    border-radius: 2rem;
+    margin: .5rem 0;
+}
+.save_btn:hover{
+    background-color: #413baf;
+}
+.filter{
+    color: #4C45CF;
+}
+
+/* wrong */
+.wrong{
+    font-weight: bold;
+    color: rgb(248, 13, 13);
+}

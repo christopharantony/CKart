@@ -1,0 +1,42 @@
+
+<%-include('include/_header')%>
+
+<!--Main-->
+
+<main id="main">
+    <div id="container">
+        
+        <div class="form-title text-center">
+            <h2 class="new_userH">Login Page</h2>
+        </div>
+        <!-- Form -->
+        <form action="/home" method="post" id="login_user">
+            <div class="new_user">
+                <div class="box-nav d-flex justify-between">
+                    <a href="/signup" class="border-shadow">
+                        <span class="new">Sign Up <i class="fa-solid fa-user-plus"></i> </span>
+                    </a>
+                    <% if (error) { %>
+                        
+                    <p class="wrong">Invalid Username or Password</p>
+                    
+                    <% } %>
+                </div>
+                <div class="form-group">
+                    <input type="text" name="email" value="" placeholder="Enter your Email">
+                </div>
+                <div class="form-group">
+                    <input type="password" name="password" value="" placeholder=" Password">
+                </div>
+                
+                <div class="form-group">
+                    <button type="submit" class="save_btn">Login</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</main>
+
+<!--/Main-->
+
+<%-include('include/_footer')%>

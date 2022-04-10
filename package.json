@@ -4,7 +4,8 @@
   "description": "An ecommerse Web Application",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "serve:local": "nodemon server.js"
   },
   "keywords": [
     "ecommerse"
@@ -18,8 +19,10 @@
     "express-session": "^1.17.2",
     "method-override": "^3.0.0",
     "mongoose": "^6.2.10",
-    "morgan": "^1.10.0",
-    "nodemon": "^2.0.15",
     "uuid": "^8.3.2"
+  },
+  "devDependencies": {
+    "morgan": "^1.10.0",
+    "nodemon": "^2.0.15"
   }
 }

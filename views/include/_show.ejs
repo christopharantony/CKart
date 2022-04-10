@@ -1,0 +1,27 @@
+<% users.sort((a,b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0)) %>
+<% for ( let i = 0; i < users.length; i++){ %>
+<tr>
+<td><%= i+1 %></td>
+<td><%= users[i].name %></td>
+<td><%= users[i].email %></td>
+<td><%= users[i].gender %></td>
+<td><%= users[i].status %></td>
+<td>
+    
+    <a href="/update?id=<%= users[i]._id %>" class="btn border-shadow update">
+        <i class="fa-solid fa-pencil"></i>
+    </a>
+    <div>
+    <form action="/api/users/<%= users[i]._id %>?_method=DELETE" method="post">
+    
+        <button class="btn border-shadow update" type="submit">
+        
+                <i class="fa-solid fa-trash-can"></i>
+        </button>
+    </form>
+</div>
+    
+</td>
+</tr>
+<% } %>
+

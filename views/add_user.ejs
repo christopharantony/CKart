@@ -1,0 +1,31 @@
+
+<%-include('include/_header')%>
+
+<!--Main-->
+
+<main id="main">
+    <div id="container">
+        <div class="box-nav d-flex justify-between">
+            <div >
+                <a href="/admin" class="filter"><i class="fa-solid fa-arrow-left"></i>All users</a>
+            </div>
+        </div>
+        <div class="form-title text-center">
+            <h2 class="new_userH">New User</h2>
+            <span>Use the below form to create a new account</span>
+                <p class="wrong"> <%=error%> </p>
+        </div>
+
+        <!-- Form -->
+        <form action="/adding" method="post" id="add_user">
+            
+        <%-include('include/_form')%>
+        
+        </form>
+        
+    </div>
+</main>
+
+<!--/Main-->
+
+<%-include('include/_footer')%>

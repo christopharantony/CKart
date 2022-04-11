@@ -139,26 +139,30 @@ exports.delete = (req,res)=>{
     })
 }
 
-//     // New User
-//     const user = new userDb({
-//         name:req.body.name,
-//         email:req.body.email,
-//         password:req.body.password,
-//         gender: req.body.gender,
-//         status:req.body.status
-//     });
+    // New User
+    exports.create = (req,res)=>{
+        if(!req.body){
+            res.status(400).send({ message :"Content can not be empty!"});
+            return;
+        }else{
+        const user = new Userdb({
+        name:req.body.name,
+        email:req.body.email,
+        password:req.body.password,
+        gender: req.body.gender,
+        status:req.body.status
+    });
 
-//     user.save(user)
-//     .then(()=>{
-//         res.redirect('/')
-//     })
-//     .catch(err=>{
-//         console.log(err.message);
-//         res.status(401).render('admin_login',{error:"true"})
-//     });
-
-// }
-
+    user.save(user)
+    .then(()=>{
+        res.redirect('/')
+    })
+    .catch(err=>{
+        console.log(err.message);
+        res.status(401).render('admin_login',{error:"Invalid Input"})
+    });
+}
+}
 
 
 

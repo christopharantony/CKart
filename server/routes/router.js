@@ -69,6 +69,7 @@ route.get('/add-product',(req,res)=>{
 
 route.post('/add-product',(req,res)=>{
     console.log(req.body);
+    console.log(req.files.Image);
 })
 
 

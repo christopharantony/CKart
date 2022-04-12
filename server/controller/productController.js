@@ -19,8 +19,9 @@ exports.create = (req,res)=>{
 let image = req.files.Image
 // console.log(image);
 // var uploadPath = path.resolve(__dirname,'../public/productsImg/',image.name)
-var uploadPath = './public/productsImg/' + image.name
-image.mv(uploadPath,(err,done)=>{
+// var uploadPath = './public/productsImg/' + image.name
+var uploadPath = './public/productsImg/' + Date.now()+'.jpg'
+image.mv(uploadPath,(err)=>{
     console.log(uploadPath);
     if(err){
         console.log(err);
@@ -30,7 +31,7 @@ image.mv(uploadPath,(err,done)=>{
 
     .then((data)=>{
         // console.log(data);
-        res.redirect('/admin_product')
+        res.redirect('/admin_products')
 
     })
     .catch(err=>{

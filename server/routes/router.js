@@ -61,7 +61,7 @@ route.get('/users',(req,res)=>{
 })
 // --------------PRODUCTS--------------------
 
-route.get('/admin_product',(req,res)=>{
+route.get('/admin_products',(req,res)=>{
     res.render('admin_products')
 })
 

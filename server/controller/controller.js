@@ -11,6 +11,7 @@ exports.Create = (req,res)=>{
         res.status(400).send({ message :"Content can not be empty!"});
         return;
     }else{
+        console.log(req.body)
             const user = new Userdb({
                 name:req.body.name,
                 email:req.body.email,

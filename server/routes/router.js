@@ -2,6 +2,8 @@ const express = require('express');
 const route=express.Router();
 const userDb = require('../model/model');
 const controller = require('../controller/controller')
+const productController = require('../controller/productController')
+const productDb =require('../model/productModel')
 
 // Admin
 const admin = {
@@ -14,7 +16,7 @@ route.get('/admin',(req,res)=>{
     userDb.find()
     .then(data=>{
         if (req.session.isAdminLogin) {
-            res.status(200).render('adminHome',{users:data})
+            res.status(200).render('admin_home',{users:data})
         } else {
             req.session.isAdminLogin=false;
             res.status(200).render('admin_login',{error:""})
@@ -59,7 +61,7 @@ route.get('/users',(req,res)=>{
 })
 // --------------PRODUCTS--------------------
 
-route.get('/admin_products',(req,res)=>{
+route.get('/admin_product',(req,res)=>{
     res.render('admin_products')
 })
 
@@ -67,10 +69,7 @@ route.get('/add-product',(req,res)=>{
     res.status(200).render('add_products')
 })
 
-route.post('/add-product',(req,res)=>{
-    console.log(req.body);
-    console.log(req.files.Image);
-})
+route.post('/add-product',productController.create)
 
 
 // Admin Logout 

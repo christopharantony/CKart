@@ -35,6 +35,7 @@ app.use('/icon',express.static(path.join(__dirname,"/public/assets/icon")));
 app.use('/images',express.static(path.join(__dirname,"/public/assets/images")));
 app.use('/css',express.static(path.join(__dirname,"/public/css")));
 app.use('/js',express.static(path.join(__dirname,"/public/js")));
+app.use('/productsImg',express.static(path.join(__dirname,"/public/productsImg")));
 
 
 app.use(function (req, res, next) {

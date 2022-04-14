@@ -221,7 +221,7 @@
       </section>
       <!-- end banner -->
       <!-- three_box -->
-      <div class="three_box">
+      <!-- <div class="three_box">
          <div class="container">
             <div class="row">
                <div class="col-md-4">
@@ -247,7 +247,7 @@
                </div>
             </div>
          </div>
-      </div>
+      </div> -->
       <!-- three_box -->
       <!-- products -->
       <div  class="products">
@@ -263,13 +263,17 @@
                <div class="col-md-12">
                   <div class="our_products">
                      <div class="row">
+                        <% for ( let i = 0; i < products.length; i++){ %>
+                           <% console.log('Yes here Im Now at Lander page') %>
+                           <% console.log(products[i].Name) %>
                         <div class="col-md-4 margin_bottom1">
                            <div class="product_box">
-                              <figure><img src="images/product1.png" alt="#"/></figure>
-                              <h3>Computer</h3>
+                              <figure><img style="width: 150px;height: 150px;" src="<%= products[i].Image %>" alt="image"/></figure>
+                              <h3><%=products[i].Name%></h3>
                            </div>
                         </div>
-                        <div class="col-md-4 margin_bottom1">
+                        <% } %>
+                        <!-- <div class="col-md-4 margin_bottom1">
                            <div class="product_box">
                               <figure><img src="images/product2.png" alt="#"/></figure>
                               <h3>Laptop</h3>
@@ -316,10 +320,10 @@
                               <figure><img src="images/product9.png" alt="#"/></figure>
                               <h3>Drive</h3>
                            </div>
-                        </div>
-                        <div class="col-md-12">
+                        </div> -->
+                        <!-- <div class="col-md-12">
                            <a class="read_more" href="#">See More</a>
-                        </div>
+                        </div> -->
                      </div>
                   </div>
                </div>
@@ -349,7 +353,7 @@
       </div>
       <!-- end laptop  section -->
       <!-- customer -->
-      <div class="customer">
+      <!-- <div class="customer">
          <div class="container">
             <div class="row">
                <div class="col-md-12">
@@ -425,11 +429,11 @@
                </div>
             </div>
          </div>
-      </div>
+      </div> -->
       <!-- end customer -->
 
       <!--  contact -->
-      <div class="contact">
+      <!-- <div class="contact">
          <div class="container">
             <div class="row">
                <div class="col-md-12">
@@ -462,7 +466,7 @@
                </div>
             </div>
          </div>
-      </div>
+      </div> -->
       <!-- end contact -->
       <!--  footer -->
       <footer>

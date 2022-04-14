@@ -1,20 +1,28 @@
 const express = require('express');
 const userRoute=express.Router();
-const userDb = require('../model/model');
+const productDb = require('../model/productModel');
 const controller = require('../controller/controller')
 
 // User Landing
 userRoute.get('/',(req,res)=>{
-    if (req.session.isUserLogin) {
-        console.log();
-        // res.status(200).render('user_home',{name:userDb.name})
-        res.status(200).render('Home')
-    } else {
-        req.session.isUserLogin=false
-        res.status(200).render('landing')
-        
-
-    }
+        productDb.find()
+        .then(data=>{
+            if (req.session.isUserLogin) {
+                console.log();
+                // res.status(200).render('user_home',{name:userDb.name})
+                res.status(200).render('Home',{products:data})
+            } else {
+                req.session.isUserLogin=false
+                console.log('Im Landed Now........................')
+                res.status(200).render('landing',{products:data})
+                }
+            // console.log(data);
+            // res.status(200).render('admin_products',{products:data})
+        })
+        .catch(err=>{
+            console.log(err.message);
+        })
+    
 });
 
 // User Login 

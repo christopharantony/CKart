@@ -3,7 +3,7 @@ const route=express.Router();
 const userDb = require('../model/model');
 const controller = require('../controller/controller')
 const productController = require('../controller/productController')
-const productDb =require('../model/productModel')
+
 
 // Admin
 const admin = {
@@ -30,6 +30,8 @@ route.get('/admin',(req,res)=>{
 
 route.post('/admin_home',controller.find);
 
+route.get('/users',controller.users)
+
 route.use('/admin_home',(req,res,next)=>{
     if (!req.session.isAdminLogin) {
         res.status(200).redirect("/admin")
@@ -49,27 +51,39 @@ route.post('/adding',controller.create)
 route.get('/search',controller.search)
 
 // Edit User
-route.get('/update',controller.updatepage)
+// route.get('/update',controller.updatepage)
 
-route.put('/update/:id',controller.update)
+// route.put('/update/:id',controller.update)
 
 // Delete User
-route.delete('/delete/:id',controller.delete)
+// route.delete('/delete/:id',controller.delete)
 
-route.get('/users',(req,res)=>{
-    res.render('admin_home',{users:data})
-})
+// route.get('/users',(req,res)=>{
+//     res.render('admin_home',{users:data})
+// })
 // --------------PRODUCTS--------------------
 
-route.get('/admin_products',(req,res)=>{
-    res.render('admin_products')
-})
+route.get('/admin_products',productController.find
+// (req,res)=>{res.render('admin_products')}
+)
 
 route.get('/add-product',(req,res)=>{
     res.status(200).render('add_products')
 })
 
 route.post('/add-product',productController.create)
+
+// Edit Product
+route.get('/update',productController.updatepage)
+
+route.put('/update/:id',productController.update)
+
+// Delete Product
+route.delete('/delete/:id',productController.delete)
+
+route.get('/users',(req,res)=>{
+    res.render('admin_home',{users:data})
+})
 
 
 // Admin Logout 

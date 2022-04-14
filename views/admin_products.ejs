@@ -19,24 +19,30 @@
                         <th scope="col">Action</th>
                     </tr>
                 </thead>
-                <!-- dummy products  -->
-                <%const products = [
-                {no:1,name:"Asus",price:"78",quant:12,cate:"Gaming",Action:"Delete"},
-                {no:1,name:"HP",price:"38",quant:1,cate:"Office",Action:"Block"},
-                {no:1,name:"RYZWN",price:"78",quant:12,cate:"Gaming",Action:"Block"},
-                {no:1,name:"SAMSUNG",price:"28",quant:32,cate:"Office",Action:"Delete"}
-                ]%>
-                <!-- /dummy products -->
+                
                 <tbody>
-                    <% for(product of products) {%>
+                    <% for ( let i = 0; i < products.length; i++){ %>
                     <tr>
-                        <th scope="row"><%=product.no%></th>
-                        <td><%=product.name%></td>
-                        <td><img style="width:50px;height:50px" src="productsImg/1649733559796.jpg" alt="product image"> </td>
-                        <td><%=product.price%></td>
-                        <td><%=product.quant%></td>
-                        <td><%=product.cate%></td>
-                        <td><%=product.Action%></td>
+                        <th scope="row"><%=i+1%></th>
+                        <td><%=products[i].Name%></td>
+                        <td><img style="width:50px;height:50px" src="<%=products[i].Image%>" alt="product image"> </td>
+                        <td><%=products[i].Price%></td>
+                        <td><%=products[i].Quantity%></td>
+                        <td><%=products[i].Category%></td>
+                        <td>
+                            <a href="/update?id=<%= products[i]._id %>" class="btn border-shadow update">
+                                <i class="fa-solid fa-pencil"></i>
+                            </a>
+                            <div>
+                            <form action="/delete/<%= products[i]._id %>?_method=DELETE" method="post">
+                            
+                                <button class="btn border-shadow update" type="submit">
+                                
+                                        <i class="fa-solid fa-trash-can"></i>
+                                </button>
+                            </form>
+                            </div>
+                        </td>
                     </tr>
                     <% } %>
                 </tbody>

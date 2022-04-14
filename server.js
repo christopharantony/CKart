@@ -57,8 +57,8 @@ app.use(
 
 // app.use('/',require('./server/routes/router'));
 app.use('/',require('./server/routes/userRouter'));
-app.use('/',require('./server/routes/router'))
+app.use('/',require('./server/routes/router'));
 
 app.listen(port,()=>{
     console.log(`Server is running at http://localhost:${port}`);
-});
+}); 

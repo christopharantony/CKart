@@ -100,6 +100,16 @@ exports.find = (req,res)=>{
     })
 }
 
+exports.users = (req,res)=>{
+    Userdb.find()
+    .then(data=>{
+            res.status(200).render('admin_home',{users:data})
+    })
+    .catch(err=>{
+        console.log(err.message);
+    })
+}
+
 // Search user
 
 exports.search = (req,res)=>{
@@ -112,13 +122,13 @@ exports.search = (req,res)=>{
     })
 }
 
-// Update Page
+//Product Update Page
 
 exports.updatepage = (req,res)=>{
     console.log(req.query.id);
     Userdb.findOne({_id:req.query.id})
     .then(data=>{
-        res.render('admin_update',{user:data})
+        res.render('product_update',{product:data})
     })
 }
 

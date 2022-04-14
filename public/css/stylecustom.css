@@ -17,7 +17,7 @@ a{
 .border-shadow{
     padding: 0.5rem 1rem;
     border: 1px solid #badee0;
-    box-shadow: 1px 3px 10px #b8dee0;
+    /* box-shadow: 1px 3px 10px #b8dee0; */
 }
 .nav-brand{
     color: white;

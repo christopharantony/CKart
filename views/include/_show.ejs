@@ -5,23 +5,18 @@
 <td><%= users[i].name %></td>
 <td><%= users[i].email %></td>
 <td><%= users[i].gender %></td>
-<td><%= users[i].status %></td>
-<!-- <td>
-    
-    <a href="/update?id=<%= users[i]._id %>" class="btn border-shadow update">
-        <i class="fa-solid fa-pencil"></i>
-    </a>
-    <div>
-    <form action="/api/users/<%= users[i]._id %>?_method=DELETE" method="post">
-    
-        <button class="btn border-shadow update" type="submit">
-        
-                <i class="fa-solid fa-trash-can"></i>
-        </button>
-    </form>
-</div>
-    
-</td> -->
+<% console.log(users[i].status,'----------------------show ejs 8') %>
+<% if(users[i].status){ %>
+    <form action="/status/<%= users[i]._id %>?_method=PATCH" method="post">
+    <td><button class="btn btn-outline-danger" type="submit">Block</button></td>
+</form>
+<% }else{ %>
+
+    <form action="/status/<%= users[i]._id %>?_method=PATCH" method="post">
+    <td><button class="btn btn-outline-success" type="submit">Active</button></td>
+</form>
+<% } %>
+
 </tr>
 <% } %>
 

@@ -11,9 +11,12 @@ const fileUpload = require('express-fileupload')
 const app = express();
 
 const port = process.env.PORT;
+
 mongoose.connect('mongodb://localhost:27017/accounts',(err)=>{
     if(err){
         console.log("Could not connect to database");
+    }else{
+        console.log('Mongoooooooooooooooo');
     }
 });
 app.use(fileUpload())

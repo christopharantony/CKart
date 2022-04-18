@@ -1,41 +1,48 @@
 <%-include('include/_adminhead')%>
 
 
-<!--Main-->
+    <!--Main-->
 
-<section>
-    <div class="container mt-4">
-        <div class="row">
-            <div class="col-md-6">
-                <h2 class="text-center">Edit Product</h2>
-                <form action="/update/<%=product._id%>?_method=PUT" method="post" enctype="multipart/form-data">
-                    <input type="hidden" name="id" value="<%= product._id%>">
-                    <label for="">Name</label>
-                    <input type="text" name="Name" value="<%=product.Name%>" class="form-control">
+    <section>
+        <div class="container mt-4">
+            <div class="row">
+                <div class="col-md-6">
+                    <h2 class="text-center">Edit Product</h2>
+                    <form action="/update/<%=product._id%>?_method=PUT" method="post" enctype="multipart/form-data">
+                        <input type="hidden" name="id" value="<%= product._id%>">
+                        <label for="">Name</label>
+                        <input type="text" name="Name" value="<%=product.Name%>" class="form-control">
 
-                    <label for="">Category</label>
-                    <input type="text" name="Category" value="<%=product.Category%>" class="form-control">
 
-                    <label for="">Price</label>
-                    <input type="text" name="Price" value="<%=product.Price%>" class="form-control">
-                    
-                    <label for="">Quantity</label>
-                    <input type="text" name="Quantity" value="<%=product.Quantity%>" class="form-control">
-                    
-                    <label for="">Description</label>
-                    <input type="text" name="Description" value="<%=product.Description%>" class="form-control">
-                    
-                    <label for="">Image</label>
-                    <input type="file" name="Image" value="<%=product.Image%>" class="form-control">
-                    
-                    <button type="submit" class="btn btn-success mt-4">Submit</button>
-                </form>
+                        
+                        
+
+                        <label for="">Price</label>
+                        <input type="text" name="Price" value="<%=product.Price%>" class="form-control">
+
+                        <label for="">Quantity</label>
+                        <input type="text" name="Quantity" value="<%=product.Quantity%>" class="form-control">
+
+                        <label for="">Description</label>
+                        <input type="text" name="Description" value="<%=product.Description%>" class="form-control">
+
+                        <label for="">Image</label>
+                        <input type="file" name="Image" value="<%=product.Image%>" class="form-control">
+                        <label for="">Category</label>
+                        <% for ( let i = 0; i < cate.length; i++){ %>
+                        <input type="radio" name="Category" id="radio" value="<%= cate[i].name %>" <%= product.Category == cate[i].name?'checked':'' %>>
+                        <label for=""><%=cate[i].name%></label>
+                        <% } %>
+                        
+
+                        <br><button type="submit" class="btn btn-success mt-4">Submit</button>
+                    </form>
+                </div>
             </div>
         </div>
-    </div>
-</section>
+    </section>
 
-<!--/Main-->
+    <!--/Main-->
 
 
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"
@@ -44,6 +51,6 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"
         integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF"
         crossorigin="anonymous"></script>
-</body>
+    </body>
 
-</html>
+    </html>

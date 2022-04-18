@@ -11,11 +11,20 @@ const schema = new mongoose.Schema({
         unique: true
     },
     password:{
-        type:String,
-        required:true
+        type: String,
+        required: true
     },
-    gender:String,
-    status:String
+    status:{
+        type: Boolean,
+        default: false
+    },
+    number:{
+        type:Number,
+        required:true,
+        unique:true
+    },
+    gender: String
+    
 });
 
 const model = mongoose.model('userDb',schema);

@@ -1,8 +1,12 @@
 const express = require('express');
 const route=express.Router();
-const userDb = require('../model/model');
+const Userdb = require('../model/model');
+const categoryDb = require('../model/categoryModel')
 const controller = require('../controller/controller')
+const catController = require('../controller/catController')
 const productController = require('../controller/productController')
+const session = require('express-session');
+
 
 
 // Admin
@@ -13,7 +17,7 @@ const admin = {
 
 // Admin Login
 route.get('/admin',(req,res)=>{
-    userDb.find()
+    Userdb.find()
     .then(data=>{
         if (req.session.isAdminLogin) {
             res.status(200).render('admin_home',{users:data})
@@ -30,7 +34,6 @@ route.get('/admin',(req,res)=>{
 
 route.post('/admin_home',controller.find);
 
-route.get('/users',controller.users)
 
 route.use('/admin_home',(req,res,next)=>{
     if (!req.session.isAdminLogin) {
@@ -40,6 +43,9 @@ route.use('/admin_home',(req,res,next)=>{
         
     }
 })
+
+route.get('/users',controller.users)
+
 // Adding User
 route.get('/add',(req,res)=>{
     res.render('add_user',{error:""})
@@ -50,7 +56,29 @@ route.post('/adding',controller.create)
 // Searching User
 route.get('/search',controller.search)
 
-// Edit User
+// User Status
+
+route.patch('/status/:id',async (req,res)=>{
+    console.log(req.params.id,"      ------------------router 58");
+    try {
+        const user =await Userdb.findOne( {_id:req.params.id })
+        
+        console.log(user.schema.paths,'       @@@@@@@@@@@@@@@@@@@@@@@@@@@');
+        if (user.status){
+            await Userdb.updateOne({_id:req.params.id},{status:false})
+            .then(()=>{
+                res.status(200).redirect('/users');
+            })
+        }else{
+            await Userdb.updateOne({_id:req.params.id},{status:true})
+            .then(()=>{
+                res.status(200).redirect('/users');
+            })
+        }
+    } catch (error) {
+        res.status(400).send(error)
+    }
+})
 // route.get('/update',controller.updatepage)
 
 // route.put('/update/:id',controller.update)
@@ -68,7 +96,11 @@ route.get('/admin_products',productController.find
 )
 
 route.get('/add-product',(req,res)=>{
-    res.status(200).render('add_products')
+    categoryDb.find()
+    .then(data=>{
+        res.status(200).render('add_products',{cate:data})
+    })
+    
 })
 
 route.post('/add-product',productController.create)
@@ -85,6 +117,24 @@ route.get('/users',(req,res)=>{
     res.render('admin_home',{users:data})
 })
 
+// ---------------- Category ---------------------
+
+route.get('/category',async (req,res)=>{
+    const cate =await categoryDb.find()
+    res.render('admin_category',{cate})
+})
+
+route.get('/add-category',(req,res)=>{
+    res.status(200).render('add_category')
+})
+
+route.post('/add-category',catController.create)
+
+route.get('/update-cate',catController.updatepage)
+
+route.put('/update-cate/:id',catController.update)
+
+route.delete('/delete-cate/:id',catController.delete)
 
 // Admin Logout 
 route.get('/logout_admin',(req,res)=>{

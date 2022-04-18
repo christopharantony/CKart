@@ -1,4 +1,5 @@
 var productDb = require('../model/productModel')
+var categoryDb = require('../model/categoryModel')
 const path = require('path');
 
 // New Product
@@ -70,7 +71,12 @@ exports.updatepage = (req,res)=>{
     console.log(req.query.id);
     productDb.findOne({_id:req.query.id})
     .then(data=>{
-        res.render('product_update',{product:data})
+        categoryDb.find()
+        .then(category=>{
+            console.log(category);
+            res.render('product_update',{product:data,cate:category})
+        })
+        
     })
 }
 //  Edit Product

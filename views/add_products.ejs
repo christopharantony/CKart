@@ -12,9 +12,10 @@
                     <label for="">Name</label>
                     <input type="text" name="Name" value="" class="form-control">
 
-                    <label for="">Category</label>
-                    <input type="text" name="Category" value="" class="form-control">
+                    <!-- <label for="">Category</label>
+                    <input type="" name="Category" value="" class="form-control"> -->
 
+                    
                     <label for="">Price</label>
                     <input type="text" name="Price" value="" class="form-control">
                     
@@ -26,7 +27,15 @@
                     
                     <label for="">Image</label>
                     <input type="file" name="Image" value="" class="form-control">
-                    
+                    <br>
+                    <label for=""> Category :</label>
+                    <br>
+                    <% for ( let i = 0; i < cate.length; i++){ %>
+                        <% console.log(cate[i].Name) %>
+                        <input type="radio" name="Category" id="Category" value="<%= cate[i].name %>">
+                        <label for="Category"><%=cate[i].name%></label>
+                    <% } %>
+                    <br>
                     <button type="submit" class="btn btn-success mt-4">Submit</button>
                 </form>
             </div>

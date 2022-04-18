@@ -17,7 +17,8 @@ exports.Create = (req,res)=>{
                 email:req.body.email,
                 password:req.body.password,
                 gender:req.body.gender,
-                status:req.body.status
+                number:req.body.number
+                
             });
             if (user.password.length>7) {
                 user.save(user)
@@ -55,10 +56,12 @@ exports.Find = async(req,res)=>{
 exports.create = (req,res)=>{
     const user = new Userdb({
         name:req.body.name,
+        number:req.body.number,
         email:req.body.email,
         password:req.body.password,
-        gender:req.body.gender,
-        status:req.body.status
+        gender:req.body.gender
+        
+        
     });
     console.log(user);
     console.log(user.password.length);

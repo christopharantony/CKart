@@ -35,12 +35,15 @@ userRoute.get("/", (req, res) => {
 
 // User Login
 userRoute.get("/login", (req, res) => {
-    res.status(200).render("user_login", { error: false });
+    if (req.session.isUserLogin){
+        res.redirect('/')
+    }
+    res.status(200).render("user_login", { error: "" });
 });
 
 // Login with Mobile Number
 userRoute.get("/loginotp", (req, res) => {
-    res.status(200).render("user_loginotp", { error: false });
+    res.status(200).render("user_loginotp", { error: "" });
 });
 
 // OTP page
@@ -58,8 +61,13 @@ userRoute.post("/signup", controller.Create);
 
 // User Home
 userRoute.post("/home",
-            check("email").isEmail().withMessage("Enter a valid email address"),
             controller.Find);
+
+// Product Details
+userRoute.get('/productDetail', async (req,res)=>{
+    const products = await productDb.findOne({Image:req.query.image})
+    res.render('product_details',{image:req.query.image, products})
+})
 
 // User Logout
 userRoute.get("/logout_user", (req, res) => {

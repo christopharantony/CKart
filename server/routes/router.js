@@ -7,7 +7,14 @@ const catController = require('../controller/catController')
 const productController = require('../controller/productController')
 const session = require('express-session');
 
-
+// Session Checking
+// const verifyLogin = (req,res,next)=>{
+//     if(req.session.isAdminLogin){
+//         next()
+//     }else{
+//         req.redirect('/admin')
+//     }
+// }
 
 // Admin
 const admin = {
@@ -135,6 +142,8 @@ route.get('/update-cate',catController.updatepage)
 route.put('/update-cate/:id',catController.update)
 
 route.delete('/delete-cate/:id',catController.delete)
+
+
 
 // Admin Logout 
 route.get('/logout_admin',(req,res)=>{

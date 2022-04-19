@@ -82,11 +82,37 @@ exports.updatepage = (req,res)=>{
 //  Edit Product
 exports.update = (req,res)=>{
     const id = req.params.id;
-    productDb.findByIdAndUpdate(id,req.body,{useFindAndModify:false})
+    // productDb.findByIdAndUpdate(id,req.body,{useFindAndModify:false})
+    let image = req.files.Image
+        var uploadPath = './public/productsImg/' + Date.now()+'.jpeg'
+        var imgPath ='productsImg/' + Date.now()+'.jpeg'
+
+image.mv(uploadPath,(err)=>{
+    console.log(uploadPath);
+    if(err){
+        console.log(err);
+        return res.status(500).send(err);
+    }
+    
+    const product = {
+        Name:req.body.Name,
+        Price:req.body.Price,
+        Quantity:req.body.Quantity,
+        Description: req.body.Description,
+        Category:req.body.Category,
+        Image:imgPath
+        
+    };
+
+    console.log(typeof(product.Quantity),'&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&')
+    console.log(id,'this is udddd');
+
+    productDb.updateOne({_id:id},{$set: product })
     .then(data=>{
         res.redirect('/admin_products')
     })
 }
+)}
 
 // ------------------- Delete Product -----------------------------
 

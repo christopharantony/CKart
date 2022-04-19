@@ -10,6 +10,9 @@ exports.mobileNum = async (req, res) => {
     const user = await Userdb.findOne({number:req.body.number})
     console.log('------------- Number in Body: ',req.body.number,'----------Number in database : ',user)
     if (user){
+        if (user.status){
+            res.render('user_loginotp',{error:"Your account is blocked"})
+        }
         console.log("number", req.body.number);
     client.verify
         .services(serviceSid)
@@ -22,7 +25,7 @@ exports.mobileNum = async (req, res) => {
             res.status(200).render("user_login-otp",{error:false,number:req.body.number});
         });
     }else{
-        res.render('user_loginotp',{error:true})
+        res.render('user_loginotp',{error:"This Number is not registered"})
     }
     
 }

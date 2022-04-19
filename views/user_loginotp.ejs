@@ -16,11 +16,9 @@
                     <a href="/signup" class="border-shadow">
                         <span class="new">Sign Up <i class="fa-solid fa-user-plus"></i> </span>
                     </a>
-                    <% if (error) { %>
                         
-                    <p class="wrong">This Number Is Not Registered</p>
+                    <p class="wrong"><%= error %></p>
                     
-                    <% } %>
                     <a href="/login" class="border-shadow">
                         <span class="new">Login with Mail ID </span>
                     </a>

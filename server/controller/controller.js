@@ -1,4 +1,6 @@
 var Userdb = require('../model/model');
+const productDb = require("../model/productModel");
+
 
 const admin = {
     email:'admin@gmail.com',
@@ -38,16 +40,23 @@ exports.Create = (req,res)=>{
 
 // User Login
 exports.Find = async(req,res)=>{
-    userDb = await Userdb.findOne({email:req.body.email,password:req.body.password})
-    if (userDb) {
-        
+    
+    if (req.session.isUserLogin){
+        res.redirect('/')
+    }else{userDb = await Userdb.findOne({email:req.body.email,password:req.body.password})
+        if (userDb) {
+            if(userDb.status){
+                res.render('user_login',{error:"Your account is blocked"})
+            }
+        const products = await productDb.find()
         req.session.user=req.body.email;
         req.session.isUserLogin = true;
         console.log(userDb);
         // res.render('user_home',{name:userDb.name})
-        res.status(200).render('Home')
+        res.status(200).render('Home',{ products })
     }else{
-        res.render('user_login',{error:true})
+        res.render('user_login',{error:"Invalid Username and Password"})
+    }
     }
 }
 

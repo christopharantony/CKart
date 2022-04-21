@@ -13,8 +13,21 @@ const productschema = new mongoose.Schema({
         type: Number,
         required:true
     },
-    Description:String,
-    Category:String,
+    Brand:{
+        // type: mongoose.Schema.Types.ObjectId,
+        type: String,
+        ref:'brandDb',
+        required:true
+    },
+    Category :{
+        // type: mongoose.Schema.Types.ObjectId,
+        type: String,
+        ref: 'categoryDb'
+    },
+    Description:{
+        type: String,
+        required: true
+    },
     Image:String
 
 });

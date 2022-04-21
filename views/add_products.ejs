@@ -17,10 +17,10 @@
 
                     
                     <label for="">Price</label>
-                    <input type="text" name="Price" value="" class="form-control">
+                    <input type="number" name="Price" value="" class="form-control">
                     
                     <label for="">Quantity</label>
-                    <input type="text" name="Quantity" value="" class="form-control">
+                    <input type="number" name="Quantity" value="" class="form-control">
                     
                     <label for="">Description</label>
                     <input type="text" name="Description" value="" class="form-control">
@@ -28,10 +28,19 @@
                     <label for="">Image</label>
                     <input type="file" name="Image" value="" class="form-control">
                     <br>
+                    <label for=""> Brand :</label>
+                    <br>
+                    <% for ( let i = 0; i < brand.length; i++){ %>
+                        <% console.log(brand[i].Name) %>
+                        <input type="radio" name="Brand" id="Brand" value="<%= brand[i].name %>">
+                        <label for="Brand"><%=brand[i].name%></label>
+                    <% } %>
+                    <br>
                     <label for=""> Category :</label>
                     <br>
                     <% for ( let i = 0; i < cate.length; i++){ %>
                         <% console.log(cate[i].Name) %>
+                        <!-- <input type="hidden" name="id" value="%=<product._id%>"> -->
                         <input type="radio" name="Category" id="Category" value="<%= cate[i].name %>">
                         <label for="Category"><%=cate[i].name%></label>
                     <% } %>

@@ -1,5 +1,7 @@
-var productDb = require('../model/productModel')
-var categoryDb = require('../model/categoryModel')
+const productDb = require('../model/productModel')
+const categoryDb = require('../model/categoryModel')
+const brandDb = require('../model/brandModel')
+
 const path = require('path');
 
 // New Product
@@ -24,6 +26,7 @@ image.mv(uploadPath,(err)=>{
         Price:req.body.Price,
         Quantity:req.body.Quantity,
         Description: req.body.Description,
+        Brand: req.body.Brand,
         Category:req.body.Category,
         Image:imgPath
         
@@ -67,17 +70,15 @@ exports.find = (req,res)=>{
 
 // ------------------- Edit Product ----------------------------
 //  Edit Page
-exports.updatepage = (req,res)=>{
+exports.updatepage = async(req,res)=>{
     console.log(req.query.id);
-    productDb.findOne({_id:req.query.id})
-    .then(data=>{
-        categoryDb.find()
-        .then(category=>{
-            console.log(category);
-            res.render('product_update',{product:data,cate:category})
-        })
+        const product =await productDb.findOne({_id:req.query.id})
+        const brand =await brandDb.find()
+        const cate =await categoryDb.find()
+            console.log(`Brand : ${brand} Category: ${cate}`);
+            res.render('product_update',{product,cate,brand})
         
-    })
+
 }
 //  Edit Product
 exports.update = (req,res)=>{
@@ -99,6 +100,7 @@ image.mv(uploadPath,(err)=>{
         Price:req.body.Price,
         Quantity:req.body.Quantity,
         Description: req.body.Description,
+        Brand: req.body.Brand,
         Category:req.body.Category,
         Image:imgPath
         
@@ -108,7 +110,7 @@ image.mv(uploadPath,(err)=>{
     console.log(id,'this is udddd');
 
     productDb.updateOne({_id:id},{$set: product })
-    .then(data=>{
+    .then(()=>{
         res.redirect('/admin_products')
     })
 }
@@ -119,7 +121,7 @@ image.mv(uploadPath,(err)=>{
 exports.delete = (req,res)=>{
     const id = req.params.id;
     productDb.findByIdAndDelete(id)
-    .then(data=>{
+    .then(()=>{
         res.redirect('/admin_products')
     })
 }

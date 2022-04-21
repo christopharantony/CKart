@@ -1,8 +1,11 @@
 const express = require('express');
 const route=express.Router();
+const Admin = require('../model/adminModel')
 const Userdb = require('../model/model');
 const categoryDb = require('../model/categoryModel')
+const brandDb = require('../model/brandModel')
 const controller = require('../controller/controller')
+const brandController = require('../controller/brandController')
 const catController = require('../controller/catController')
 const productController = require('../controller/productController')
 const session = require('express-session');
@@ -16,11 +19,6 @@ const session = require('express-session');
 //     }
 // }
 
-// Admin
-const admin = {
-    email:'admin@gmail.com',
-    password:'admin123'
-}
 
 // Admin Login
 route.get('/admin',(req,res)=>{
@@ -86,27 +84,19 @@ route.patch('/status/:id',async (req,res)=>{
         res.status(400).send(error)
     }
 })
-// route.get('/update',controller.updatepage)
-
-// route.put('/update/:id',controller.update)
-
-// Delete User
-// route.delete('/delete/:id',controller.delete)
-
-// route.get('/users',(req,res)=>{
-//     res.render('admin_home',{users:data})
-// })
 // --------------PRODUCTS--------------------
 
 route.get('/admin_products',productController.find
 // (req,res)=>{res.render('admin_products')}
 )
 
-route.get('/add-product',(req,res)=>{
-    categoryDb.find()
-    .then(data=>{
-        res.status(200).render('add_products',{cate:data})
-    })
+route.get('/add-product',async (req,res)=>{
+    const brand = await brandDb.find()
+    const cate = await categoryDb.find()
+    
+    // .then(data=>{
+        res.status(200).render('add_products',{brand,cate})
+    // })
     
 })
 
@@ -123,6 +113,27 @@ route.delete('/delete/:id',productController.delete)
 route.get('/users',(req,res)=>{
     res.render('admin_home',{users:data})
 })
+
+// ---------------- Brands ---------------------
+
+route.get('/brand',async (req,res)=>{
+    const brand =await brandDb.find()
+    res.render('admin_brand',{brand})
+})
+
+route.get('/add-brand',(req,res)=>{
+    res.status(200).render('add_brand')
+})
+
+route.post('/add-brand',brandController.create)
+
+route.get('/update-brand',brandController.updatepage)
+
+route.put('/update-brand/:id',brandController.update)
+
+route.delete('/delete-brand/:id',brandController.delete)
+
+
 
 // ---------------- Category ---------------------
 

@@ -14,12 +14,12 @@ const schema = new mongoose.Schema({
         type: String,
         required: true
     },
-    status:{
+    isBlocked:{
         type: Boolean,
         default: false
     },
     number:{
-        type:Number,
+        type:String,
         required:true,
         unique:true
     },

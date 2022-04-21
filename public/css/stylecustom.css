@@ -54,9 +54,9 @@ table{
     width: 100%;
 }
 
-.tbody tr:hover{
+/* .tbody tr:hover{
     background-color: aqua;
-}
+} */
 .thead{
     color: aliceblue;
     background-color: darkslategray;
@@ -134,4 +134,10 @@ table{
     font-weight: bold;
     color: rgb(248, 13, 13);
 }
+/* #resend{
+    display: none;
+} */
 
+#Timer{
+    padding-top: 6px;
+}

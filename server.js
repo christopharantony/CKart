@@ -10,7 +10,7 @@ const fileUpload = require('express-fileupload')
 
 const app = express();
 
-const port = process.env.PORT;
+const port = process.env.PORT ;
 
 mongoose.connect('mongodb://localhost:27017/accounts',(err)=>{
     if(err){

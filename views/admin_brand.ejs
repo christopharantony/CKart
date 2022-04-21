@@ -5,38 +5,28 @@
     <section>
         <div class="container">
             <div class="row mt-4">
-                <a href="/add-product" class="btn btn-success ml-auto proadd">Add product</a>
+                <a href="/add-brand" class="btn btn-success ml-auto proadd">Add Brand</a>
             </div>
             <table class="table mt-4">
                 <thead>
                     <tr>
                         <th scope="col">No.</th>
                         <th scope="col">Name</th>
-                        <th scope="col">Image</th>
-                        <th scope="col">Price</th>
-                        <th scope="col">Quantity</th>
-                        <th scope="col">Brand</th>
-                        <th scope="col">Category</th>
                         <th scope="col">Action</th>
                     </tr>
                 </thead>
                 
                 <tbody>
-                    <% for ( let i = 0; i < products.length; i++){ %>
+                    <% for ( let i = 0; i < brand.length; i++){ %>
                     <tr>
                         <th scope="row"><%=i+1%></th>
-                        <td><%=products[i].Name%></td>
-                        <td><img style="width:50px;height:50px" src="<%=products[i].Image%>" alt="product image"> </td>
-                        <td><%=products[i].Price%></td>
-                        <td><%=products[i].Quantity%></td>
-                        <td><%=products[i].Brand%></td>
-                        <td><%=products[i].Category%></td>
+                        <td><%=brand[i].name%></td>
                         <td>
-                            <a href="/update?id=<%= products[i]._id %>" class="btn border-shadow update">
+                            <a href="/update-brand?id=<%= brand[i]._id %>" class="btn border-shadow update">
                                 <i class="fa-solid fa-pencil"></i>
                             </a>
                             <div>
-                            <form action="/delete/<%= products[i]._id %>?_method=DELETE" method="post">
+                            <form action="/delete-brand/<%= brand[i]._id %>?_method=DELETE" method="post">
                             
                                 <button class="btn border-shadow update" type="submit">
                                 

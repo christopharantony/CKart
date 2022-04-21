@@ -1,4 +1,5 @@
 var Userdb = require('../model/model');
+const productDb = require('../model/productModel')
 
 var accountSid = process.env.TWILIO_ACCOUNT_SID;
 var authToken = process.env.TWILIO_AUTH_TOKEN;
@@ -40,10 +41,44 @@ exports.otp = (req, res) => {
             code: otp,
         })
         .then((resp) => {
+            
             console.log("response ", resp);
             if (resp.valid) {
-                res.status(200).render('Home');
+                productDb.find()
+                .then((products)=>{
+                    res.status(200).render('Home',{products});
+                })
+                
+            }else{
+                res.render('user_login-otp',{error:true,number:req.body.number});
             }
-            res.render('user_login-otp',{error:true,number:req.body.number});
+            
         });
+}
+
+exports.resend = (req,res)=>{
+        client.verify
+            .services(serviceSid)
+            .verifications.create({
+                to: `+91${req.body.number}`,
+                channel: "sms"
+            })
+            .then((resp) => {
+                console.log("response ", resp);
+                res.status(200).render("user_login-otp",{error:false,number:req.body.number});
+            });
+        
+    console.log('*******************    req.body.number',req.body.number);
+    // console.log('*******************    number',number); number is not defined
+
+    // client.verify
+    //     .services(serviceSid)
+    //     .verifications.create({
+    //         to: `+91${req.body.number}`,
+    //         channel: "sms"
+    //     })
+    //     .then((resp) => {
+    //         console.log("response ", resp);
+    //         res.status(200).render("user_login-otp",{error:false,number:req.body.number});
+    //     });
 }

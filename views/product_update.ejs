@@ -18,17 +18,27 @@
                         
 
                         <label for="">Price</label>
-                        <input type="text" name="Price" value="<%=product.Price%>" class="form-control">
+                        <input type="number" name="Price" value="<%=product.Price%>" class="form-control">
 
                         <label for="">Quantity</label>
-                        <input type="text" name="Quantity" value="<%=product.Quantity%>" class="form-control">
+                        <input type="number" name="Quantity" value="<%=product.Quantity%>" class="form-control">
 
                         <label for="">Description</label>
                         <input type="text" name="Description" value="<%=product.Description%>" class="form-control">
 
                         <label for="">Image</label>
+                        <br>
+                        <img style="width:70px;height:70px" src="<%=product.Image%>" alt="product image">
+                        <br><br>
                         <input type="file" name="Image" value="<%=product.Image%>" class="form-control">
-                        <label for="">Category</label>
+                        <br>
+                        <label for="">Brand</label><br>
+                        <% for ( let i = 0; i < brand.length; i++){ %>
+                        <input type="radio" name="Brand" id="brand" value="<%= brand[i].name %>" <%= product.Category == brand[i].name?'checked':'' %>>
+                        <label for=""><%=brand[i].name%></label>
+                        <% } %>
+                        <br><br>
+                        <label for="">Category</label><br>
                         <% for ( let i = 0; i < cate.length; i++){ %>
                         <input type="radio" name="Category" id="radio" value="<%= cate[i].name %>" <%= product.Category == cate[i].name?'checked':'' %>>
                         <label for=""><%=cate[i].name%></label>

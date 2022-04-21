@@ -12,25 +12,20 @@ var serviceSid = process.env.TWILIO_SERVICE_SID;
 const client = require("twilio")(accountSid, authToken);
 
 // User Landing
-userRoute.get("/", (req, res) => {
-    productDb
-        .find()
-        .then((data) => {
+userRoute.get("/", async(req, res) => {
+    try {
+        const products =await productDb.find()
+        
             if (req.session.isUserLogin) {
-                console.log();
-                // res.status(200).render('user_home',{name:userDb.name})
-                res.status(200).render("Home", { products: data });
+                res.status(200).render("Home", { products,isUserLogin:req.session.isUserLogin});
             } else {
                 req.session.isUserLogin = false;
                 console.log("Im Landed Now........................");
-                res.status(200).render("landing", { products: data });
+                res.status(200).render("Home", { products,isUserLogin:req.session.isUserLogin});
             }
-            // console.log(data);
-            // res.status(200).render('admin_products',{products:data})
-        })
-        .catch((err) => {
-            console.log(err.message);
-        });
+    } catch (error) {
+        console.log(error.message);
+    }
 });
 
 // User Login
@@ -51,6 +46,7 @@ userRoute.post("/mobile", otpcontroller.mobileNum);
 
 // OTP submit
 userRoute.post("/otp", otpcontroller.otp);
+userRoute.post('/resend',otpcontroller.resend)
 
 // User SignUp
 userRoute.get("/signup", (req, res) => {
@@ -66,7 +62,7 @@ userRoute.post("/home",
 // Product Details
 userRoute.get('/productDetail', async (req,res)=>{
     const products = await productDb.findOne({Image:req.query.image})
-    res.render('product_details',{image:req.query.image, products})
+    res.render('product_details',{image:req.query.image, products,isUserLogin:req.session.isUserLogin})
 })
 
 // User Logout
@@ -79,7 +75,6 @@ userRoute.get("/logout_user", (req, res) => {
             res.send("Error");
         } else {
             res.redirect('/')
-            // res.render("user_login", { error: "Logout successfully" });
         }
     });
 });

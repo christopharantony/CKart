@@ -1,4 +1,4 @@
-<%-include('include/_header')%>
+<%-include('../include/_header')%>
 
     <!--Main-->
 
@@ -37,7 +37,7 @@
             </form>
             <form action="/resend" method="post">
                 <div class="new_user">
-                    <div class="form-group">
+                    <div class="form-group" id="hideresend" style="visibility:hidden">
                         <input type="hidden" name="number" value="<%=number%>">
                         <button type="submit" class="save_btn" id="resend">Resend</button>
                     </div>
@@ -49,6 +49,12 @@
     <!--/Main-->
 
     <script>
+
+        function showdiv(){
+            document.getElementById("hideresend").style.visibility ="visible";
+        }
+        setTimeout("showdiv()", 60*1000);
+
         document.getElementsByTagName("button")[1].disabled = true
 
         const myTimeout = setTimeout(myGreeting, 59 * 1000);
@@ -74,4 +80,4 @@
         }
     </script>
 
-    <%-include('include/_footer')%>
+    <%-include('../include/_footer')%>

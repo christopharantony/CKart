@@ -15,7 +15,7 @@ exports.create =async (req,res)=>{
 exports.updatepage =async (req,res)=>{
     console.log(req.query.id);
     const cate = await categoryDb.findOne({_id:req.query.id})
-    res.render('category_update',{cate})
+    res.render('admin/category_update',{cate})
 }
 
 exports.update = async (req,res)=>{

@@ -10,17 +10,19 @@ exports.create = (req,res)=>{
         res.status(400).send({ message :"Content can not be empty!"});
         return;
     }else{
-        let image = req.files.Image
-        var uploadPath = './public/productsImg/' + Date.now()+'.jpeg'
-        var imgPath ='productsImg/' + Date.now()+'.jpeg'
-
-image.mv(uploadPath,(err)=>{
-    console.log(uploadPath);
-    if(err){
-        console.log(err);
-        return res.status(500).send(err);
-    }
-    
+        let image = req.files?.Image
+        if(image){
+            var uploadPath = './public/productsImg/' + Date.now()+'.jpeg'
+            var imgPath ='productsImg/' + Date.now()+'.jpeg'
+            image.mv(uploadPath,(err)=>{
+            console.log(uploadPath);
+            if(err){
+                console.log(err);
+                return res.status(500).send(err);
+            }
+            })
+        }
+        
     const product = new productDb({
         Name:req.body.Name,
         Price:req.body.Price,
@@ -34,15 +36,13 @@ image.mv(uploadPath,(err)=>{
         product.save(product)
     .then((data)=>{
         console.log(data);
-        res.redirect('/admin_products')
-
+        res.redirect('/admin-products')
     })
     .catch(err=>{
         console.log(err.message);
-    // res.status(401).render('admin_login',{error:"Invalid Input"})
     });
         
-    })
+    
 
 }
 }
@@ -50,8 +50,8 @@ image.mv(uploadPath,(err)=>{
 exports.find = (req,res)=>{
     productDb.find()
     .then(data=>{
-        // console.log(data);
-        res.status(200).render('admin_products',{products:data})
+        console.log('products : ',data);
+        res.status(200).render('admin/admin_products',{products:data})
     })
     .catch(err=>{
         console.log(err.message);
@@ -61,12 +61,12 @@ exports.find = (req,res)=>{
 // ------------------- Edit Product ----------------------------
 //  Edit Page
 exports.updatepage = async(req,res)=>{
-    console.log(req.query.id);
+    console.log('Product Id : ',req.query.id);
         const product =await productDb.findOne({_id:req.query.id})
         const brand =await brandDb.find()
         const cate =await categoryDb.find()
             console.log(`Brand : ${brand} Category: ${cate}`);
-            res.render('product_update',{product,cate,brand})
+            res.render('admin/product_update',{product,cate,brand})
         
 
 }
@@ -91,13 +91,12 @@ exports.update = (req,res)=>{
         
     };
 
-    console.log(typeof(product.Quantity),'&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&')
-    console.log(id,'this is udddd');
+    console.log('Type of Product : ',typeof(product.Quantity))
+    console.log('ProductId : ',id);
 
     productDb.updateOne({_id:id},{$set: product })
     .then(()=>{
-        res.redirect('/admin_products')
-        
+        res.redirect('/admin-products')
     })
 }
 // )}
@@ -108,6 +107,6 @@ exports.delete = (req,res)=>{
     const id = req.params.id;
     productDb.findByIdAndDelete(id)
     .then(()=>{
-        res.redirect('/admin_products')
+        res.redirect('/admin-products')
     })
 }

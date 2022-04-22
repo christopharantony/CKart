@@ -1,4 +1,4 @@
-<%-include('include/_adminhead')%>
+<%-include('../include/_adminhead')%>
 
 
     <!--Main-->
@@ -12,10 +12,6 @@
                         <input type="hidden" name="id" value="<%= product._id%>">
                         <label for="">Name</label>
                         <input type="text" name="Name" value="<%=product.Name%>" class="form-control">
-
-
-                        
-                        
 
                         <label for="">Price</label>
                         <input type="number" name="Price" value="<%=product.Price%>" class="form-control">

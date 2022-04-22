@@ -15,7 +15,7 @@ exports.create =async (req,res)=>{
 exports.updatepage =async (req,res)=>{
     console.log(req.query.id);
     const brand = await brandDb.findOne({_id:req.query.id})
-    res.render('brand_update',{brand})
+    res.render('admin/brand_update',{brand})
 }
 
 exports.update = async (req,res)=>{

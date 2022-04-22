@@ -26,10 +26,10 @@ route.get('/admin',(req,res)=>{
     Userdb.find()
     .then(data=>{
         if (req.session.isAdminLogin) {
-            res.status(200).render('admin_home',{users:data})
+            res.status(200).render('admin/admin_home',{users:data})
         } else {
             req.session.isAdminLogin=false;
-            res.status(200).render('admin_login',{error:""})
+            res.status(200).render('admin/admin_login',{error:""})
         }
     }).catch(err=>{
         console.error(err.message);
@@ -38,10 +38,10 @@ route.get('/admin',(req,res)=>{
 
 // Admin Home
 
-route.post('/admin_home',controller.find);
+route.post('/admin-home',controller.find);
 
 
-route.use('/admin_home',(req,res,next)=>{
+route.use('/admin-home',(req,res,next)=>{
     if (!req.session.isAdminLogin) {
         res.status(200).redirect("/admin")
     } else { 
@@ -54,7 +54,7 @@ route.get('/users',controller.users)
 
 // Adding User
 route.get('/add',(req,res)=>{
-    res.render('add_user',{error:""})
+    res.render('admin/add_user',{error:""})
 });
 
 route.post('/adding',controller.create)
@@ -64,43 +64,19 @@ route.get('/search',controller.search)
 
 // User Status
 
-route.patch('/status/:id',async (req,res)=>{
-    console.log(req.params.id,"      ------------------router 58");
-    try {
-        const user =await Userdb.findOne( {_id:req.params.id })
-        
-        console.log(user.schema.paths,'       @@@@@@@@@@@@@@@@@@@@@@@@@@@');
-        if (user.status){
-            await Userdb.updateOne({_id:req.params.id},{status:false})
-            .then(()=>{
-                res.status(200).redirect('/users');
-            })
-        }else{
-            await Userdb.updateOne({_id:req.params.id},{status:true})
-            .then(()=>{
-                res.status(200).redirect('/users');
-            })
-        }
-    } catch (error) {
-        res.status(400).send(error)
-    }
-})
+route.patch('/status/:id',controller.block)
 // --------------PRODUCTS--------------------
 
-route.get('/admin_products',productController.find
-// (req,res)=>{res.render('admin_products')}
-)
+route.get('/admin-products',productController.find)
 
+// Product Add Form
 route.get('/add-product',async (req,res)=>{
     const brand = await brandDb.find()
     const cate = await categoryDb.find()
-    
-    // .then(data=>{
-        res.status(200).render('add_products',{brand,cate})
-    // })
-    
+        res.status(200).render('admin/add_products',{brand,cate})
 })
 
+// Adding Product
 route.post('/add-product',productController.create)
 
 // Edit Product
@@ -119,11 +95,11 @@ route.get('/users',(req,res)=>{
 
 route.get('/brand',async (req,res)=>{
     const brand =await brandDb.find()
-    res.render('admin_brand',{brand})
+    res.render('admin/admin_brand',{brand})
 })
 
 route.get('/add-brand',(req,res)=>{
-    res.status(200).render('add_brand')
+    res.status(200).render('admin/add_brand')
 })
 
 route.post('/add-brand',brandController.create)
@@ -140,11 +116,11 @@ route.delete('/delete-brand/:id',brandController.delete)
 
 route.get('/category',async (req,res)=>{
     const cate =await categoryDb.find()
-    res.render('admin_category',{cate})
+    res.render('admin/admin_category',{cate})
 })
 
 route.get('/add-category',(req,res)=>{
-    res.status(200).render('add_category')
+    res.status(200).render('admin/add_category')
 })
 
 route.post('/add-category',catController.create)

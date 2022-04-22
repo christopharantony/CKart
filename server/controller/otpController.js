@@ -11,9 +11,9 @@ exports.mobileNum = async (req, res) => {
     const user = await Userdb.findOne({number:req.body.number})
     console.log('------------- Number in Body: ',req.body.number,'----------Number in database : ',user)
     if (user){
-        if (user.status){
-            res.render('user_loginotp',{error:"Your account is blocked"})
-        }
+        if (user.isBlocked){
+            res.render('user/user_loginotp',{error:"Your account is blocked"})
+        }else{
         console.log("number", req.body.number);
     client.verify
         .services(serviceSid)
@@ -23,10 +23,11 @@ exports.mobileNum = async (req, res) => {
         })
         .then((resp) => {
             console.log("response ", resp);
-            res.status(200).render("user_login-otp",{error:false,number:req.body.number});
+            res.status(200).render("user/user_login-otp",{error:false,number:req.body.number});
         });
+    }
     }else{
-        res.render('user_loginotp',{error:"This Number is not registered"})
+        res.render('user/user_loginotp',{error:"This Number is not registered"})
     }
     
 }
@@ -46,11 +47,11 @@ exports.otp = (req, res) => {
             if (resp.valid) {
                 productDb.find()
                 .then((products)=>{
-                    res.status(200).render('Home',{products});
+                    res.status(200).render('user/Home',{products,isUserLogin:req.session.isUserLogin});
                 })
                 
             }else{
-                res.render('user_login-otp',{error:true,number:req.body.number});
+                res.render('user/user_login-otp',{error:true,number:req.body.number});
             }
             
         });
@@ -65,12 +66,10 @@ exports.resend = (req,res)=>{
             })
             .then((resp) => {
                 console.log("response ", resp);
-                res.status(200).render("user_login-otp",{error:false,number:req.body.number});
+                res.status(200).render("user/user_login-otp",{error:false,number:req.body.number});
             });
         
     console.log('*******************    req.body.number',req.body.number);
-    // console.log('*******************    number',number); number is not defined
-
     // client.verify
     //     .services(serviceSid)
     //     .verifications.create({

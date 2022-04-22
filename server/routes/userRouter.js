@@ -17,11 +17,11 @@ userRoute.get("/", async(req, res) => {
         const products =await productDb.find()
         
             if (req.session.isUserLogin) {
-                res.status(200).render("Home", { products,isUserLogin:req.session.isUserLogin});
+                res.status(200).render("user/Home", { products,isUserLogin:req.session.isUserLogin});
             } else {
                 req.session.isUserLogin = false;
                 console.log("Im Landed Now........................");
-                res.status(200).render("Home", { products,isUserLogin:req.session.isUserLogin});
+                res.status(200).render("user/Home", { products,isUserLogin:req.session.isUserLogin});
             }
     } catch (error) {
         console.log(error.message);
@@ -33,12 +33,12 @@ userRoute.get("/login", (req, res) => {
     if (req.session.isUserLogin){
         res.redirect('/')
     }
-    res.status(200).render("user_login", { error: "" });
+    res.status(200).render("user/user_login", { error: "" });
 });
 
 // Login with Mobile Number
 userRoute.get("/loginotp", (req, res) => {
-    res.status(200).render("user_loginotp", { error: "" });
+    res.status(200).render("user/user_loginotp", { error: "" });
 });
 
 // OTP page
@@ -50,7 +50,7 @@ userRoute.post('/resend',otpcontroller.resend)
 
 // User SignUp
 userRoute.get("/signup", (req, res) => {
-    res.render("user_signup", { error: "" });
+    res.render("user/user_signup", { error: "" });
 });
 
 userRoute.post("/signup", controller.Create);
@@ -62,7 +62,11 @@ userRoute.post("/home",
 // Product Details
 userRoute.get('/productDetail', async (req,res)=>{
     const products = await productDb.findOne({Image:req.query.image})
-    res.render('product_details',{image:req.query.image, products,isUserLogin:req.session.isUserLogin})
+    res.render('user/product_details',{image:req.query.image, products,isUserLogin:req.session.isUserLogin})
+})
+
+userRoute.get('/add-to-cart/:id',(req,res)=>{
+    
 })
 
 // User Logout

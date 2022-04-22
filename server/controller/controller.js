@@ -26,14 +26,14 @@ exports.Create = (req, res) => {
         if (user.password.length > 7) {
             user.save(user)
                 .then(() => {
-                    res.status(201).render('user_login', { error: "" })
+                    res.status(201).render('user/user_login', { error: "" })
                 })
                 .catch(err => {
                     console.log(err.message);
-                    res.status(401).render('user_signup', { error: "Account already in use" })
+                    res.status(401).render('user/user_signup', { error: "Account already in use" })
                 })
         } else {
-            res.render('user_signup', { error: "Password must contain atleast 8 characters" })
+            res.render('user/user_signup', { error: "Password must contain atleast 8 characters" })
         }
 
     }
@@ -48,16 +48,16 @@ exports.Find = async (req, res) => {
         userDb = await Userdb.findOne({ email: req.body.email, password: req.body.password })
         if (userDb) {
             if (userDb.isBlocked) {
-                res.render('user_login', { error: "Your account is blocked" })
+                res.render('user/user_login', { error: "Your account is blocked" })
             }
             const products = await productDb.find()
-            req.session.user = req.body.email;
+            req.session.user = req.body.userDb;
             req.session.isUserLogin = true;
             console.log(userDb);
             // res.render('user_home',{name:userDb.name})
-            res.status(200).render('Home', { products,isUserLogin:req.session.isUserLogin })
+            res.status(200).render('user/Home', { products,isUserLogin:req.session.isUserLogin })
         } else {
-            res.render('user_login', { error: "Invalid Username and Password" })
+            res.render('user/user_login', { error: "Invalid Username and Password" })
         }
     }
 }
@@ -75,19 +75,18 @@ exports.create = (req, res) => {
 
     });
     console.log(user);
-    console.log(user.password.length);
     if (user.password.length > 7) {
         user.save(user)
             .then(() => {
-                res.render('add_user', { error: "" })
+                res.render('admin/add_user', { error: "" })
             })
             .catch(err => {
                 console.log(err.message);
-                res.render('add_user', { error: "Account is already in use" })
+                res.render('admin/add_user', { error: "Account is already in use" })
 
             })
     } else {
-        res.render('add_user', { error: "Password must contain at least 8 characters" })
+        res.render('admin/add_user', { error: "Password must contain at least 8 characters" })
     }
 
 }
@@ -98,15 +97,15 @@ exports.find = async (req, res) => {
     try {
         const data = await Userdb.find()
         if (req.session.isAdminLogin) {
-            res.status(200).render('admin_home', { users: data })
+            res.status(200).render('admin/admin_home', { users: data })
         } else {
             const admin = await adminDb.findOne({email:req.body.email, password:req.body.password})
             if (admin) {
                 req.session.admin = req.body.email;
                 req.session.isAdminLogin = true;
-                res.status(200).render('admin_home', { users: data })
+                res.status(200).render('admin/admin_home', { users: data })
             } else {
-                res.status(401).render('admin_login', { error: "Invalid Username or Password" })
+                res.status(401).render('admin/admin_login', { error: "Invalid Username or Password" })
             }
         }
     } catch (err) {
@@ -117,7 +116,7 @@ exports.find = async (req, res) => {
 exports.users = (req, res) => {
     Userdb.find()
         .then(data => {
-            res.status(200).render('admin_home', { users: data })
+            res.status(200).render('admin/admin_home', { users: data })
         })
         .catch(err => {
             console.log(err.message);
@@ -132,37 +131,58 @@ exports.search = (req, res) => {
         name: new RegExp(req.query.searchName, "i")
     })
         .then(data => {
-            res.render('admin_home', { users: data })
+            res.render('admin/admin_home', { users: data })
         })
 }
 
-//Product Update Page
-
-exports.updatepage = (req, res) => {
-    console.log(req.query.id);
-    Userdb.findOne({ _id: req.query.id })
-        .then(data => {
-            res.render('product_update', { product: data })
-        })
+exports.block = async (req,res)=>{
+    try {
+        const user =await Userdb.findOne( {_id:req.params.id })
+        console.log("user.isBlocked",user.isBlocked)
+        console.log("req.params.id",req.params.id);
+        if (user.isBlocked){
+            await Userdb.updateOne({_id:req.params.id},{isBlocked:false})
+            .then(()=>{
+                res.status(200).redirect('/users');
+            })
+        }else{
+            await Userdb.updateOne({_id:req.params.id},{isBlocked:true})
+            .then(()=>{
+                res.status(200).redirect('/users');
+            })
+        }
+    } catch (error) {
+        res.status(400).send(error)
+    }
 }
 
-// Update User
-exports.update = (req, res) => {
-    const id = req.params.id;
-    Userdb.findByIdAndUpdate(id, req.body, { useFindAndModify: false })
-        .then(data => {
-            res.redirect('/admin')
-        })
-}
+// //Product Update Page
 
-// Delete User
-exports.delete = (req, res) => {
-    const id = req.params.id;
-    Userdb.findByIdAndDelete(id)
-        .then(data => {
-            res.redirect('/admin')
-        })
-}
+// exports.updatepage = (req, res) => {
+//     console.log(req.query.id);
+//     Userdb.findOne({ _id: req.query.id })
+//         .then(data => {
+//             res.render('product_update', { product: data })
+//         })
+// }
+
+// // Update User
+// exports.update = (req, res) => {
+//     const id = req.params.id;
+//     Userdb.findByIdAndUpdate(id, req.body, { useFindAndModify: false })
+//         .then(data => {
+//             res.redirect('/admin')
+//         })
+// }
+
+// // Delete User
+// exports.delete = (req, res) => {
+//     const id = req.params.id;
+//     Userdb.findByIdAndDelete(id)
+//         .then(data => {
+//             res.redirect('/admin')
+//         })
+// }
 
 // New User
 exports.create = (req, res) => {

@@ -28,9 +28,9 @@
 
                         <label for="">Image</label>
                         <br>
-                        <img style="width:70px;height:70px" src="<%=product.Image%>" alt="product image">
+                        <img style="width:70px;height:70px" src="<%=product.Image%>" alt="product image" id="imgView" >
                         <br><br>
-                        <input type="file" name="Image" value="<%=product.Image%>" class="form-control">
+                        <input type="file" name="Image" value="<%=product.Image%>" class="form-control" onchange="viewImage(event)">
                         <br>
                         <label for="">Brand</label><br>
                         <% for ( let i = 0; i < brand.length; i++){ %>
@@ -53,6 +53,12 @@
     </section>
 
     <!--/Main-->
+    <script>
+        console.log('Product_Update : ',event);
+        function viewImage(event){
+            document.getElementById('imgView').src=URL.createObjectURL(event.target.files[0])
+        }
+    </script>
 
 
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"

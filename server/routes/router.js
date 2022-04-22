@@ -9,6 +9,7 @@ const brandController = require('../controller/brandController')
 const catController = require('../controller/catController')
 const productController = require('../controller/productController')
 const session = require('express-session');
+const req = require('express/lib/request');
 
 // Session Checking
 // const verifyLogin = (req,res,next)=>{

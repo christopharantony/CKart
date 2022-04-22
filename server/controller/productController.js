@@ -32,16 +32,6 @@ image.mv(uploadPath,(err)=>{
         
     });
         product.save(product)
-// console.log(req.body)
-// console.log(product);
-
-// console.log(image);
-// var uploadPath = path.resolve(__dirname,'../public/productsImg/',image.name)
-// var uploadPath = './public/productsImg/' + image.name
-
-
-
-
     .then((data)=>{
         console.log(data);
         res.redirect('/admin_products')
@@ -83,17 +73,12 @@ exports.updatepage = async(req,res)=>{
 //  Edit Product
 exports.update = (req,res)=>{
     const id = req.params.id;
-    // productDb.findByIdAndUpdate(id,req.body,{useFindAndModify:false})
-    let image = req.files.Image
-        var uploadPath = './public/productsImg/' + Date.now()+'.jpeg'
+        let image = req.files?.Image
+        if(image){
+            var uploadPath = './public/productsImg/' + Date.now()+'.jpeg'
         var imgPath ='productsImg/' + Date.now()+'.jpeg'
-
-image.mv(uploadPath,(err)=>{
-    console.log(uploadPath);
-    if(err){
-        console.log(err);
-        return res.status(500).send(err);
-    }
+        image.mv(uploadPath)
+        }
     
     const product = {
         Name:req.body.Name,
@@ -112,9 +97,10 @@ image.mv(uploadPath,(err)=>{
     productDb.updateOne({_id:id},{$set: product })
     .then(()=>{
         res.redirect('/admin_products')
+        
     })
 }
-)}
+// )}
 
 // ------------------- Delete Product -----------------------------
 

@@ -68,7 +68,6 @@ exports.updatepage = async(req,res)=>{
             console.log(`Brand : ${brand} Category: ${cate}`);
             res.render('admin/product_update',{product,cate,brand})
         
-
 }
 //  Edit Product
 exports.update = (req,res)=>{

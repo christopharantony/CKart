@@ -1,15 +1,15 @@
-const express = require('express');
-const route=express.Router();
-const Admin = require('../model/adminModel')
-const Userdb = require('../model/model');
-const categoryDb = require('../model/categoryModel')
-const brandDb = require('../model/brandModel')
-const controller = require('../controller/controller')
-const brandController = require('../controller/brandController')
-const catController = require('../controller/catController')
-const productController = require('../controller/productController')
-const session = require('express-session');
-const req = require('express/lib/request');
+const express = require("express");
+const route = express.Router();
+const Admin = require("../model/adminModel");
+const Userdb = require("../model/model");
+const categoryDb = require("../model/categoryModel");
+const brandDb = require("../model/brandModel");
+const controller = require("../controller/controller");
+const brandController = require("../controller/brandController");
+const catController = require("../controller/catController");
+const productController = require("../controller/productController");
+const session = require("express-session");
+const req = require("express/lib/request");
 
 // Session Checking
 // const verifyLogin = (req,res,next)=>{
@@ -20,132 +20,132 @@ const req = require('express/lib/request');
 //     }
 // }
 
-
 // Admin Login
-route.get('/admin',(req,res)=>{
+route.get("/admin", (req, res) => {
     Userdb.find()
-    .then(data=>{
-        if (req.session.isAdminLogin) {
-            res.status(200).render('admin/admin_home',{users:data})
-        } else {
-            req.session.isAdminLogin=false;
-            res.status(200).render('admin/admin_login',{error:""})
-        }
-    }).catch(err=>{
-        console.error(err.message);
-    })
-})
+        .then((data) => {
+            if (req.session.isAdminLogin) {
+                res.status(200).render("admin/admin_home", { users: data });
+            } else {
+                req.session.isAdminLogin = false;
+                res.status(200).render("admin/admin_login", { error: "" });
+            }
+        })
+        .catch((err) => {
+            console.error(err.message);
+        });
+});
 
 // Admin Home
 
-route.post('/admin-home',controller.find);
+route.post("/admin-home", controller.find);
 
+// route.use('/admin-home',(req,res,next)=>{
+//     if (!req.session.isAdminLogin) {
+//         res.status(200).redirect("/admin")
+//     } else {
+//         next();
 
-route.use('/admin-home',(req,res,next)=>{
+//     }
+// })
+
+route.use((req, res, next) => {
     if (!req.session.isAdminLogin) {
-        res.status(200).redirect("/admin")
-    } else { 
-        next();
-        
-    }
-})
-
-route.get('/users',controller.users)
-
-// Adding User
-route.get('/add',(req,res)=>{
-    res.render('admin/add_user',{error:""})
+        console.log("not admin");
+        res.status(200).redirect("/admin");
+    } else next();
 });
 
-route.post('/adding',controller.create)
+route.get("/users", controller.users);
+
+// Adding User
+route.get("/add", (req, res) => {
+    res.render("admin/add_user", { error: "" });
+});
+
+route.post("/adding", controller.create);
 
 // Searching User
-route.get('/search',controller.search)
+route.get("/search", controller.search);
 
 // User Status
 
-route.patch('/status/:id',controller.block)
+route.patch("/status/:id", controller.block);
 // --------------PRODUCTS--------------------
 
-route.get('/admin-products',productController.find)
+route.get("/admin-products", productController.find);
 
 // Product Add Form
-route.get('/add-product',async (req,res)=>{
-    const brand = await brandDb.find()
-    const cate = await categoryDb.find()
-        res.status(200).render('admin/add_products',{brand,cate})
-})
+route.get("/add-product", async (req, res) => {
+    const brand = await brandDb.find();
+    const cate = await categoryDb.find();
+    res.status(200).render("admin/add_products", { brand, cate });
+});
 
 // Adding Product
-route.post('/add-product',productController.create)
+route.post("/add-product", productController.create);
 
 // Edit Product
-route.get('/update',productController.updatepage)
+route.get("/update", productController.updatepage);
 
-route.put('/update/:id',productController.update)
+route.put("/update/:id", productController.update);
 
 // Delete Product
-route.delete('/delete/:id',productController.delete)
+route.delete("/delete/:id", productController.delete);
 
-route.get('/users',(req,res)=>{
-    res.render('admin_home',{users:data})
-})
+route.get("/users", (req, res) => {
+    res.render("admin_home", { users: data });
+});
 
 // ---------------- Brands ---------------------
 
-route.get('/brand',async (req,res)=>{
-    const brand =await brandDb.find()
-    res.render('admin/admin_brand',{brand})
-})
+route.get("/brand", async (req, res) => {
+    const brand = await brandDb.find();
+    res.render("admin/admin_brand", { brand });
+});
 
-route.get('/add-brand',(req,res)=>{
-    res.status(200).render('admin/add_brand')
-})
+route.get("/add-brand", (req, res) => {
+    res.status(200).render("admin/add_brand");
+});
 
-route.post('/add-brand',brandController.create)
+route.post("/add-brand", brandController.create);
 
-route.get('/update-brand',brandController.updatepage)
+route.get("/update-brand", brandController.updatepage);
 
-route.put('/update-brand/:id',brandController.update)
+route.put("/update-brand/:id", brandController.update);
 
-route.delete('/delete-brand/:id',brandController.delete)
-
-
+route.delete("/delete-brand/:id", brandController.delete);
 
 // ---------------- Category ---------------------
 
-route.get('/category',async (req,res)=>{
-    const cate =await categoryDb.find()
-    res.render('admin/admin_category',{cate})
-})
+route.get("/category", async (req, res) => {
+    const cate = await categoryDb.find();
+    res.render("admin/admin_category", { cate });
+});
 
-route.get('/add-category',(req,res)=>{
-    res.status(200).render('admin/add_category')
-})
+route.get("/add-category", (req, res) => {
+    res.status(200).render("admin/add_category");
+});
 
-route.post('/add-category',catController.create)
+route.post("/add-category", catController.create);
 
-route.get('/update-cate',catController.updatepage)
+route.get("/update-cate", catController.updatepage);
 
-route.put('/update-cate/:id',catController.update)
+route.put("/update-cate/:id", catController.update);
 
-route.delete('/delete-cate/:id',catController.delete)
+route.delete("/delete-cate/:id", catController.delete);
 
-
-
-// Admin Logout 
-route.get('/logout_admin',(req,res)=>{
-    req.session.destroy(function(err){
-        res.clearCookie()
+// Admin Logout
+route.get("/logout_admin", (req, res) => {
+    req.session.destroy(function (err) {
+        res.clearCookie();
         console.log(req.session);
         if (err) {
-            res.status(403).send("Hai Admin, Error while logingout")
+            res.status(403).send("Hai Admin, Error while logingout");
         } else {
-            res.status(200).redirect('/')
+            res.status(200).redirect("/");
         }
-    })
-})
-
-
+    });
+});
 
 module.exports = route;

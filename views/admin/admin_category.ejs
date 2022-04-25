@@ -27,11 +27,11 @@
                             </a>
                             <div>
                             <form action="/delete-cate/<%= cate[i]._id %>?_method=DELETE" method="post">
-                            
-                                <button class="btn border-shadow update" type="submit">
-                                
+                                <a href="" onclick="return confirm('Are want to delete <%=cate[i].name%> ?')">
+                                    <button class="btn border-shadow update" type="submit">
                                         <i class="fa-solid fa-trash-can"></i>
-                                </button>
+                                    </button>
+                                </a>
                             </form>
                             </div>
                         </td>

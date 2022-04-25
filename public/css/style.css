@@ -632,8 +632,8 @@ ul.btn li:last-child {
 }
 
 .our_products .product_box h3:hover {
-    background: #48ca95;
-    transition: ease-in all 0.5s;
+    background: #ffae00;
+    transition: ease-in all 0.2s;
 }
 
 .margin_bottom1 {

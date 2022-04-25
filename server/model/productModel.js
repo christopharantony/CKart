@@ -15,14 +15,14 @@ const productschema = new mongoose.Schema({
     },
     Brand:{
         // type: mongoose.Schema.Types.ObjectId,
+        // ref:'brandDb',
         type: String,
-        ref:'brandDb',
-        required:true
+        // required:true
     },
     Category :{
         // type: mongoose.Schema.Types.ObjectId,
         type: String,
-        ref: 'categoryDb'
+        // ref: 'categoryDb'
     },
     Description:{
         type: String,

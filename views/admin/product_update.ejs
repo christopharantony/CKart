@@ -28,18 +28,23 @@
                         <br><br>
                         <input type="file" name="Image" value="<%=product.Image%>" class="form-control" onchange="viewImage(event)">
                         <br>
-                        <label for="">Brand</label><br>
+                        <div class="m-2">
+                            <label for="brandOptions" class="form-label">Brand :</label>
+                            <select id="brandOptions" name="Brand">
                         <% for ( let i = 0; i < brand.length; i++){ %>
-                        <input type="radio" name="Brand" id="brand" value="<%= brand[i].name %>" <%= product.Category == brand[i].name?'checked':'' %>>
-                        <label for=""><%=brand[i].name%></label>
+                        <option value="<%=brand[i].name%>" <%= product.Brand == brand[i].name?'selected':'' %>><%=brand[i].name%></option>
                         <% } %>
-                        <br><br>
+                            </select>
+                        </div>
+                        <div class="m-2">
+                        <label for="categoryOptions" class="form-label">Category :</label>
+                        <select value="" id="categoryOptions" name="Category">
                         <label for="">Category</label><br>
                         <% for ( let i = 0; i < cate.length; i++){ %>
-                        <input type="radio" name="Category" id="radio" value="<%= cate[i].name %>" <%= product.Category == cate[i].name?'checked':'' %>>
-                        <label for=""><%=cate[i].name%></label>
+                        <option value="<%=cate[i].name%>"<%= product.Category == cate[i].name?'selected':'' %>><%=cate[i].name%></option>
                         <% } %>
-                        
+                        </select>
+                        </div>
 
                         <br><button type="submit" class="btn btn-success mt-4">Submit</button>
                     </form>

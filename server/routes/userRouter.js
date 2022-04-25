@@ -2,8 +2,12 @@ const express = require("express");
 const { check, validationResult } = require("express-validator");
 const userRoute = express.Router();
 const productDb = require("../model/productModel");
+const cartDb = require('../model/cartModel')
 const controller = require("../controller/controller");
 const otpcontroller = require("../controller/otpController")
+const cartcontroller = require('../controller/CartController')
+
+var ObjectId = require('mongoose').Types.ObjectId;
 
 var accountSid = process.env.TWILIO_ACCOUNT_SID;
 var authToken = process.env.TWILIO_AUTH_TOKEN;
@@ -65,9 +69,46 @@ userRoute.get('/productDetail', async (req,res)=>{
     res.render('user/product_details',{image:req.query.image, products,isUserLogin:req.session.isUserLogin})
 })
 
-userRoute.get('/add-to-cart/:id',(req,res)=>{
-    
+// Check User using Middleware
+userRoute.use((req, res, next) => {
+    if (!req.session.isUserLogin) {
+        console.log("not User");
+        res.status(200).redirect("/");
+    } else next();
+});
+
+// --------------------- Cart ---------------------------
+userRoute.get('/cart',async(req,res)=>{
+    const userId = req.session.user._id;
+    let cartItems = await cartDb.aggregate([
+        {
+            $match:{user:ObjectId(userId)}
+        },
+        {
+            $lookup:{
+                from:'productdbs',
+                let:{prodList:"$products"},
+                pipeline:[
+                    {
+                        $match:{
+                            $expr:{
+                                $in:['$_id','$$prodList']
+                            }
+                        }
+                    }
+                ],
+                as:'cartList'
+            }
+        }
+    ])
+    console.log(cartItems[0].cartList);
+    const products = cartItems[0].cartList
+    // res.send('Cart')
+    res.render('user/cart',{products})
 })
+
+// Add to cart
+userRoute.get("/add-to-cart",cartcontroller.addToCart)
 
 // User Logout
 userRoute.get("/logout_user", (req, res) => {

@@ -1,58 +1,61 @@
 <%-include('../include/_adminhead')%>
 
 
-<!--Main-->
+    <!--Main-->
 
-<section>
-    <div class="container mt-4">
-        <div class="row">
-            <div class="col-md-6">
-                <h2 class="text-center">Add Product</h2>
-                <form action="/add-product" method="post" enctype="multipart/form-data">
-                    <label for="">Name</label>
-                    <input type="text" name="Name" value="" class="form-control">
+    <section>
+        <div class="container mt-4">
+            <div class="row">
+                <div class="col-md-6">
+                    <h2 class="text-center">Add Product</h2>
+                    <form action="/add-product" method="post" enctype="multipart/form-data">
+                        <label for="">Name</label>
+                        <input type="text" name="Name" value="" class="form-control">
 
-                    <!-- <label for="">Category</label>
+                        <!-- <label for="">Category</label>
                     <input type="" name="Category" value="" class="form-control"> -->
 
-                    
-                    <label for="">Price</label>
-                    <input type="number" name="Price" value="" class="form-control">
-                    
-                    <label for="">Quantity</label>
-                    <input type="number" name="Quantity" value="" class="form-control">
-                    
-                    <label for="">Description</label>
-                    <input type="text" name="Description" value="" class="form-control">
-                    
-                    <label for="">Image</label>
-                    <input type="file" name="Image" value="" class="form-control">
-                    <br>
-                    <label for=""> Brand :</label>
-                    <br>
-                    <% for ( let i = 0; i < brand.length; i++){ %>
-                        <% console.log(brand[i].Name) %>
-                        <input type="radio" name="Brand" id="Brand" value="<%= brand[i].name %>">
-                        <label for="Brand"><%=brand[i].name%></label>
-                    <% } %>
-                    <br>
-                    <label for=""> Category :</label>
-                    <br>
-                    <% for ( let i = 0; i < cate.length; i++){ %>
-                        <% console.log(cate[i].Name) %>
-                        <!-- <input type="hidden" name="id" value="%=<product._id%>"> -->
-                        <input type="radio" name="Category" id="Category" value="<%= cate[i].name %>">
-                        <label for="Category"><%=cate[i].name%></label>
-                    <% } %>
-                    <br>
-                    <button type="submit" class="btn btn-success mt-4">Submit</button>
-                </form>
+
+                        <label for="">Price</label>
+                        <input type="number" name="Price" value="" class="form-control">
+
+                        <label for="">Quantity</label>
+                        <input type="number" name="Quantity" value="" class="form-control">
+
+                        <label for="">Description</label>
+                        <input type="text" name="Description" value="" class="form-control">
+
+                        <label for="">Image</label>
+                        <input type="file" name="Image" value="" class="form-control">
+                        <br>
+                        
+                        <div class="m-2">
+                            <label for="brandOptions" class="form-label">Brand :</label>
+                            <select id="brandOptions" name="Brand">
+                        <% for ( let i=0; i < brand.length; i++){ %>
+                            <% console.log(brand[i].name) %>
+                            <option value="<%=brand[i].name%>"><%=brand[i].name%></option>
+                        <% } %>
+                            </select>
+                        </div>
+                            <div class="m-2">
+                                <label for="categoryOptions" class="form-label">Category :</label>
+                                <select value="" id="categoryOptions" name="Category">
+                            <% for ( let i=0; i < cate.length; i++){ %>                                                        <% console.log(cate[i].name) %>
+                                <option value="<%=cate[i].name%>"><%=cate[i].name%></option>
+                                <% console.log(cate[i]) %>
+                            <% } %>
+                                </select>
+                        </div>
+                            <br>
+                        <button type="submit" class="btn btn-success mt-4">Submit</button>
+                    </form>
+                </div>
             </div>
         </div>
-    </div>
-</section>
+    </section>
 
-<!--/Main-->
+    <!--/Main-->
 
 
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"
@@ -61,6 +64,6 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"
         integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF"
         crossorigin="anonymous"></script>
-</body>
+    </body>
 
-</html>
+    </html>

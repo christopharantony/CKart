@@ -2,12 +2,6 @@ var Userdb = require('../model/model');
 const adminDb = require('../model/adminModel')
 const productDb = require("../model/productModel");
 
-
-// const admin = {
-//     email:'admin@gmail.com',
-//     password:'admin123'
-// }
-
 // SignUp
 exports.Create = (req, res) => {
     if (!req.body) {
@@ -24,7 +18,7 @@ exports.Create = (req, res) => {
 
         });
         if (user.password.length > 7) {
-            user.save(user)
+            user.save()
                 .then(() => {
                     res.status(201).render('user/user_login', { error: "" })
                 })
@@ -51,7 +45,7 @@ exports.Find = async (req, res) => {
                 res.render('user/user_login', { error: "Your account is blocked" })
             }
             const products = await productDb.find()
-            req.session.user = req.body.userDb;
+            req.session.user = userDb;
             req.session.isUserLogin = true;
             console.log(userDb);
             // res.render('user_home',{name:userDb.name})
@@ -103,7 +97,7 @@ exports.find = async (req, res) => {
             if (admin) {
                 req.session.admin = req.body.email;
                 req.session.isAdminLogin = true;
-                res.status(200).render('admin/admin_home', { users: data })
+                res.status(200).redirect('/admin')
             } else {
                 res.status(401).render('admin/admin_login', { error: "Invalid Username or Password" })
             }
@@ -135,6 +129,7 @@ exports.search = (req, res) => {
         })
 }
 
+// Block and Unblock User
 exports.block = async (req,res)=>{
     try {
         const user =await Userdb.findOne( {_id:req.params.id })
@@ -155,34 +150,6 @@ exports.block = async (req,res)=>{
         res.status(400).send(error)
     }
 }
-
-// //Product Update Page
-
-// exports.updatepage = (req, res) => {
-//     console.log(req.query.id);
-//     Userdb.findOne({ _id: req.query.id })
-//         .then(data => {
-//             res.render('product_update', { product: data })
-//         })
-// }
-
-// // Update User
-// exports.update = (req, res) => {
-//     const id = req.params.id;
-//     Userdb.findByIdAndUpdate(id, req.body, { useFindAndModify: false })
-//         .then(data => {
-//             res.redirect('/admin')
-//         })
-// }
-
-// // Delete User
-// exports.delete = (req, res) => {
-//     const id = req.params.id;
-//     Userdb.findByIdAndDelete(id)
-//         .then(data => {
-//             res.redirect('/admin')
-//         })
-// }
 
 // New User
 exports.create = (req, res) => {
@@ -208,18 +175,3 @@ exports.create = (req, res) => {
             });
     }
 }
-
-
-
-// // Return all users / Single User
-
-// exports.find = async(req,res)=>{
-//     userDb = await userDb.findOne({email:req.body.email,password:req.body.password})
-//     if(userDb) {
-
-//         req.session.user=req.body.email;
-//         req.session.isUserLogin = true;
-//         req.render('user_home',{name:userDb.name})
-//     }else{
-//         res.render('user_login',{error:"true"})
-//     }

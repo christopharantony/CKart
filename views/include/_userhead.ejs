@@ -63,9 +63,9 @@
                         <div class="collapse navbar-collapse" id="navbarsExample04">
                            <ul class="navbar-nav mr-auto">
                               <li class="nav-item">
-                                 <a class="nav-link" href="index.html">Home</a>
+                                 <a class="nav-link" href="/">Home</a>
                               </li>
-                              <li class="nav-item">
+                              <!-- <li class="nav-item">
                                  <a class="nav-link" href="about.html">About</a>
                               </li>
                               <li class="nav-item">
@@ -79,19 +79,19 @@
                               </li>
                               <li class="nav-item">
                                  <a class="nav-link" href="contact.html">Contact Us</a>
-                              </li>
-                              <li class="nav-item d_none">
+                              </li> -->
+                              <li class="nav-item ">
                                  <a class="nav-link" href="#"><i class="fa fa-search" aria-hidden="true"></i></a>
                               </li>
                               <% if (isUserLogin) { %>
-                                 <li class="nav-item d_none">
-                                    <a class="nav-link" href="/cart"><i class="fa fa-shopping-cart" aria-hidden="true"></i></a>
+                                 <li class="nav-item ">
+                                    <a class="nav-link" href="/cart"><i class="fa fa-shopping-cart" aria-hidden="true"></i><sup><span class="badge" id="cart-count"> <%= cartCount %> </span></sup></a>
                                  </li>
-                                 <li class="nav-item d_none">
+                                 <li class="nav-item ">
                                     <a class="nav-link" href="/logout_user"><i class="fa fa-user" ></i></a>
                                  </li>
                               <% }else{ %>
-                              <li class="nav-item d_none">
+                              <li class="nav-item ">
                                  <a class="nav-link" href="/login">Login</a>
                               </li>
                               <% } %>

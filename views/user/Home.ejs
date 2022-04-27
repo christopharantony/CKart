@@ -180,7 +180,8 @@
                               <figure><img style="width: 150px;height: 150px;" src="<%= products[i].Image %>" alt="image"/></figure>
                               </a>
                               <p><%=products[i].Name%></p>
-                              <a href="/add-to-cart?id=<%= products[i]._id%> "><h3 class="atc_home" >Add to cart</h3></a>
+                              <!-- <a href="/add-to-cart?id=<%= products[i]._id%> "><h3 class="atc_home" >Add to cart</h3></a> -->
+                              <button onclick="addToCart('<%=products[i]._id%>')" class="atc_home"> Add to cart</button>
                               
                            </div>
                         </div>

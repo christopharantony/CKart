@@ -1,6 +1,7 @@
 var Userdb = require('../model/model');
 const adminDb = require('../model/adminModel')
 const productDb = require("../model/productModel");
+const cartDb  = require('../model/cartModel')
 
 // SignUp
 exports.Create = (req, res) => {
@@ -44,15 +45,22 @@ exports.Find = async (req, res) => {
             if (userDb.isBlocked) {
                 res.render('user/user_login', { error: "Your account is blocked" })
             }
-            const products = await productDb.find()
             req.session.user = userDb;
+            let cartCount = 0
+            let cart = await cartDb.findOne({user:userDb._id})
+            console.log('cart',cart);
+            if (cart) {
+                cartCount = cart.products.length
+            }
+            const products = await productDb.find()
+            
             req.session.isUserLogin = true;
             console.log(userDb);
-            // res.render('user_home',{name:userDb.name})
-            res.status(200).render('user/Home', { products,isUserLogin:req.session.isUserLogin })
+            res.status(200).render('user/Home', { products,cartCount,isUserLogin:req.session.isUserLogin })
         } else {
             res.render('user/user_login', { error: "Invalid Username and Password" })
         }
+        
     }
 }
 

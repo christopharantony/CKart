@@ -20,8 +20,16 @@ userRoute.get("/", async(req, res) => {
     try {
         const products =await productDb.find()
         
+        
             if (req.session.isUserLogin) {
-                res.status(200).render("user/Home", { products,isUserLogin:req.session.isUserLogin});
+                req.session.user = userDb;
+            let cartCount = 0
+            let cart = await cartDb.findOne({user:userDb._id})
+            console.log('cart',cart);
+            if (cart) {
+                cartCount = cart.products.length
+            }
+                res.status(200).render("user/Home", { products,isUserLogin:req.session.isUserLogin,cartCount});
             } else {
                 req.session.isUserLogin = false;
                 console.log("Im Landed Now........................");
@@ -66,49 +74,69 @@ userRoute.post("/home",
 // Product Details
 userRoute.get('/productDetail', async (req,res)=>{
     const products = await productDb.findOne({Image:req.query.image})
-    res.render('user/product_details',{image:req.query.image, products,isUserLogin:req.session.isUserLogin})
+    res.render('user/product_details',{image:req.query.image, products,cartCount,isUserLogin:req.session.isUserLogin})
 })
 
 // Check User using Middleware
-userRoute.use((req, res, next) => {
-    if (!req.session.isUserLogin) {
-        console.log("not User");
-        res.status(200).redirect("/");
-    } else next();
-});
+// userRoute.use((req, res, next) => {
+//     if (!req.session.isUserLogin) {
+//         console.log("not User");
+//         res.status(200).redirect("/");
+//     } else next();
+// });
 
 // --------------------- Cart ---------------------------
 userRoute.get('/cart',async(req,res)=>{
-    const userId = req.session.user._id;
+    const userId = req.session.user?._id;
     let cartItems = await cartDb.aggregate([
         {
             $match:{user:ObjectId(userId)}
         },
         {
+            $unwind:'$products'
+        },
+        {
+            $project:{
+                item:'$products.item',
+                quantity:'$products.quantity'
+            }
+        },
+        {
             $lookup:{
                 from:'productdbs',
-                let:{prodList:"$products"},
-                pipeline:[
-                    {
-                        $match:{
-                            $expr:{
-                                $in:['$_id','$$prodList']
-                            }
-                        }
-                    }
-                ],
-                as:'cartList'
+                localField:'item',
+                foreignField:'_id',
+                as:'product'
+            }
+        },
+        {
+            $project:{
+                item: 1, quantity: 1 ,product: { $arrayElemAt: ['$product',0]}
             }
         }
     ])
-    console.log(cartItems[0].cartList);
-    const products = cartItems[0].cartList
-    // res.send('Cart')
-    res.render('user/cart',{products})
+    // console.log(cartItems[0].cartList);
+    // const products = cartItems[0].cartList
+    console.log('cartItems',cartItems);
+    // console.log('Products in your cart' ,products);
+    res.render('user/cart',{cartItems})
+    // res.json(cartItems)
+    // res.send("Added")
 })
 
+// Control quantity in cart
+userRoute.post("/change-product-quantity",(req,res)=>{
+    console.log('req.body',req.body);
+}
+    // cartcontroller.getProductQuantity
+)
+
+// userRoute.get("/change-product-quantity",(req,res)=>{
+//     console.log('req.get.body',req.body);
+// })
+
 // Add to cart
-userRoute.get("/add-to-cart",cartcontroller.addToCart)
+userRoute.get("/add-to-cart:id",cartcontroller.addToCart)
 
 // User Logout
 userRoute.get("/logout_user", (req, res) => {

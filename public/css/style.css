@@ -38,8 +38,8 @@ html {
 }
 
 body {
-     color: #666666;
-     font-size: 14px;
+     color: #ffffff;
+     font-size: 20px;
      font-family: 'Poppins', sans-serif;
      line-height: 1.80857;
      font-weight: normal;
@@ -524,7 +524,7 @@ ul.btn li:last-child {
      padding: 0;
      text-transform: uppercase;
      border-bottom: #48ca95 solid 1px;
-     max-width: 315px;
+     max-width: 360px;
      margin: auto;
 }
 

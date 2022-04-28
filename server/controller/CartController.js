@@ -69,10 +69,45 @@ exports.addToCart = async(req,res)=>{
 
 // ----------------------------- Cart Quantity --------------------------
 
-exports.getProductQuantity = (req,res,next)=>{
-    console.log(req.body);
+exports.changeProductQuantity =async (req,res,next)=>{
+    const cartId = req.body.cart;
+    const proId = req.body.product;
+    let count = req.body.count;
+    let quantity = req.body.quantity;
+    count = parseInt(count)
+    quantity = parseInt(quantity)
+    console.log(`Cart ID : ${cartId} proId : ${proId} count:${count} Quantity:${quantity}`);
+    if ( count == -1 && quantity == 1) {
+        const product = await cartDb.updateOne({_id:ObjectId(cartId)},
+        {
+            $pull:{products:{item:ObjectId(proId)}}
+        })
+        product.removeProduct = true;
+        console.log(product);
+    res.json(product)
+    }else{
+        const product = await cartDb.updateOne({_id:ObjectId(cartId),"products.item":ObjectId(proId)},
+        {
+            $inc:{"products.$.quantity":count}
+        })
+        console.log(product);
+    res.json(product)
+    }
+    
+    // console.log(product);
+    // res.json(product)
 }
 
+// --------------------- Remove from Cart -------------
+exports.removeProcart =async (req,res)=>{
+    const cartId = req.body.cart;
+    const proId = req.body.product;
+    const product = await cartDb.updateOne({_id:ObjectId(cartId)},
+    {
+        $pull:{products:{item:ObjectId(proId)}}
+    })
+    res.json(product)
+}
 
 
 

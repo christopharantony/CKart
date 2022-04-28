@@ -13,7 +13,7 @@
 
     <!-- Button -->
     <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-    <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
+    <!-- <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script> -->
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
 </head>
 
@@ -40,8 +40,11 @@
         <div class="cart">
 
             <div class="products">
+                    <% let total = 0 %>
+                    <% let sum = 0 %>
                     <% for ( let i=0; i < cartItems.length; i++) { %>
-
+                        <% total = total + (cartItems[i].product.Price*cartItems[i].quantity) %>
+                        <% sum = sum + cartItems[i].quantity %>
                         <div class="product">
 
                             <img src="<%= cartItems[i].product.Image %>">
@@ -70,8 +73,8 @@
                                             <span class="glyphicon glyphicon-minus"></span>
                                         </button>
                                     </span>
-                                    <input type="text" name="quant[2]" class="form-control input-number" value="<%=cartItems[i].quantity%>"
-                                        min="1" max="100" style="width: 42px;" >
+                                    <span type="text" name="quant[2]" class="form-control input-number" id="<%=cartItems[i].product._id%>" value="<%=cartItems[i].quantity%>"
+                                        min="1" max="10" style="width: 42px;" ><%=cartItems[i].quantity%></span>
                                     <span class="input-group-btn">
                                         <button type="button" class="btn btn-success btn-number" data-type="plus"
                                             data-field="quant[2]"
@@ -81,13 +84,13 @@
                                     </span>
                                 </div>
 
-                                <p class="product-remove">
+                                <button class="product-remove" onclick="removeProcart('<%=cartItems[i]._id%>' , '<%=cartItems[i].product._id%>')">
 
                                     <i class="fa fa-trash" aria-hidden="true"></i>
 
                                     <span class="remove">Remove</span>
 
-                                </p>
+                                </button>
 
                             </div>
 
@@ -103,7 +106,7 @@
 
                     <span>Total Price</span>
 
-                    <span>₹ 3,000</span>
+                    <span>$ <%=total%> </span>
 
                 </p>
 
@@ -111,7 +114,7 @@
 
                     <span>Number of Items</span>
 
-                    <span>2</span>
+                    <span><%=sum%></span>
 
                 </p>
 
@@ -119,37 +122,73 @@
 
                     <span>You Save</span>
 
-                    <span>₹ 1,000</span>
+                    <span>$ 0</span>
 
                 </p>
 
-                <a href="#">Proceed to Checkout</a>
+                <a href="/place-order?total=<%=total%>">Proceed to Checkout</a>
 
             </div>
 
         </div>
 
     </div>
+    
 
+    <!-- complete: function(data) {
+        alert('hi');
+    } -->
 
 
 </body>
 <script>
     function changeQuantity(cartId,proId,count){
+        let quantity = parseInt(document.getElementById(proId).innerHTML)
+        count=parseInt(count)
         $.ajax({
             type:'POST',
             url:'/change-product-quantity',
             data:{
                 cart:cartId,
                 product:proId,
-                count:count
+                count:count,
+                quantity:quantity
             },
-            
+            dataType: 'json',
             success:(response)=>{
-                alert('Hai')
+
+                if (response.removeProduct) {
+                    alert("Product removed from cart")
+                    location.reload()
+                } else {
+                    document.getElementById(proId).innerHTML = quantity + count
+                }
+                // let quant = $('#pro-quant').html()
+                // quant = parseInt(quant)+count
+                // $("#pro-quant").html(quant)
+                // console.log(response)
+                // alert(response)
             },
             error:(err)=>{
                 alert(err)
+            }
+            
+        })
+    }
+
+    function removeProcart(cartId,proId){
+        
+        $.ajax({
+            type:'POST',
+            url:'/remove-product-cart',
+            data:{
+                cart:cartId,
+                product:proId
+            },
+            dataType:'json',
+            success:(response)=>{
+                alert("Product removed from cart")
+                location.reload()
             }
         })
     }

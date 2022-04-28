@@ -25,7 +25,6 @@ userRoute.get("/", async(req, res) => {
                 req.session.user = userDb;
             let cartCount = 0
             let cart = await cartDb.findOne({user:userDb._id})
-            console.log('cart',cart);
             if (cart) {
                 cartCount = cart.products.length
             }
@@ -115,32 +114,30 @@ userRoute.get('/cart',async(req,res)=>{
             }
         }
     ])
-    // console.log(cartItems[0].cartList);
-    // const products = cartItems[0].cartList
-    console.log('cartItems',cartItems);
-    // console.log('Products in your cart' ,products);
     res.render('user/cart',{cartItems})
     // res.json(cartItems)
     // res.send("Added")
 })
 
 // Control quantity in cart
-userRoute.post("/change-product-quantity",(req,res)=>{
-    console.log('req.body',req.body);
-}
-    // cartcontroller.getProductQuantity
+userRoute.post("/change-product-quantity",
+    cartcontroller.changeProductQuantity
 )
 
-// userRoute.get("/change-product-quantity",(req,res)=>{
-//     console.log('req.get.body',req.body);
-// })
+// Remove product from the cart
+userRoute.post("/remove-product-cart",cartcontroller.removeProcart)
+
+// Place Order
+userRoute.get('/place-order',(req,res)=>{
+    const total = req.query.total;
+    res.render('user/place_order',{total})
+})
 
 // Add to cart
 userRoute.get("/add-to-cart:id",cartcontroller.addToCart)
 
 // User Logout
 userRoute.get("/logout_user", (req, res) => {
-    console.log(req.session);
     req.session.destroy(function (err) {
         res.clearCookie();
         if (err) {

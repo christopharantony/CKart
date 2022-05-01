@@ -40,11 +40,7 @@
         <div class="cart">
 
             <div class="products">
-                    <% let total = 0 %>
-                    <% let sum = 0 %>
                     <% for ( let i=0; i < cartItems.length; i++) { %>
-                        <% total = total + (cartItems[i].product.Price*cartItems[i].quantity) %>
-                        <% sum = sum + cartItems[i].quantity %>
                         <div class="product">
 
                             <img src="<%= cartItems[i].product.Image %>">
@@ -69,7 +65,7 @@
                                     <span class="input-group-btn">
                                         <button type="button" class="btn btn-danger btn-number" data-type="minus"
                                             data-field="quant[2]"
-                                            onclick="changeQuantity('<%=cartItems[i]._id%>' , '<%=cartItems[i].product._id%>' , -1)">
+                                            onclick="changeQuantity('<%=cartItems[i]._id%>' , '<%=cartItems[i].product._id%>', '<%=user._id%>' , -1)">
                                             <span class="glyphicon glyphicon-minus"></span>
                                         </button>
                                     </span>
@@ -78,7 +74,7 @@
                                     <span class="input-group-btn">
                                         <button type="button" class="btn btn-success btn-number" data-type="plus"
                                             data-field="quant[2]"
-                                            onclick="changeQuantity('<%=cartItems[i]._id%>' , '<%=cartItems[i].product._id%>' , 1)">
+                                            onclick="changeQuantity('<%=cartItems[i]._id%>' , '<%=cartItems[i].product._id%>', '<%=user._id%>' , 1)">
                                             <span class="glyphicon glyphicon-plus"></span>
                                         </button>
                                     </span>
@@ -105,8 +101,8 @@
                 <p>
 
                     <span>Total Price</span>
-
-                    <span>$ <%=total%> </span>
+                    
+                    <span>$ <span id="total"><%=totalValue%></span> </span>
 
                 </p>
 
@@ -114,7 +110,7 @@
 
                     <span>Number of Items</span>
 
-                    <span><%=sum%></span>
+                    <span>999</span>
 
                 </p>
 
@@ -126,7 +122,7 @@
 
                 </p>
 
-                <a href="/place-order?total=<%=total%>">Proceed to Checkout</a>
+                <a href="/place-order">Proceed to Checkout</a>
 
             </div>
 
@@ -142,13 +138,14 @@
 
 </body>
 <script>
-    function changeQuantity(cartId,proId,count){
+    function changeQuantity(cartId,proId,userId,count){
         let quantity = parseInt(document.getElementById(proId).innerHTML)
         count=parseInt(count)
         $.ajax({
             type:'POST',
             url:'/change-product-quantity',
             data:{
+                user:userId,
                 cart:cartId,
                 product:proId,
                 count:count,
@@ -162,6 +159,7 @@
                     location.reload()
                 } else {
                     document.getElementById(proId).innerHTML = quantity + count
+                    document.getElementById("total").innerHTML = response.total
                 }
                 // let quant = $('#pro-quant').html()
                 // quant = parseInt(quant)+count

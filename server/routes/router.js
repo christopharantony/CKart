@@ -1,15 +1,17 @@
 const express = require("express");
 const route = express.Router();
-const Admin = require("../model/adminModel");
+
 const Userdb = require("../model/model");
-const categoryDb = require("../model/categoryModel");
+const Admin = require("../model/adminModel");
 const brandDb = require("../model/brandModel");
+const categoryDb = require("../model/categoryModel");
 const controller = require("../controller/controller");
-const brandController = require("../controller/brandController");
+const orderController = require('../controller/orderController')
 const catController = require("../controller/catController");
+const brandController = require("../controller/brandController");
 const productController = require("../controller/productController");
+
 const session = require("express-session");
-const req = require("express/lib/request");
 
 // Session Checking
 // const verifyLogin = (req,res,next)=>{
@@ -71,7 +73,10 @@ route.get("/search", controller.search);
 // User Status
 
 route.patch("/status/:id", controller.block);
-// --------------PRODUCTS--------------------
+
+
+
+// ------------------------------------PRODUCTS---------------------------------------------------------
 
 route.get("/admin-products", productController.find);
 
@@ -91,13 +96,20 @@ route.get("/update", productController.updatepage);
 route.put("/update/:id", productController.update);
 
 // Delete Product
+route.use((req,res,next)=>{
+    if(req.query._method == "DELETE"){
+        req.method = "DELETE";
+        req.url = req.path;
+    }
+    next();
+})
 route.delete("/delete/:id", productController.delete);
 
 route.get("/users", (req, res) => {
     res.render("admin_home", { users: data });
 });
 
-// ---------------- Brands ---------------------
+// -------------------------------------------------- Brands -------------------------------------------
 
 route.get("/brand", async (req, res) => {
     const brand = await brandDb.find();
@@ -116,7 +128,7 @@ route.put("/update-brand/:id", brandController.update);
 
 route.delete("/delete-brand/:id", brandController.delete);
 
-// ---------------- Category ---------------------
+// -------------------------------------------- Category -------------------------------------------------
 
 route.get("/category", async (req, res) => {
     const cate = await categoryDb.find();
@@ -135,6 +147,18 @@ route.put("/update-cate/:id", catController.update);
 
 route.delete("/delete-cate/:id", catController.delete);
 
+// --------------------------------------------- Orders -----------------------------------------------
+route.get('/admin-orders',orderController.find)
+
+// Cancel orders
+route.put('/cancel-admin/:id',orderController.cancelOrder)
+
+// Update the status
+route.post('/statusUpdate',orderController.statusUpdate)
+
+
+
+// --------------------------------------------- LogOut -----------------------------------------------
 // Admin Logout
 route.get("/logout_admin", (req, res) => {
     req.session.destroy(function (err) {

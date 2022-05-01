@@ -4,7 +4,7 @@ var ObjectId = require('mongoose').Types.ObjectId;
 
 
 exports.addToCart = async(req,res)=>{
-    const userId = req.session.user._id;
+    const userId = req.session.user?._id;
     const proId = req.params.id;
     console.log("Product ID : ",proId);
     console.log("User ID : ",userId);
@@ -72,24 +72,95 @@ exports.addToCart = async(req,res)=>{
 exports.changeProductQuantity =async (req,res,next)=>{
     const cartId = req.body.cart;
     const proId = req.body.product;
+    const userId = req.body.user;
     let count = req.body.count;
     let quantity = req.body.quantity;
     count = parseInt(count)
     quantity = parseInt(quantity)
-    console.log(`Cart ID : ${cartId} proId : ${proId} count:${count} Quantity:${quantity}`);
+    console.log(`Cart ID : ${cartId} proId : ${proId} count:${count} Quantity:${quantity} UserID: ${userId}`);
     if ( count == -1 && quantity == 1) {
-        const product = await cartDb.updateOne({_id:ObjectId(cartId)},
+        let product = await cartDb.updateOne({_id:ObjectId(cartId)},
         {
             $pull:{products:{item:ObjectId(proId)}}
         })
         product.removeProduct = true;
+        let totalValue = await cartDb.aggregate([
+            {
+                $match:{user:ObjectId(userId)}
+            },
+            {
+                $unwind:'$products'
+            },
+            {
+                $project:{
+                    item:'$products.item',
+                    quantity:'$products.quantity'
+                }
+            },
+            {
+                $lookup:{
+                    from:'productdbs',
+                    localField:'item',
+                    foreignField:'_id',
+                    as:'product'
+                }
+            },
+            {
+                $project:{
+                    item: 1, quantity: 1 ,product: { $arrayElemAt: ['$product',0]}
+                }
+            },
+            {
+                $group:{
+                    _id:null,
+                    total:{$sum: { $multiply: ['$quantity','$product.Price']}}
+                }
+            }
+        ])
+        console.log(totalValue);
+        product.total = totalValue[0].total
         console.log(product);
     res.json(product)
     }else{
+        const userId = req.body.user
         const product = await cartDb.updateOne({_id:ObjectId(cartId),"products.item":ObjectId(proId)},
         {
             $inc:{"products.$.quantity":count}
         })
+        let totalValue = await cartDb.aggregate([
+            {
+                $match:{user:ObjectId(userId)}
+            },
+            {
+                $unwind:'$products'
+            },
+            {
+                $project:{
+                    item:'$products.item',
+                    quantity:'$products.quantity'
+                }
+            },
+            {
+                $lookup:{
+                    from:'productdbs',
+                    localField:'item',
+                    foreignField:'_id',
+                    as:'product'
+                }
+            },
+            {
+                $project:{
+                    item: 1, quantity: 1 ,product: { $arrayElemAt: ['$product',0]}
+                }
+            },
+            {
+                $group:{
+                    _id:null,
+                    total:{$sum: { $multiply: ['$quantity','$product.Price']}}
+                }
+            }
+        ])
+        product.total = totalValue[0].total
         console.log(product);
     res.json(product)
     }
@@ -108,6 +179,90 @@ exports.removeProcart =async (req,res)=>{
     })
     res.json(product)
 }
+
+
+
+
+
+
+// --------------------- Total Price --------------------
+
+exports.getTotalAmount 
+
+
+// --------------------------------------------- View Cart {User} -----------------------------------------------
+
+exports.userCart = async(req,res)=>{
+    const userId = req.session.user?._id;
+    let cartItems = await cartDb.aggregate([
+        {
+            $match:{user:ObjectId(userId)}
+        },
+        {
+            $unwind:'$products'
+        },
+        {
+            $project:{
+                item:'$products.item',
+                quantity:'$products.quantity'
+            }
+        },
+        {
+            $lookup:{
+                from:'productdbs',
+                localField:'item',
+                foreignField:'_id',
+                as:'product'
+            }
+        },
+        {
+            $project:{
+                item: 1, quantity: 1 ,product: { $arrayElemAt: ['$product',0]}
+            }
+        }
+    ])
+    let totalValue = await cartDb.aggregate([
+        {
+            $match:{user:ObjectId(userId)}
+        },
+        {
+            $unwind:'$products'
+        },
+        {
+            $project:{
+                item:'$products.item',
+                quantity:'$products.quantity'
+            }
+        },
+        {
+            $lookup:{
+                from:'productdbs',
+                localField:'item',
+                foreignField:'_id',
+                as:'product'
+            }
+        },
+        {
+            $project:{
+                item: 1, quantity: 1 ,product: { $arrayElemAt: ['$product',0]}
+            }
+        },
+        {
+            $group:{
+                _id:null,
+                total:{$sum: { $multiply: ['$quantity','$product.Price']}},
+                totalCount:{$sum: '$quantity'}
+            }
+        }
+    ])
+    console.log(totalValue[0]?.totalCount);
+    res.render('user/cart',{cartItems,user:req.session.user,totalValue:totalValue[0]?.total})
+}
+
+
+
+
+
 
 
 

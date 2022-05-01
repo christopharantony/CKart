@@ -4,7 +4,7 @@ const brandDb = require('../model/brandModel')
 
 const path = require('path');
 
-// New Product
+// --------------------------------------------- New Product -----------------------------------------------
 exports.create = (req,res)=>{
     if(!req.body){
         res.status(400).send({ message :"Content can not be empty!"});
@@ -46,7 +46,7 @@ exports.create = (req,res)=>{
 
 }
 }
-
+// --------------------------------------------- All Products -----------------------------------------------
 exports.find = (req,res)=>{
     productDb.find()
     .then(data=>{
@@ -58,7 +58,7 @@ exports.find = (req,res)=>{
     })
 }
 
-// ------------------- Edit Product ----------------------------
+// --------------------------------------------- Edit Product -----------------------------------------------
 //  Edit Page
 exports.updatepage = async(req,res)=>{
     console.log('Product Id : ',req.query.id);
@@ -67,7 +67,6 @@ exports.updatepage = async(req,res)=>{
         const cate =await categoryDb.find()
             console.log(`Brand : ${brand} Category: ${cate}`);
             res.render('admin/product_update',{product,cate,brand})
-        
 }
 //  Edit Product
 exports.update = (req,res)=>{
@@ -78,7 +77,6 @@ exports.update = (req,res)=>{
         var imgPath ='productsImg/' + Date.now()+'.jpeg'
         image.mv(uploadPath)
         }
-    
     const product = {
         Name:req.body.Name,
         Price:req.body.Price,
@@ -89,10 +87,8 @@ exports.update = (req,res)=>{
         Image:imgPath
         
     };
-
     console.log('Type of Product : ',typeof(product.Quantity))
     console.log('ProductId : ',id);
-
     productDb.updateOne({_id:id},{$set: product })
     .then(()=>{
         res.redirect('/admin-products')
@@ -100,12 +96,26 @@ exports.update = (req,res)=>{
 }
 // )}
 
-// ------------------- Delete Product -----------------------------
-
+// --------------------------------------------- Delete Product -----------------------------------------------
 exports.delete = (req,res)=>{
     const id = req.params.id;
     productDb.findByIdAndDelete(id)
     .then(()=>{
         res.redirect('/admin-products')
     })
+}
+
+
+// ==================================================================================================
+// ==================================================================================================
+
+exports.productDetails = async (req,res)=>{
+    const products = await productDb.findOne({Image:req.query.image})
+    let cartCount = 0
+            let cart = await cartDb.findOne({user:req.session.user._id})
+            console.log('cart',cart);
+            if (cart) {
+                cartCount = cart.products.length
+            }
+    res.render('user/product_details',{image:req.query.image, products,cartCount,isUserLogin:req.session.isUserLogin})
 }

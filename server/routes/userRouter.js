@@ -1,11 +1,15 @@
 const express = require("express");
-const { check, validationResult } = require("express-validator");
 const userRoute = express.Router();
-const productDb = require("../model/productModel");
 const cartDb = require('../model/cartModel')
+const orderDb = require('../model/orderModel')
+const productDb = require("../model/productModel");
 const controller = require("../controller/controller");
 const otpcontroller = require("../controller/otpController")
-const cartcontroller = require('../controller/CartController')
+const cartcontroller = require('../controller/CartController');
+const orderController = require('../controller/orderController')
+const productController = require('../controller/productController')
+const { check, validationResult } = require("express-validator");
+const { redirect } = require("express/lib/response");
 
 var ObjectId = require('mongoose').Types.ObjectId;
 
@@ -15,12 +19,10 @@ var serviceSid = process.env.TWILIO_SERVICE_SID;
 
 const client = require("twilio")(accountSid, authToken);
 
-// User Landing
+// --------------------------------------------- User Landing -----------------------------------------------
 userRoute.get("/", async(req, res) => {
     try {
         const products =await productDb.find()
-        
-        
             if (req.session.isUserLogin) {
                 req.session.user = userDb;
             let cartCount = 0
@@ -39,7 +41,8 @@ userRoute.get("/", async(req, res) => {
     }
 });
 
-// User Login
+// --------------------------------------------- User Login -----------------------------------------------
+
 userRoute.get("/login", (req, res) => {
     if (req.session.isUserLogin){
         res.redirect('/')
@@ -47,34 +50,30 @@ userRoute.get("/login", (req, res) => {
     res.status(200).render("user/user_login", { error: "" });
 });
 
-// Login with Mobile Number
+// ------------------ Login with Mobile Number -----------------
 userRoute.get("/loginotp", (req, res) => {
     res.status(200).render("user/user_loginotp", { error: "" });
 });
 
-// OTP page
+// ------------------- OTP page -------------------
 userRoute.post("/mobile", otpcontroller.mobileNum);
 
-// OTP submit
+// ------------------- OTP Submit -----------------
 userRoute.post("/otp", otpcontroller.otp);
 userRoute.post('/resend',otpcontroller.resend)
 
-// User SignUp
+// -------------------------------------------------- User SignUp ---------------------------------------------------------
 userRoute.get("/signup", (req, res) => {
     res.render("user/user_signup", { error: "" });
 });
 
 userRoute.post("/signup", controller.Create);
 
-// User Home
-userRoute.post("/home",
-            controller.Find);
+// ----------- User Home ---------------
+userRoute.post("/home",controller.Find);
 
-// Product Details
-userRoute.get('/productDetail', async (req,res)=>{
-    const products = await productDb.findOne({Image:req.query.image})
-    res.render('user/product_details',{image:req.query.image, products,cartCount,isUserLogin:req.session.isUserLogin})
-})
+// ------------------ Product Details ---------------------------
+userRoute.get('/productDetail', productController.productDetails)
 
 // Check User using Middleware
 // userRoute.use((req, res, next) => {
@@ -84,59 +83,33 @@ userRoute.get('/productDetail', async (req,res)=>{
 //     } else next();
 // });
 
-// --------------------- Cart ---------------------------
-userRoute.get('/cart',async(req,res)=>{
-    const userId = req.session.user?._id;
-    let cartItems = await cartDb.aggregate([
-        {
-            $match:{user:ObjectId(userId)}
-        },
-        {
-            $unwind:'$products'
-        },
-        {
-            $project:{
-                item:'$products.item',
-                quantity:'$products.quantity'
-            }
-        },
-        {
-            $lookup:{
-                from:'productdbs',
-                localField:'item',
-                foreignField:'_id',
-                as:'product'
-            }
-        },
-        {
-            $project:{
-                item: 1, quantity: 1 ,product: { $arrayElemAt: ['$product',0]}
-            }
-        }
-    ])
-    res.render('user/cart',{cartItems})
-    // res.json(cartItems)
-    // res.send("Added")
-})
+// ------------------ Cart -------------------
+userRoute.get('/cart',cartcontroller.userCart)
 
 // Control quantity in cart
-userRoute.post("/change-product-quantity",
-    cartcontroller.changeProductQuantity
-)
+userRoute.post("/change-product-quantity",cartcontroller.changeProductQuantity)
 
-// Remove product from the cart
 userRoute.post("/remove-product-cart",cartcontroller.removeProcart)
 
-// Place Order
-userRoute.get('/place-order',(req,res)=>{
-    const total = req.query.total;
-    res.render('user/place_order',{total})
+userRoute.get('/place-order',orderController.myOrders)
+
+userRoute.post('/place-order',orderController.orderPlacing)
+
+// ------------------ Order Placed ------------------------
+userRoute.get('/order-success',(req,res)=>{
+    res.render('user/order_success',{user:req.session.user})
 })
 
 // Add to cart
 userRoute.get("/add-to-cart:id",cartcontroller.addToCart)
 
-// User Logout
+// Show the orders
+userRoute.get('/user-orders',orderController.Find)
+
+// Cancel the orders
+userRoute.put('/cancel/:id',orderController.cancel)
+
+
 userRoute.get("/logout_user", (req, res) => {
     req.session.destroy(function (err) {
         res.clearCookie();

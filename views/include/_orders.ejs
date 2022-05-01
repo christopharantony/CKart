@@ -1,0 +1,54 @@
+<% for ( let i = 0; i < orderData.length; i++){ %>
+    <tr>
+    <td><%= i+1 %></td>
+    <td><%= orderData[i].userData[0]?.name %></td>
+    <td><%= orderData[i].productData[0]?.Name %></td>
+    <td><%= orderData[i].products.quantity %></td>
+    <td><%= orderData[i].deliveryDetails.mobile %></td>
+    <td><%= orderData[i].deliveryDetails.address %></td>
+    <td><%= orderData[i].date.toDateString() %></td>
+    <td><%= orderData[i].totalAmount %></td>
+    <td><%= orderData[i].paymentMethod %></td>
+    <!-- <td><%= orderData[i].status %></td> -->
+    <td> <select name="status" onchange="deliveryStatus(value,'<%=orderData[i]._id%>')">
+        <option value="<%= orderData[i].status %>" selected disabled> <%= orderData[i].status %></option>
+        <option value="Pending">Pending</option>
+        <option value="Dispached">Dispached</option>
+        <option value="Shipped">Shipped</option>
+        <option value="Deliverd">Delivered</option>
+        <option value="Cancel">Cancel</option>
+    </select> </td>
+
+    <% if(orderData[i].status == "Canceled") { %>
+        <td><button class="btn btn-outline-danger" disabled>Cancel</button></td>
+    <% }else{ %>
+    <td><form action="/cancel-admin/<%= orderData[i]._id %>?_method=PUT" method="post">
+        <a href="" onclick="return confirm('Are want to cancel <%= orderData[i].productData[0].Name %> ?')">
+            <button class="btn btn-outline-danger" type="submit">Cancel</button>
+        </a>
+    </form></td>
+    <% } %>
+
+    
+    
+    </tr>
+    <% } %>
+
+    <script>
+        function deliveryStatus(value,orderId){
+            $.ajax({
+                url:'/statusUpdate',
+                method:'post',
+                data:{
+                    status:value,
+                    orderId:orderId
+                },
+                success:(response)=>{
+                    if(response){
+                    location.reload() 
+                    }
+                }
+            })
+    
+        }
+    </script>

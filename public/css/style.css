@@ -619,15 +619,15 @@ ul.btn li:last-child {
 }
 
 .our_products .product_box h3 {
-     width: 200px;
+     /* width: 200px; */
      /* color: #fff; */
-     font-size: 20px;
+     /* font-size: 20px; */
      line-height: 20px;
      /* background-color: #252525; */
      /* font-weight: 500; */
      margin: 0 auto;
      padding: 10px 0;
-     margin-top: 40px;
+     margin-top: 10px;
      transition: ease-in all 0.5s;
 }
 
@@ -1057,7 +1057,7 @@ ul.social_icon li a:hover {
 }
 
 .laptop1 .titlepage {
-     text-align: right;
+     text-align: left;
 }
 
 .laptop1 .titlepage h2 {
@@ -1067,7 +1067,7 @@ ul.social_icon li a:hover {
 }
 
 .laptop1 .titlepage p {
-     padding: 30px 0;
+     /* padding: 30px 0; */
      color: #000;
 }
 

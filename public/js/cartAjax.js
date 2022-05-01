@@ -11,7 +11,7 @@ function addToCart(proId) {
                 $("#cart-count").html(count)
             }
             // console.log('Cart AJAX'+proId);
-            alert(proId);
+            alert('Added to cart');
         },
     });
 }

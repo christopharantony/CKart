@@ -14,6 +14,10 @@ a{
     margin: auto;
     padding: 5rem 1rem;
 }
+#container-orders {
+    margin: auto;
+    padding: 5rem 1rem;
+}
 .border-shadow{
     padding: 0.5rem 1rem;
     border: 1px solid #badee0;

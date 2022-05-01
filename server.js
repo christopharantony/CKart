@@ -6,7 +6,8 @@ const { v4: uuidv4 } = require('uuid');
 const mongoose = require('mongoose');
 const methodOverride = require('method-override');
 require('dotenv').config();
-const fileUpload = require('express-fileupload')
+const fileUpload = require('express-fileupload');
+const Swal = require('sweetalert2')
 
 const app = express();
 

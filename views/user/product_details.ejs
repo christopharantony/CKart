@@ -6,17 +6,27 @@
       <div class="laptop1">
          <div class="container">
             <div class="row">
-               <div class="col-md-7">
+               <div class="col-md-7" style="padding-left: 7rem;">
                   <div class="laptop1_img">
-                     <figure><img src="<%= image %>" alt="#"/></figure>
+                     <a href="<%= image %>" class="MagicZoom" data-options="zoomPosition: inner"><img src="<%= image %>" style="max-width: 300px max-height 300px;" /></a>`
                   </div>
                </div>
                <div class="col-md-5">
                   <div class="titlepage">
                      <h2><%= products.Name %></h2>
+                     <h1>$ <%= products.Price %></h1>
+                     <h1>Brand : <%= products.Brand %></h1>
+                     <h1>Type : <%= products.Category %></h1>
+                     <h3>Description</h3>
                      <p><%= products.Description %></p>
-                     <a class="read_more" href="#">Read More</a>
+                     
+
+                     <!-- <a class="read_more" href="#">Read More</a> -->
                   </div>
+               </div>
+               <div class="col-md-7 pt-5" style="margin-left: 11%;">
+                  <button onclick="addToCart('<%=products._id%>')" class="btc_home"> Add to cart</button>
+                  <a href="/buy-now?id=<%= products._id%> "><h3 class="atc_home" >Buy Now</h3></a>
                </div>
             </div>
          </div>

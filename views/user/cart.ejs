@@ -10,7 +10,10 @@
 
     <link rel="stylesheet" type="text/css"
         href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-
+    <!-- Swal -->
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="sweetalert2.all.min.js"></script>
+    <link rel="stylesheet" href="sweetalert2.min.css">
     <!-- Button -->
     <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
     <!-- <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script> -->
@@ -20,7 +23,8 @@
 <body>
 
     <!-- As a link -->
-    <nav class=" navbar-light bg-light" style="background-color: #4843a3;height: 4em; color: white; padding-left: 42em;">
+    <nav class=" navbar-light bg-light"
+        style="background-color: #4843a3;height: 4em; color: white; padding-left: 42em;">
         <a href="/" style="    float: left;
         margin-left: -38em;
         margin-top: 1em;
@@ -40,59 +44,63 @@
         <div class="cart">
 
             <div class="products">
-                    <% for ( let i=0; i < cartItems.length; i++) { %>
-                        <div class="product">
+                <% for ( let i=0; i < cartItems.length; i++) { %>
+                    <div class="product">
 
-                            <img src="<%= cartItems[i].product.Image %>">
+                        <img src="<%= cartItems[i].product.Image %>">
 
-                            <div class="product-info">
+                        <div class="product-info">
 
-                                <h3 class="product-name">
-                                    <%= cartItems[i].product.Name %>
-                                </h3>
+                            <h3 class="product-name">
+                                <%= cartItems[i].product.Name %>
+                            </h3>
 
-                                <h4 class="product-price">$ <%= cartItems[i].product.Price %>
-                                </h4>
+                            <h4 class="product-price">$ <%= cartItems[i].product.Price %>
+                            </h4>
 
-                                <h4 class="product-offer">
-                                    <%= cartItems[i].product.Description %>
-                                </h4>
+                            <h4 class="product-offer">
+                                <%= cartItems[i].product.Description %>
+                            </h4>
 
 
-                                <p class="product-quantity">Qnt:
+                            <p class="product-quantity">Qnt:
 
-                                <div class="input-group" style="width: 110px;">
-                                    <span class="input-group-btn">
-                                        <button type="button" class="btn btn-danger btn-number" data-type="minus"
-                                            data-field="quant[2]"
-                                            onclick="changeQuantity('<%=cartItems[i]._id%>' , '<%=cartItems[i].product._id%>', '<%=user._id%>' , -1)">
-                                            <span class="glyphicon glyphicon-minus"></span>
-                                        </button>
-                                    </span>
-                                    <span type="text" name="quant[2]" class="form-control input-number" id="<%=cartItems[i].product._id%>" value="<%=cartItems[i].quantity%>"
-                                        min="1" max="10" style="width: 42px;" ><%=cartItems[i].quantity%></span>
-                                    <span class="input-group-btn">
-                                        <button type="button" class="btn btn-success btn-number" data-type="plus"
-                                            data-field="quant[2]"
-                                            onclick="changeQuantity('<%=cartItems[i]._id%>' , '<%=cartItems[i].product._id%>', '<%=user._id%>' , 1)">
-                                            <span class="glyphicon glyphicon-plus"></span>
-                                        </button>
-                                    </span>
-                                </div>
-
-                                <button class="product-remove" onclick="removeProcart('<%=cartItems[i]._id%>' , '<%=cartItems[i].product._id%>')">
-
-                                    <i class="fa fa-trash" aria-hidden="true"></i>
-
-                                    <span class="remove">Remove</span>
-
-                                </button>
-
+                            <div class="input-group" style="width: 110px;">
+                                <span class="input-group-btn">
+                                    <button type="button" class="btn btn-danger btn-number" data-type="minus"
+                                        data-field="quant[2]"
+                                        onclick="changeQuantity('<%=cartItems[i]._id%>' , '<%=cartItems[i].product._id%>', '<%=user._id%>' , -1)">
+                                        <span class="glyphicon glyphicon-minus"></span>
+                                    </button>
+                                </span>
+                                <span type="text" name="quant[2]" class="form-control input-number"
+                                    id="<%=cartItems[i].product._id%>" value="<%=cartItems[i].quantity%>" min="1"
+                                    max="10" style="width: 42px;">
+                                    <%=cartItems[i].quantity%>
+                                </span>
+                                <span class="input-group-btn">
+                                    <button type="button" class="btn btn-success btn-number" data-type="plus"
+                                        data-field="quant[2]"
+                                        onclick="changeQuantity('<%=cartItems[i]._id%>' , '<%=cartItems[i].product._id%>', '<%=user._id%>' , 1)">
+                                        <span class="glyphicon glyphicon-plus"></span>
+                                    </button>
+                                </span>
                             </div>
+
+                            <button class="product-remove"
+                                onclick="removeProcart('<%=cartItems[i]._id%>' , '<%=cartItems[i].product._id%>')">
+
+                                <i class="fa fa-trash" aria-hidden="true"></i>
+
+                                <span class="remove">Remove</span>
+
+                            </button>
 
                         </div>
 
-                        <% } %>
+                    </div>
+
+                    <% } %>
 
             </div>
 
@@ -101,8 +109,10 @@
                 <p>
 
                     <span>Total Price</span>
-                    
-                    <span>$ <span id="total"><%=totalValue%></span> </span>
+
+                    <span>$ <span id="total">
+                            <%=totalValue%>
+                        </span> </span>
 
                 </p>
 
@@ -129,7 +139,7 @@
         </div>
 
     </div>
-    
+
 
     <!-- complete: function(data) {
         alert('hi');
@@ -138,21 +148,21 @@
 
 </body>
 <script>
-    function changeQuantity(cartId,proId,userId,count){
+    function changeQuantity(cartId, proId, userId, count) {
         let quantity = parseInt(document.getElementById(proId).innerHTML)
-        count=parseInt(count)
+        count = parseInt(count)
         $.ajax({
-            type:'POST',
-            url:'/change-product-quantity',
-            data:{
-                user:userId,
-                cart:cartId,
-                product:proId,
-                count:count,
-                quantity:quantity
+            type: 'POST',
+            url: '/change-product-quantity',
+            data: {
+                user: userId,
+                cart: cartId,
+                product: proId,
+                count: count,
+                quantity: quantity
             },
             dataType: 'json',
-            success:(response)=>{
+            success: (response) => {
 
                 if (response.removeProduct) {
                     alert("Product removed from cart")
@@ -167,29 +177,54 @@
                 // console.log(response)
                 // alert(response)
             },
-            error:(err)=>{
+            error: (err) => {
                 alert(err)
             }
-            
+
         })
     }
-
-    function removeProcart(cartId,proId){
-        
-        $.ajax({
-            type:'POST',
-            url:'/remove-product-cart',
-            data:{
-                cart:cartId,
-                product:proId
-            },
-            dataType:'json',
-            success:(response)=>{
-                alert("Product removed from cart")
-                location.reload()
+    function removeProcart(cartId, proId) {
+        Swal.fire({
+            title: 'Are you want to Remove?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Remove'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    type: 'POST',
+                    url: '/remove-product-cart',
+                    data: {
+                        cart: cartId,
+                        product: proId
+                    },
+                    dataType: 'json',
+                    success: (response) => {
+                        alert("Product removed from cart")
+                        location.reload()
+                    }
+                })
             }
         })
     }
+    // function removeProcart(cartId, proId) {
+
+    //     $.ajax({
+    //         type: 'POST',
+    //         url: '/remove-product-cart',
+    //         data: {
+    //             cart: cartId,
+    //             product: proId
+    //         },
+    //         dataType: 'json',
+    //         success: (response) => {
+    //             alert("Product removed from cart")
+    //             location.reload()
+    //         }
+    //     })
+    // }
 </script>
 
 </html>

@@ -2,7 +2,16 @@ const productDb = require('../model/productModel')
 const orderDb = require('../model/orderModel')
 const userDb = require('../model/model')
 const cartDb = require('../model/cartModel')
+
 var ObjectId = require('mongoose').Types.ObjectId;
+
+const crypto = require('crypto');
+
+const Razorpay = require('razorpay')
+var instance = new Razorpay({
+    key_id: 'rzp_test_GHZ8qfO5RgHRDG',
+    key_secret: '96OZZd2cbBqVjnR6ZLeQrGOU',
+    });
 
 // --------------------------------------------- My Orders -----------------------------------------------
 exports.Find = async (req,res)=>{
@@ -86,17 +95,22 @@ exports.statusUpdate = async(req, res) => {
 // --------------------------------------------------------------- Cancel Orders  ---------------------------------------------------------
 
 exports.cancel = async(req,res)=>{
-    
         const id = req.params.id;
         await orderDb.updateOne({_id:id},{$set: {"status":"Canceled"}})
+        await productDb.updateOne({"_id": ObjectId(proId)},
+        {
+            $inc: { Quantity : 1 }
+        })
         res.redirect('/user-orders')
-    
-    
 }
 
 exports.cancelOrder = async(req,res)=>{
     const id = req.params?.id;
     await orderDb.updateOne({_id:id},{$set: {"status":"Canceled"}})
+    await productDb.updateOne({"_id": ObjectId(proId)},
+    {
+        $inc: { Quantity : 1 }
+    })
     res.redirect('/admin-orders')
 }
 
@@ -181,12 +195,12 @@ exports.orderPlacing = async(req,res)=>{
         }
     ])
     const order = req.body
-    console.log(totalPrize);
     var total = totalPrize[0].total
     let products = cart.products
+    console.log('======================',products);
 
     console.log(total);
-    console.log("Products here",products)
+    console.log("Products here",products[0].item)
 
     let status = order['payment-method']==='COD'?'placed':'pending'
     let orderObj = new orderDb({
@@ -203,16 +217,62 @@ exports.orderPlacing = async(req,res)=>{
         status:status,
         date: new Date()
     })
-    console.log(products);
     orderObj.save()
-    await cartDb.remove({user:ObjectId(order.userId)})
+    await productDb.updateOne({"_id": ObjectId(proId)},
+    {
+        $inc: { Quantity : -1 }
+    })
+    await cartDb.deleteOne({user:ObjectId(order.userId)})
     if(req.body['payment-method']=='COD'){
-        res.json({status:true})
-    }else if(req.body['payment-method']=='ONLINE') {
-
-    }else{
-        res.send("Sorry,    Error in Paying...")
+        res.json({codSuccess:true})
+    }
+    // else if(req.body['payment-method']=='ONLINE') {
+    // }
+    else{
+        console.log(`total : ${total} Product : ${products[0].item} `)
+        var options = {
+            amount: total*100,
+            currency: "INR",
+            receipt: ""+products[0].item,
+            notes: {
+                key1: "value3",
+                key2: "value2"
+            }
+        }
+        instance.orders.create(options, function(err, order) {
+            if (err) {
+                console.log(err);
+            }else {
+                console.log("New Order",order);
+                res.json(order);
+            }
+        })
+        
     }
     
-    console.log('Place order post req.body',req.body)
+    console.log('Place order post req.body')
+}
+// --------------------------------------------- Payment Verification -----------------------------------------------
+exports.paymentVerification = async(req, res)=>{
+    let hmac = crypto.createHmac('sha256', '96OZZd2cbBqVjnR6ZLeQrGOU');
+    console.log('Payment Verification BODY :', req.body)
+    console.log(req.body.payment.razorpay_order_id);
+    console.log(req.body.payment.razorpay_payment_id);
+    hmac.update(req.body.payment.razorpay_order_id+'|'+req.body.payment.razorpay_payment_id);
+    hmac = hmac.digest('hex')
+if(hmac==req.body.payment.razorpay_signature){
+    // userHelpers.chagePaymentStatus (req.body [' receipt']).then(() =>{
+    //     console.log("Payment successfull"); 
+    //     res.json({status:true})
+    const orderId = req.body.order.receipt
+    await orderDb.updateOne({_id:ObjectId(orderId)},
+    {
+        $set:{ status:'pending'}
+    })
+    console.log('payment successfull');
+    res.json({status:true})
+}else{
+    console.log(err);
+    res.json({status: false,errMsg:''})
+}
 }

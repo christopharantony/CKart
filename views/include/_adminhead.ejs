@@ -5,13 +5,25 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>CKart</title>
     <!-- Swal -->
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="sweetalert2.all.min.js"></script>
     <link rel="stylesheet" href="sweetalert2.min.css">
     <!-- Ajax -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+    <!-- Data tables -->
+    <link rel="stylesheet" type="text/css" href="DataTables/datatables.min.css" />
+
+    <script type="text/javascript" src="DataTables/datatables.min.js"></script>
+
+    <!-- Cropper -->
+    <script src=" https://jsuites.net/v4/jsuites.js"></script>
+    <script src="https://jsuites.net/v4/jsuites.layout.js"></script>
+    <link rel="stylesheet" href="https://jsuites.net/v4/jsuites.css" type="text/css" />
+    <link rel="stylesheet" href="https://jsuites.net/v4/jsuites.layout.css" type="text/css" />
+    <!-- /Cropper -->
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.0/css/all.min.css"
         integrity="sha512-10/jx2EXwxxWqCLX/hHth/vu2KY3jCF70dCQB8TSgNjbCVAC/8vai53GfMDrO2Emgwccf2pJqxct9ehpzG+MTw=="
@@ -82,6 +94,10 @@
         </div>
     </nav>
     <script>
+        $(document).ready(function () {
+            $('#table_id').DataTable();
+        });
+        
         function adminLogout() {
             Swal.fire({
                 title: 'Are you want to logout?',
@@ -97,7 +113,7 @@
             })
         }
 
-        function deleteProduct(id){
+        function deleteProduct(id) {
             Swal.fire({
                 title: 'Are you want to delete?',
                 icon: 'warning',
@@ -107,8 +123,8 @@
                 confirmButtonText: 'Delete'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    type="delete",
-                    location.href = `/delete/${id}?_method=DELETE`
+                    type = "delete",
+                        location.href = `/delete/${id}?_method=DELETE`
                     Swal.fire(
                         'Deleted!',
                         'Your file has been deleted.',

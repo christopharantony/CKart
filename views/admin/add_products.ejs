@@ -29,6 +29,18 @@
                         <input type="file" name="Image" value="" class="form-control">
                         <br>
                         
+                        <!-- cropping -->
+                        <!-- <div class='row'>
+                            <div class='column p10'>
+                                <div id='image-cropper' style='border:1px solid #ccc'></div>
+                            </div><div class='column f1 p10'>
+                                <div id='image-cropper-result'><img style='width:120px;height:120px;'></div>
+                            </div>
+                        </div>
+                        
+                        <input type='button' value='Get cropped image' id='image-getter' class='jbutton dark'> -->
+                        <!-- /cropping -->
+                        
                         <div class="m-2">
                             <label for="brandOptions" class="form-label">Brand :</label>
                             <select id="brandOptions" name="Brand">
@@ -57,7 +69,16 @@
 
     <!--/Main-->
 
+        <script>
+        jSuites.crop(document.getElementById('image-cropper'), {
+            area: [ 280, 280 ],
+            crop: [ 150, 150 ],
+        })
 
+        document.getElementById('image-getter').onclick = function() {
+            document.getElementById('image-cropper-result').children[0].src = document.getElementById('image-cropper').crop.getCroppedImage().src;  
+        }
+        </script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"
         integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p"
         crossorigin="anonymous"></script>

@@ -25,14 +25,11 @@ exports.addToCart = async(req,res)=>{
             
             console.log('check', typeof(val1), typeof(val2), val1, val2)
             if(val1 == val2){
-                    console.log('found')
                     return true
                 
             }else{
-                console.log('not found')
                 return false
             }
-            
         } )
         console.log('Product Exist in : ' ,proExist);
         if(proExist != -1){
@@ -42,9 +39,7 @@ exports.addToCart = async(req,res)=>{
                 $inc:{"products.$.quantity":1}
             }
             )
-            console.log(product);
         }else{
-            console.log('Not incrementing')
             await cartDb.updateOne({user:ObjectId(userId)},{$push: {products:proObj}})
         }
         // 
@@ -164,9 +159,6 @@ exports.changeProductQuantity =async (req,res,next)=>{
         console.log(product);
     res.json(product)
     }
-    
-    // console.log(product);
-    // res.json(product)
 }
 
 // --------------------- Remove from Cart -------------
@@ -221,6 +213,7 @@ exports.userCart = async(req,res)=>{
             }
         }
     ])
+    
     let totalValue = await cartDb.aggregate([
         {
             $match:{user:ObjectId(userId)}
@@ -255,7 +248,7 @@ exports.userCart = async(req,res)=>{
             }
         }
     ])
-    console.log(totalValue[0]?.totalCount);
+    console.log(totalValue[0]);
     res.render('user/cart',{cartItems,user:req.session.user,totalValue:totalValue[0]?.total})
 }
 
@@ -268,25 +261,3 @@ exports.userCart = async(req,res)=>{
 
 
 
-
-
-// 
-// var ObjectId = require('mongoose').Types.ObjectId; 
-
-
-// exports.addToCart = async (req,res)=>{
-//     const proId = req.params.id;
-//     const userId = req.session.user._id;
-//     let userCart = await cartDb.findOne({user:ObjectId(userId)})
-//     if (userCart) {
-//         res.send('Hai')
-//     } else {
-//         let cartObj = new cartDb({
-//             user:ObjectId(userId),
-//             products:[ObjectId(proId)]
-//         });
-//         cartObj.save()
-//         res.send('Hai')
-//     }
-
-// }

@@ -40,6 +40,7 @@ app.use('/images',express.static(path.join(__dirname,"/public/assets/images")));
 app.use('/css',express.static(path.join(__dirname,"/public/css")));
 app.use('/js',express.static(path.join(__dirname,"/public/js")));
 app.use('/productsImg',express.static(path.join(__dirname,"/public/productsImg")));
+app.use('/datatables',express.static(path.join(__dirname,"/public/DataTables")));
 
 
 app.use(function (req, res, next) {
@@ -54,8 +55,8 @@ app.use(function (req, res, next) {
 app.use(
     session({
         secret: uuidv4(),
-        resave: false,
-        saveUninitialized: true,  
+        resave: false, 
+        saveUninitialized: true,
     })
 );
 
@@ -65,4 +66,4 @@ app.use('/',require('./server/routes/router'));
 
 app.listen(port,()=>{
     console.log(`Server is running at http://localhost:${port}`);
-}); 
+});

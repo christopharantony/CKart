@@ -57,7 +57,17 @@ route.use((req, res, next) => {
         res.status(200).redirect("/admin");
     } else next();
 });
-
+// Method Override
+route.use((req,res,next)=>{
+    if(req.query._method == "DELETE"){
+        req.method = "DELETE";
+        req.url = req.path;
+    }else if(req.query._method == "PUT"){
+        req.method = "PUT";
+        req.url = req.path;
+    }
+    next();
+})
 route.get("/users", controller.users);
 
 // Adding User
@@ -95,14 +105,7 @@ route.get("/update", productController.updatepage);
 
 route.put("/update/:id", productController.update);
 
-// Delete Product
-route.use((req,res,next)=>{
-    if(req.query._method == "DELETE"){
-        req.method = "DELETE";
-        req.url = req.path;
-    }
-    next();
-})
+
 route.delete("/delete/:id", productController.delete);
 
 route.get("/users", (req, res) => {
@@ -161,15 +164,17 @@ route.post('/statusUpdate',orderController.statusUpdate)
 // --------------------------------------------- LogOut -----------------------------------------------
 // Admin Logout
 route.get("/logout_admin", (req, res) => {
-    req.session.destroy(function (err) {
-        res.clearCookie();
-        console.log(req.session);
-        if (err) {
-            res.status(403).send("Hai Admin, Error while logingout");
-        } else {
-            res.status(200).redirect("/");
-        }
-    });
+    // req.session.destroy(function (err) {
+    //     res.clearCookie();
+    //     console.log(req.session);
+    //     if (err) {
+    //         res.status(403).send("Hai Admin, Error while logingout");
+    //     } else {
+    //         res.status(200).redirect("/");
+    //     }
+    // });
+    req.session.isAdminLogin = false;
+    res.redirect('/')
 });
 
 module.exports = route;

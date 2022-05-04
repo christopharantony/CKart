@@ -8,8 +8,18 @@ const otpcontroller = require("../controller/otpController")
 const cartcontroller = require('../controller/CartController');
 const orderController = require('../controller/orderController')
 const productController = require('../controller/productController')
+
+
+const Razorpay = require('razorpay')
+var instance = new Razorpay({
+    key_id: 'rzp_test_GHZ8qfO5RgHRDG',
+    key_secret: '96OZZd2cbBqVjnR6ZLeQrGOU',
+    });
+
+const crypto = require('crypto');
 const { check, validationResult } = require("express-validator");
 const { redirect } = require("express/lib/response");
+const { findById } = require("../model/cartModel");
 
 var ObjectId = require('mongoose').Types.ObjectId;
 
@@ -82,6 +92,73 @@ userRoute.get('/productDetail', productController.productDetails)
 //         res.status(200).redirect("/");
 //     } else next();
 // });
+// ---------------- Buy Now  -----------------
+userRoute.get('/buy-now',async (req, res)=>{
+    const user = req.session.user;
+    const product = req.query.id;
+    console.log(`user : ${user} product : ${product}`);
+    const pro = await productDb.findById(product)
+    console.log(`pro.Price : ${pro.Price}`)
+    res.render('user/buyplace_order',{total:pro.Price,user,product})
+})
+
+userRoute.post('/buyplace-order/:price/:proId',async (req, res)=>{
+    const userId = req.body.userId
+    const proId = req.body.proId
+    const total = parseInt(req.params.price);
+    console.log(`req.body : ${req.body}`)
+    console.log("Price", req.params.price);
+    console.log("User ID : ",req.body.userId)
+
+    let products = [{item:ObjectId(proId),quantity: 1}]
+
+    let status = req.body['payment-method']==='COD'?'placed':'pending'
+    let orderObj = new orderDb({
+        deliveryDetails:{
+            name:req.body.Name,
+            mobile:req.body.mobile,
+            address:req.body.address,
+            pincode:req.body.Pincode
+        },
+        userId:ObjectId(userId),
+        paymentMethod:req.body['payment-method'],
+        products:products,
+        totalAmount:total,
+        status:status,
+        date: new Date()
+    })
+    orderObj.save()
+    await productDb.updateOne({"_id": ObjectId(proId)},
+    {
+        $inc: { Quantity : -1 }
+    })
+    if(req.body['payment-method']=='COD'){
+        res.json({codSuccess:true})
+    }else{
+        console.log(`total : ${total} Product : ${products[0].item} `)
+        var options = {
+            amount: total*100,
+            currency: "INR",
+            receipt: ""+products[0].item,
+            notes: {
+                key1: "value3",
+                key2: "value2"
+            }
+        }
+        instance.orders.create(options, function(err, order) {
+            if (err) {
+                console.log('error',err);
+            }else {
+                console.log("New Order",order);
+                res.json(order);
+            }
+        })
+        
+    }
+    
+    
+
+})
 
 // ------------------ Cart -------------------
 userRoute.get('/cart',cartcontroller.userCart)
@@ -94,6 +171,8 @@ userRoute.post("/remove-product-cart",cartcontroller.removeProcart)
 userRoute.get('/place-order',orderController.myOrders)
 
 userRoute.post('/place-order',orderController.orderPlacing)
+
+userRoute.post('/verify-payment',orderController.paymentVerification)
 
 // ------------------ Order Placed ------------------------
 userRoute.get('/order-success',(req,res)=>{
@@ -111,15 +190,18 @@ userRoute.put('/cancel/:id',orderController.cancel)
 
 
 userRoute.get("/logout_user", (req, res) => {
-    req.session.destroy(function (err) {
-        res.clearCookie();
-        if (err) {
-            console.log(err);
-            res.send("Error");
-        } else {
-            res.redirect('/')
-        }
-    });
+    // req.session.destroy(function (err) {
+    //     res.clearCookie();
+    //     if (err) {
+    //         console.log(err);
+    //         res.send("Error");
+    //     } else {
+    //         res.redirect('/')
+    //     }
+    // });
+    req.session.user = null;
+    req.session.isUserLogin = false;
+    res.redirect('/')
 });
 
 module.exports = userRoute;

@@ -26,13 +26,16 @@
                                 <i class="fa-solid fa-pencil"></i>
                             </a>
                             <div>
-                            <form action="/delete-brand/<%= brand[i]._id %>?_method=DELETE" method="post">
+                            <!-- <form action="/delete-brand/<%= brand[i]._id %>?_method=DELETE" method="post">
                                 <a href="" onclick="return confirm('Are want to delete <%=brand[i].name%> ?')">
                                 <button class="btn border-shadow update" type="submit">
                                     <i class="fa-solid fa-trash-can"></i>
                                 </button>
                                 </a>
-                            </form>
+                            </form> -->
+                            <button onclick="deleteProduct('<%=brand[i]._id %>')" class="btn border-shadow update" >
+                                <i class="fa-solid fa-trash-can"></i>
+                            </button>
                             </div>
                         </td>
                     </tr>

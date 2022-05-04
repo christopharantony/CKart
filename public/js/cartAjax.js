@@ -5,13 +5,12 @@ function addToCart(proId) {
         method: "get",
         success: (response) => { 
             if (response.status){
-                
                 let count = $('#cart-count').html()
                 count = parseInt(count)+1
                 $("#cart-count").html(count)
             }
             // console.log('Cart AJAX'+proId);
-            alert('Added to cart');
+            // alert('Added to cart');
         },
     });
 }

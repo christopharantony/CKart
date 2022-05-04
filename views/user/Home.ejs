@@ -172,8 +172,6 @@
                   <div class="our_products">
                      <div class="row">
                         <% for ( let i = 0; i < products.length; i++){ %>
-                           <% console.log('Yes here Im Now at Home page') %>
-                           <% console.log(products[i].Name) %>
                         <div class="col-md-4 margin_bottom1">
                            <div class="product_box">
                               <a href="/productDetail?image=<%=products[i].Image %>">
@@ -182,8 +180,7 @@
                               <p><%=products[i].Name%></p>
                               <!-- <a href="/add-to-cart?id=<%= products[i]._id%> "><h3 class="atc_home" >Add to cart</h3></a> -->
                               <button onclick="addToCart('<%=products[i]._id%>')" class="btc_home"> Add to cart</button>
-                              <a href="/buy-now?id=<%= products._id%> "><h3 class="atc_home" >Buy Now</h3></a>
-                              
+                              <a href="/buy-now?id=<%= products[i]._id%> "><h3 class="atc_home" >Buy Now</h3></a>
                            </div>
                         </div>
                         <% } %>

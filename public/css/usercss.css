@@ -12,3 +12,12 @@
     margin-top: 16px;
     font-weight: normal;
 }
+
+.outofstock{
+    position: absolute;
+    content: 'OUT OF STOCK';
+    right: 110px;
+    color: #ff0202;
+    transform: rotate(12deg);
+    top: 41px;
+}

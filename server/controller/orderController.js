@@ -115,7 +115,6 @@ exports.cancelOrder = async(req,res)=>{
 }
 
 // --------------------------------------------- My Order -----------------------------------------------
-
 exports.myOrders = async(req,res)=>{
     const userId = req.session.user?._id;
     let total = await cartDb.aggregate([
@@ -218,9 +217,9 @@ exports.orderPlacing = async(req,res)=>{
         date: new Date()
     })
     orderObj.save()
-    await productDb.updateOne({"_id": ObjectId(proId)},
+    await productDb.updateOne({"_id": ObjectId(products[0].item)},
     {
-        $inc: { Quantity : -1 }
+        $inc: { Quantity : -'$products[0].quantity' }
     })
     await cartDb.deleteOne({user:ObjectId(order.userId)})
     if(req.body['payment-method']=='COD'){

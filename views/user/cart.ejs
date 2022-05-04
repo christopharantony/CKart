@@ -44,6 +44,9 @@
         <div class="cart">
 
             <div class="products">
+                <% if (cartItems.length == 0) { %>
+                    <h2>Cart is Empty</h2>
+                <% } else { %>
                 <% for ( let i=0; i < cartItems.length; i++) { %>
                     <div class="product">
 
@@ -101,6 +104,7 @@
                     </div>
 
                     <% } %>
+                    
 
             </div>
 
@@ -139,7 +143,7 @@
         </div>
 
     </div>
-
+<% } %>
 
     <!-- complete: function(data) {
         alert('hi');
@@ -202,7 +206,6 @@
                     },
                     dataType: 'json',
                     success: (response) => {
-                        alert("Product removed from cart")
                         location.reload()
                     }
                 })

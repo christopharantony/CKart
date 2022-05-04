@@ -113,7 +113,7 @@ exports.delete = (req,res)=>{
 exports.productDetails = async (req,res)=>{
     const products = await productDb.findOne({Image:req.query.image})
     let cartCount = 0
-            let cart = await cartDb.findOne({user:req.session.user._id})
+            let cart = await cartDb.findOne({user:req.session.user?._id})
             console.log('cart',cart);
             if (cart) {
                 cartCount = cart.products.length

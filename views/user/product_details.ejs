@@ -24,10 +24,16 @@
                      <!-- <a class="read_more" href="#">Read More</a> -->
                   </div>
                </div>
+               <% if (products.Quantity == 0) { %>
+               <div class="col-md-7 pt-5" style="margin-left: 11%;">
+                  <h2 style="color: red;">Out of Stock</h2>
+               </div>
+               <% } else { %>
                <div class="col-md-7 pt-5" style="margin-left: 11%;">
                   <button onclick="addToCart('<%=products._id%>')" class="btc_home"> Add to cart</button>
                   <a href="/buy-now?id=<%= products._id%> "><h3 class="atc_home" >Buy Now</h3></a>
                </div>
+               <% } %>
             </div>
          </div>
       </div>

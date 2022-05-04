@@ -11,10 +11,15 @@ exports.create = (req,res)=>{
         res.status(400).send({ message :"Content can not be empty!"});
         return;
     }else{
-        let image = req.files?.Image
-        if(image){
+        console.log("req.body",req.files);
+        let images = req.files?.Image
+        const imgPath = []
+        if(images){
+            for (const image of images){
             var uploadPath = './public/productsImg/' + Date.now()+'.jpeg'
-            var imgPath ='productsImg/' + Date.now()+'.jpeg'
+            var img ='productsImg/' + Date.now()+'.jpeg'
+            imgPath.push(img)
+            console.log('img',img);
             image.mv(uploadPath,(err)=>{
             console.log(uploadPath);
             if(err){
@@ -22,6 +27,8 @@ exports.create = (req,res)=>{
                 return res.status(500).send(err);
             }
             })
+            }
+            console.log('imgPath',imgPath);
         }
         
     const product = new productDb({

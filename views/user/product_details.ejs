@@ -5,13 +5,18 @@
       <!-- laptop1 -->
       <div class="laptop1">
          <div class="container">
-            <div class="row">
-               <div class="col-md-7" style="padding-left: 7rem;">
+            <div class="row"> <ul>
+                  <% for (const img of image) { %>
+                     <li> <button onclick="imageMain('<%= img %>')">  <img src="<%= img %>" style="width: 100px ;height: 100px; "> </button> </li>
+                  <% } %>
+                  </ul>
+               <div class="col-md-7 proimg" style="padding-left: 7rem;" >
                   <div class="laptop1_img">
-                     <a href="<%= image %>" class="MagicZoom" data-options="zoomPosition: inner"><img src="<%= image %>" style="max-width: 300px max-height 300px;" /></a>`
+                     <a href="<%= image[0] %>" class="MagicZoom" id="magicChange" data-options="zoomPosition: inner"><img src="<%= image[0] %>" id="changeImage" style="max-width: 300px max-height 300px;" /></a>`
                   </div>
+               
                </div>
-               <div class="col-md-5">
+               <div class="prodetail">
                   <div class="titlepage">
                      <h2><%= products.Name %></h2>
                      <h1>$ <%= products.Price %></h1>

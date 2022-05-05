@@ -13,7 +13,7 @@ const app = express();
 
 const port = process.env.PORT ;
 
-mongoose.connect('mongodb://localhost:27017/accounts',(err)=>{
+mongoose.connect('mongodb://localhost:27017/ckart',(err)=>{
     if(err){
         console.log("Could not connect to database");
     }else{

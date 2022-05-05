@@ -118,12 +118,15 @@ exports.delete = (req,res)=>{
 // ==================================================================================================
 
 exports.productDetails = async (req,res)=>{
-    const products = await productDb.findOne({Image:req.query.image})
+    image = req.query.image.split(',')
+    const products = await productDb.findOne({Image:image})
     let cartCount = 0
             let cart = await cartDb.findOne({user:req.session.user?._id})
             console.log('cart',cart);
             if (cart) {
                 cartCount = cart.products.length
             }
-    res.render('user/product_details',{image:req.query.image, products,cartCount,isUserLogin:req.session.isUserLogin})
+        console.log('req.query.image',(req.query.image.split(',')));
+        console.log("==============>",image,products,cartCount);
+    res.render('user/product_details',{image:image, products,cartCount,isUserLogin:req.session.isUserLogin})
 }

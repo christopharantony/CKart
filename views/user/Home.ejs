@@ -178,7 +178,7 @@
                               <% if (products[i].Quantity == 0) { %>
                                  <figure><h1 class="outofstock">Out of Stock</h1><img style="width: 150px;height: 150px;" src="<%= products[i].Image %>" alt="image"/></figure>
                               <% } else { %>
-                                 <figure><img style="width: 150px;height: 150px;" src="<%= products[i].Image %>" alt="image"/></figure>
+                                 <figure><img style="width: 150px;height: 150px;" src="<%= products[i].Image[0] %>" alt="image"/></figure>
                               <% } %>
                               </a>
                               <p><%=products[i].Name%></p>

@@ -21,3 +21,12 @@
     transform: rotate(12deg);
     top: 41px;
 }
+
+.prodetail{
+    position: absolute;
+    margin-left: 48rem;
+}
+
+.proimg{
+    position: absolute;
+}

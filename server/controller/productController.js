@@ -80,12 +80,24 @@ exports.updatepage = async(req,res)=>{
 //  Edit Product
 exports.update = (req,res)=>{
     const id = req.params.id;
-        let image = req.files?.Image
-        if(image){
-            var uploadPath = './public/productsImg/' + Date.now()+'.jpeg'
-        var imgPath ='productsImg/' + Date.now()+'.jpeg'
-        image.mv(uploadPath)
+    let images = [req.files?.Image1,req.files?.Image2,req.files?.Image3]
+    const imgPath = []
+    if(images){
+        for (const image of images){
+        var uploadPath = './public/productsImg/' + Date.now()+'.jpeg'
+        var img ='productsImg/' + Date.now()+'.jpeg'
+        imgPath.push(img)
+        console.log('img',img);
+        image?.mv(uploadPath,(err)=>{
+        console.log(uploadPath);
+        if(err){
+            console.log(err);
+            return res.status(500).send(err);
         }
+        })
+        }
+        console.log('imgPath',imgPath);
+    }
     const product = {
         Name:req.body.Name,
         Price:req.body.Price,
@@ -101,6 +113,9 @@ exports.update = (req,res)=>{
     productDb.updateOne({_id:id},{$set: product })
     .then(()=>{
         res.redirect('/admin-products')
+    })
+    .catch(err=>{
+        res.send(err.message)
     })
 }
 // )}

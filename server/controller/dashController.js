@@ -11,6 +11,22 @@ exports.dash = async(req,res)=>{
         console.log("No. of orders found : ",orders.length)
         console.log("No. of users found : ",users.length)
         console.log("No. of products found : ",products.length)
+        const dates = await orderDb.aggregate([
+            {
+                $project:{
+                    date: 1,_id: 0
+                }
+            },
+            // {
+            //     $group:{
+            //         _id:{day: { $dayOfMonth: "$date"}, month: { $month: "$date"}, year: { $year: "$date"}},
+                    
+            //     }
+            // }
+        ])
+        
+        // console.log(dates.map(date =>{date.toDateString()}));
+        // const d = dates.toDateString();
         res.status(200).render('admin/dashboard',{ordercount:orders.length,usercount:users.length,productcount:products.length})
     }else{
         req.session.isAdminLogin = false;

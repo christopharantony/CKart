@@ -1,5 +1,6 @@
 var categoryDb = require('../model/categoryModel');
 const productDb = require('../model/productModel');
+const orderDb = require('../model/orderModel');
 
 exports.create =async (req,res)=>{
     try{
@@ -29,8 +30,13 @@ exports.update = async (req,res)=>{
 
 exports.delete = async (req,res)=>{
     const id = req.params.id;
-    const cat = await categoryDb.findOne({_id:id})
+    const cat = await categoryDb.findOne({_id:id}) 
     await categoryDb.findByIdAndDelete(id)
+    const products = await productDb.find({"Category":cat.name})
     await productDb.deleteMany({"Category":cat.name})
+    // for (const product of products){
+    //     console.log("Product ID : ",product._id);
+    //     await orderDb.deleteMany({"Category":cat.name})
+    // }
     res.redirect('/category')
 }

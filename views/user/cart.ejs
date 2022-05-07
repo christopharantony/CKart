@@ -49,7 +49,7 @@
                 <% } else { %>
                 <% for ( let i=0; i < cartItems.length; i++) { %>
                     <div class="product">
-                        <a href="/productDetail?image=<%=cartItems[i].product.Image %>">
+                        <a href="/productDetail?image=<%=cartItems[i]?.product.Image %>">
                         <img style="width: 250px;padding: 35px;padding-top: 46px;" src="<%= cartItems[i].product.Image[0] %>">
                         </a>
                         <div class="product-info">

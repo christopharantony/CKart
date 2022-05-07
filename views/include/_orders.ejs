@@ -1,4 +1,5 @@
 <% for ( let i = 0; i < orderData.length; i++){ %>
+    <% if ( orderData[i].userData[0]?.name && orderData[i].productData[0]?.Name  ) { %>
     <tr>
     <td><%= i+1 %></td>
     <td><%= orderData[i].userData[0]?.name %></td>
@@ -32,6 +33,7 @@
     
     
     </tr>
+    <% } %>
     <% } %>
 
     <script>

@@ -48,7 +48,7 @@ exports.Find = async (req,res)=>{
             if (cart) {
                 cartCount = cart.products.length
             }
-    console.log(orderDetails)
+    console.log("Error finding in My orders",orderDetails[0])
     res.render('user/my_orders',{orderData:orderDetails,cartCount,isUserLogin:req.session.isUserLogin})
 }
 // --------------------------------------------- Orders in admin side -----------------------------------------------
@@ -96,11 +96,14 @@ exports.statusUpdate = async(req, res) => {
 
 exports.cancel = async(req,res)=>{
         const id = req.params.id;
-        await orderDb.updateOne({_id:id},{$set: {"status":"Canceled"}})
+        const order = await orderDb.findOne({_id:id})
+        console.log("^^^^^^^^^^^^^^^",order.products[0].item)
+        const proId = order.products[0].item
         await productDb.updateOne({"_id": ObjectId(proId)},
         {
             $inc: { Quantity : 1 }
         })
+        await orderDb.updateOne({_id:id},{$set: {"status":"Canceled"}})
         res.redirect('/user-orders')
 }
 
@@ -219,7 +222,7 @@ exports.orderPlacing = async(req,res)=>{
     orderObj.save()
     await productDb.updateOne({"_id": ObjectId(products[0].item)},
     {
-        $inc: { Quantity : -'$products[0].quantity' }
+        $inc: { Quantity : -products[0].quantity }
     })
     await cartDb.deleteOne({user:ObjectId(order.userId)})
     if(req.body['payment-method']=='COD'){

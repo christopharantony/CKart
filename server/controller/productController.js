@@ -11,8 +11,10 @@ exports.create = (req,res)=>{
         res.status(400).send({ message :"Content can not be empty!"});
         return;
     }else{
-        console.log("req.body",req.files);
-        let images = req.files?.Image
+        console.log("req.body",req.body);
+        console.log("req.files",req.files);
+        let images = [req.files?.Image1,req.files?.Image2,req.files?.Image3]
+        console.log(images);
         const imgPath = []
         if(images){
             for (const image of images){
@@ -58,7 +60,6 @@ exports.create = (req,res)=>{
 exports.find = (req,res)=>{
     productDb.find()
     .then(data=>{
-        console.log('products : ',data);
         res.status(200).render('admin/admin_products',{products:data})
     })
     .catch(err=>{

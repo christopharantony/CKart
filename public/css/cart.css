@@ -99,6 +99,18 @@
 	position: relative;
 
 }
+.favproduct-info{
+
+	padding: 20px;
+
+	width: 100%;
+
+	position: relative;
+
+	padding-top: 43px;
+
+}
+
 
 .product-name, .product-price, .product-offer{
 
@@ -126,7 +138,39 @@
 
 }
 
+.fav-product-remove{
+
+	position: absolute;
+
+	bottom: 70px;
+
+	right: 40px;
+
+	padding: 10px 25px;
+
+	background-color: green;
+
+	color: white;
+
+	cursor: pointer;
+
+	border-radius: 5px;
+
+}
+
 .product-remove:hover{
+
+	background-color: white;
+
+	color: green;
+
+	font-weight: 600;
+
+	border: 1px solid green;
+
+}
+
+.fav-product-remove:hover{
 
 	background-color: white;
 

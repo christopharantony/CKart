@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CKart</title>
+    <title>CKart : Admin</title>
     <!-- Swal -->
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="sweetalert2.all.min.js"></script>
@@ -25,6 +25,7 @@
     <link rel="stylesheet" href="https://jsuites.net/v4/jsuites.layout.css" type="text/css" /> -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.11/cropper.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.11/cropper.js"></script>
+    
     <!-- /Cropper -->
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.0/css/all.min.css"
@@ -41,7 +42,7 @@
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container-fluid">
             <!-- <div> -->
-            <a class="navbar-brand" href="#">Admin</a>
+            <a class="navbar-brand" href="/admin">Admin</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                 data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
                 aria-label="Toggle navigation">
@@ -127,6 +128,46 @@
                 if (result.isConfirmed) {
                     type = "delete",
                         location.href = `/delete/${id}?_method=DELETE`
+                    Swal.fire(
+                        'Deleted!',
+                        'Your file has been deleted.',
+                        'success'
+                    )
+                }
+            })
+        }
+        function deleteBrand(id) {
+            Swal.fire({
+                title: 'Are you want to delete?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Delete'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    type = "delete",
+                        location.href = `/delete-brand/${id}?_method=DELETE`
+                    Swal.fire(
+                        'Deleted!',
+                        'Your file has been deleted.',
+                        'success'
+                    )
+                }
+            })
+        }
+        function deleteCategory(id) {
+            Swal.fire({
+                title: 'Are you want to delete?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Delete'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    type = "delete",
+                        location.href = `/delete-cate/${id}?_method=DELETE`
                     Swal.fire(
                         'Deleted!',
                         'Your file has been deleted.',

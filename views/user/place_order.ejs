@@ -146,7 +146,6 @@
                                 data:$('#request').serialize(),
                                 success:(response)=>{
                                     console.log(response);
-                                    alert("Order Placed")
                                     if(response.codSuccess){
                                         location.href='/order-success'
                                     }else{

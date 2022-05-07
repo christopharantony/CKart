@@ -7,10 +7,10 @@
          <div id="banner1" class="carousel slide" data-ride="carousel">
             <ol class="carousel-indicators">
                <li data-target="#banner1" data-slide-to="0" class="active"></li>
-               <li data-target="#banner1" data-slide-to="1"></li>
+               <!-- <li data-target="#banner1" data-slide-to="1"></li>
                <li data-target="#banner1" data-slide-to="2"></li>
                <li data-target="#banner1" data-slide-to="3"></li>
-               <li data-target="#banner1" data-slide-to="4"></li>
+               <li data-target="#banner1" data-slide-to="4"></li> -->
             </ol>
             <div class="carousel-inner">
                <div class="carousel-item active">
@@ -19,10 +19,31 @@
                         <div class="row">
                            <div class="col-md-6">
                               <div class="text-bg">
-                                 <span>Computer And Laptop</span>
-                                 <h1>Accessories</h1>
-                                 <p>There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or </p>
-                                 <a href="#">Buy Now </a> <a href="contact.html">Contact </a>
+                                 <span>Laptop</span>
+                                 <h1>Free delivery</h1>
+                                 <p>Designed for productivity and entertainment.</p>
+                                 <a href="#">Buy Now </a> <a href="#">Add to Cart </a>
+                              </div>
+                           </div>
+                           <div class="col-md-6">
+                              <div class="text_img">
+                                 <figure><img src="images/pct.png" alt="#"/></figure>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+               <div class="carousel-item">
+                  <div class="container">
+                     <div class="carousel-caption">
+                        <div class="row">
+                           <div class="col-md-6">
+                              <div class="text-bg">
+                                 <span>Free delivery</span>
+                                 <h1>Laptop</h1>
+                                 <p>Designed for productivity and entertainment.</p>
+                                 <a href="#">Buy Now </a> <a href="#">Add to Cart </a>
                               </div>
                            </div>
                            <div class="col-md-6">
@@ -43,7 +64,7 @@
                                  <span>Computer And Laptop</span>
                                  <h1>Accessories</h1>
                                  <p>There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or </p>
-                                 <a href="#">Buy Now </a> <a href="contact.html">Contact </a>
+                                 <a href="#">Buy Now </a> <a href="#">Add to Cart </a>
                               </div>
                            </div>
                            <div class="col-md-6">
@@ -64,28 +85,7 @@
                                  <span>Computer And Laptop</span>
                                  <h1>Accessories</h1>
                                  <p>There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or </p>
-                                 <a href="#">Buy Now </a> <a href="contact.html">Contact </a>
-                              </div>
-                           </div>
-                           <div class="col-md-6">
-                              <div class="text_img">
-                                 <figure><img src="images/pct.png" alt="#"/></figure>
-                              </div>
-                           </div>
-                        </div>
-                     </div>
-                  </div>
-               </div>
-               <div class="carousel-item">
-                  <div class="container">
-                     <div class="carousel-caption">
-                        <div class="row">
-                           <div class="col-md-6">
-                              <div class="text-bg">
-                                 <span>Computer And Laptop</span>
-                                 <h1>Accessories</h1>
-                                 <p>There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or </p>
-                                 <a href="#">Buy Now </a> <a href="contact.html">Contact </a>
+                                 <a href="#">Buy Now </a> <a href="#">Add to Cart </a>
                               </div>
                            </div>
                            <div class="col-md-6">
@@ -181,10 +181,21 @@
                                  <figure><img style="width: 150px;height: 150px;" src="<%= products[i].Image[0] %>" alt="image"/></figure>
                               <% } %>
                               </a>
-                              <p><%=products[i].Name%></p>
-                              <!-- <a href="/add-to-cart?id=<%= products[i]._id%> "><h3 class="atc_home" >Add to cart</h3></a> -->
+                              <h1><%=products[i].Name%></h1>
+                              <h1>$<%=products[i].Price%></h1>
+                              <% if (isUserLogin) { %>
+                              <% console.log('fav',fav,'id',products[i]._id) %>
+                              <% if (fav?.includes(products[i]._id)) { %>
+                              <button onclick="addToFav('<%=products[i]._id%>')"><i class="fa-solid fa-heart" style="color: red;" id="<%=products[i]._id%>" ></i></button>
+                              <% } else {%>
+                              <button onclick="addToFav('<%=products[i]._id%>')"><i class="fa-solid fa-heart" id="<%=products[i]._id%>" ></i></button>
+                              <% } %>
                               <button onclick="addToCart('<%=products[i]._id%>')" class="btc_home"> Add to cart</button>
-                              <a href="/buy-now?id=<%= products[i]._id%> "><h3 class="atc_home" >Buy Now</h3></a>
+                              <a href="/buy-now?id=<%= products[i]._id%> "><h3 class="atc_home" style="margin-left: 119px;" >Buy Now</h3></a>
+                              <% } else {%>
+                              <a href="/login"><h3 class="atc_home" >Add to cart</h3></a>
+                              <a href="/buy-now?id=<%= products[i]._id%> "><h3 class="atc_home"  >Buy Now</h3></a>
+                              <% } %>
                            </div>
                         </div>
                         <% } %>

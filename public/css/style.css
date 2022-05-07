@@ -391,7 +391,7 @@ ul.btn li:last-child {
      align-items: center;
      position: relative;
 }
-.banner_main::before {
+/* .banner_main::before {
      position: absolute;
      content: "";
      width:50px; 
@@ -400,8 +400,8 @@ ul.btn li:last-child {
      background-repeat: no-repeat;
      bottom: -38px;
      right: 38px;
-}
-.banner_main::after {
+} */
+/* .banner_main::after {
      position: absolute;
      content: "";
      width:50px; 
@@ -410,7 +410,7 @@ ul.btn li:last-child {
      background-repeat: no-repeat;
      bottom: -38px;
      left: 38px;
-}
+} */
 .text-bg {
      text-align: left;
 }

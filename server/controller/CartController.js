@@ -52,9 +52,6 @@ exports.addToCart = async(req,res)=>{
         cartObj.save()
         console.log('Added to Cart sucessfully');
     }
-    // res.send('Added to cart')
-    // res.redirect('/')
-    console.log('cartcontroller add to cart');
     res.json({status:true})
 }
 
@@ -248,8 +245,14 @@ exports.userCart = async(req,res)=>{
             }
         }
     ])
-    console.log(totalValue[0]);
-    res.render('user/cart',{cartItems,user:req.session.user,totalValue:totalValue[0]?.total})
+    // console.log(totalValue[0]);
+    console.log("Caaaaaaaart",cartItems);
+    let totalNo = 0
+    for (const cart of cartItems) {
+        totalNo = cart.quantity + totalNo;
+    }
+    console.log(totalNo)
+    res.render('user/cart',{cartItems,totalNo,user:req.session.user,totalValue:totalValue[0]?.total})
 }
 
 

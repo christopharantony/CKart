@@ -2,6 +2,9 @@ var Userdb = require('../model/model');
 const adminDb = require('../model/adminModel')
 const productDb = require("../model/productModel");
 const cartDb  = require('../model/cartModel')
+const favDb = require('../model/favModel')
+
+var ObjectId = require('mongoose').Types.ObjectId;
 
 // SignUp
 exports.Create = (req, res) => {
@@ -34,18 +37,21 @@ exports.Create = (req, res) => {
     }
 }
 
+
+
 // User Login
 exports.Find = async (req, res) => {
 
     if (req.session.isUserLogin) {
         res.redirect('/')
     } else {
-        userDb = await Userdb.findOne({ email: req.body.email, password: req.body.password })
+        let userDb = await Userdb.findOne({ email: req.body.email, password: req.body.password })
         if (userDb) {
             if (userDb.isBlocked) {
                 res.render('user/user_login', { error: "Your account is blocked" })
             }
             req.session.user = userDb;
+            const userId = req.session.user?._id
             let cartCount = 0
             let cart = await cartDb.findOne({user:userDb._id})
             console.log('cart',cart);
@@ -53,10 +59,11 @@ exports.Find = async (req, res) => {
                 cartCount = cart.products.length
             }
             const products = await productDb.find()
-            
+            const wishlist = await favDb.findOne({user:ObjectId(userId)})
+            fav = wishlist?.products
             req.session.isUserLogin = true;
             console.log(userDb);
-            res.status(200).render('user/Home', { products,cartCount,isUserLogin:req.session.isUserLogin })
+            res.status(200).render('user/Home', { products,cartCount,fav,isUserLogin:req.session.isUserLogin })
         } else {
             res.render('user/user_login', { error: "Invalid Username and Password" })
         }
@@ -99,7 +106,8 @@ exports.find = async (req, res) => {
     try {
         const data = await Userdb.find()
         if (req.session.isAdminLogin) {
-            res.status(200).render('admin/admin_home', { users: data })
+            // res.status(200).render('admin/admin_home', { users: data })
+            res.status(200).render('admin/dashboard')
         } else {
             const admin = await adminDb.findOne({email:req.body.email, password:req.body.password})
             if (admin) {

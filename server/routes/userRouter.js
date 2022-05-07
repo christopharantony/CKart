@@ -1,10 +1,12 @@
 const express = require("express");
 const userRoute = express.Router();
+const favDb = require('../model/favModel')
 const cartDb = require('../model/cartModel')
 const orderDb = require('../model/orderModel')
 const productDb = require("../model/productModel");
 const controller = require("../controller/controller");
 const otpcontroller = require("../controller/otpController")
+const favController = require("../controller/favController")
 const cartcontroller = require('../controller/CartController');
 const orderController = require('../controller/orderController')
 const productController = require('../controller/productController')
@@ -34,9 +36,11 @@ userRoute.get("/", async(req, res) => {
     try {
         const products =await productDb.find()
             if (req.session.isUserLogin) {
-                req.session.user = userDb;
+                // let userDb = null
+                // req.session.user = userDb;
+                console.log(req.session.user);
             let cartCount = 0
-            let cart = await cartDb.findOne({user:userDb._id})
+            let cart = await cartDb.findOne({user:req.session.user._id})
             if (cart) {
                 cartCount = cart.products.length
             }
@@ -181,6 +185,14 @@ userRoute.get('/order-success',(req,res)=>{
 
 // Add to cart
 userRoute.get("/add-to-cart:id",cartcontroller.addToCart)
+
+//--------------------------------------------------------------------------------------------------------------------------------------------
+// ------------------ Add Favorites ------------------------
+userRoute.post("/add-to-fav:id",favController.fav)
+
+userRoute.get('/user-fav',favController.find)
+
+userRoute.post("/remove-product-fav",favController.removeProfav)
 
 // Show the orders
 userRoute.get('/user-orders',orderController.Find)

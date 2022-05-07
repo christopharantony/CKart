@@ -1,4 +1,6 @@
 var brandDb = require('../model/brandModel');
+const productDb = require('../model/productModel')
+
 
 exports.create =async (req,res)=>{
     try{
@@ -20,12 +22,16 @@ exports.updatepage =async (req,res)=>{
 
 exports.update = async (req,res)=>{
     const id = req.params.id;
+    const brand = await brandDb.findOne({_id:id}) 
     await brandDb.findByIdAndUpdate(id,req.body,{useFindAndModify:false})
+    await productDb.updateMany({"Brand": brand.name},{$set:{"Brand": req.body.name}})
         res.redirect('/brand')
 }
 
 exports.delete = async (req,res)=>{
     const id = req.params.id;
+    const brand = await brandDb.findOne({_id:id})
     await brandDb.findByIdAndDelete(id)
+    await productDb.deleteMany({"Brand": brand.name})
     res.redirect('/brand')
 }

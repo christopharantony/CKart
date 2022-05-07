@@ -1,5 +1,10 @@
 <%-include('../include/_userhead')%>
-
+<script>
+   function imageMain(img){
+      $('#changeImage').attr('src', img)
+      $('#magicChange').attr("href", img);
+   }
+</script>
       <!-- end header inner -->
       <!-- end header -->
       <!-- laptop1 -->
@@ -35,8 +40,8 @@
                </div>
                <% } else { %>
                <div class="col-md-7 pt-5" style="margin-left: 11%;">
-                  <button onclick="addToCart('<%=products._id%>')" class="btc_home"> Add to cart</button>
-                  <a href="/buy-now?id=<%= products._id%> "><h3 class="atc_home" >Buy Now</h3></a>
+                  <button onclick="addToCart('<%=products._id%>')" class="btc_home" style="margin-left: 13.5rem;"> Add to cart</button>
+                  <a href="/buy-now?id=<%= products._id%> "><h3 class="atc_home" style="margin-left: 13.5rem;">Buy Now</h3></a>
                </div>
                <% } %>
             </div>

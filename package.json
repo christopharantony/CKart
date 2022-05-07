@@ -14,6 +14,8 @@
   "author": "Christophar Antony",
   "license": "ISC",
   "dependencies": {
+    "chart.js": "^3.7.1",
+    "cropperjs": "^1.5.12",
     "dotenv": "^16.0.0",
     "ejs": "^3.0.2",
     "express": "^4.17.3",

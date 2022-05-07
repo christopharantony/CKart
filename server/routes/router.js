@@ -6,8 +6,9 @@ const Admin = require("../model/adminModel");
 const brandDb = require("../model/brandModel");
 const categoryDb = require("../model/categoryModel");
 const controller = require("../controller/controller");
-const orderController = require('../controller/orderController')
 const catController = require("../controller/catController");
+const dashController = require("../controller/dashController")
+const orderController = require('../controller/orderController')
 const brandController = require("../controller/brandController");
 const productController = require("../controller/productController");
 
@@ -23,20 +24,25 @@ const session = require("express-session");
 // }
 
 // Admin Login
-route.get("/admin", (req, res) => {
-    Userdb.find()
-        .then((data) => {
-            if (req.session.isAdminLogin) {
-                res.status(200).render("admin/admin_home", { users: data });
-            } else {
-                req.session.isAdminLogin = false;
-                res.status(200).render("admin/admin_login", { error: "" });
-            }
-        })
-        .catch((err) => {
-            console.error(err.message);
-        });
-});
+// route.get("/admin", (req, res) => {
+//     Userdb.find()
+//         .then((data) => {
+//             if (req.session.isAdminLogin) {
+//                 // res.status(200).render("admin/admin_home", { users: data });
+//                 res.status(200).render('admin/dashboard')
+//             } else {
+//                 req.session.isAdminLogin = false;
+//                 res.status(200).render("admin/admin_login", { error: "" });
+//             }
+//         })
+//         .catch((err) => {
+//             console.error(err.message);
+//         });
+// });
+
+route.get("/admin",dashController.dash)
+
+route.get('/getChart',dashController.chart)
 
 // Admin Home
 

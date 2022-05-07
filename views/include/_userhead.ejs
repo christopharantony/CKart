@@ -34,6 +34,10 @@
       <script type="text/javascript" src="js/magiczoomplus.js"></script>
       <!-- Ajax -->
       <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+      <!-- FontAwsome -->
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
+		integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g=="
+		crossorigin="anonymous" referrerpolicy="no-referrer" />
 
       <!--[if lt IE 9]>
       <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
@@ -94,6 +98,9 @@
                               <% if (isUserLogin) { %>
                                  <li class="nav-item">
                                     <a class="nav-link" href="/user-orders">My Orders</a>
+                                 </li>
+                                 <li class="nav-item">
+                                    <a class="nav-link" href="/user-fav">My Wishlist</a>
                                  </li>
                                  <li class="nav-item ">
                                     <a class="nav-link" href="/cart"><i class="fa fa-shopping-cart" aria-hidden="true"></i><sup><span class="badge" id="cart-count"> <%= cartCount %> </span></sup></a>

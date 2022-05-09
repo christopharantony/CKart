@@ -1,3 +1,21 @@
+.bannerimg {
+    position: relative;
+    color: #fff;
+}
+.centertxt{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+.bannerlabel{
+    font-size:2rem;
+    font-weight: bold;
+}
+.bannerdecr{
+    font-size: 1rem;
+    font-weight: 600;
+}
 .product {
     display: flex;
     width: 100%;

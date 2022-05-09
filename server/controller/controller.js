@@ -3,6 +3,7 @@ const adminDb = require('../model/adminModel')
 const productDb = require("../model/productModel");
 const cartDb  = require('../model/cartModel')
 const favDb = require('../model/favModel')
+const bannerDb = require('../model/bannerModel')
 
 var ObjectId = require('mongoose').Types.ObjectId;
 
@@ -54,7 +55,7 @@ exports.Find = async (req, res) => {
             const userId = req.session.user?._id
             let cartCount = 0
             let cart = await cartDb.findOne({user:userDb._id})
-            console.log('cart',cart);
+            const banners = await bannerDb.find()
             if (cart) {
                 cartCount = cart.products.length
             }
@@ -62,8 +63,7 @@ exports.Find = async (req, res) => {
             const wishlist = await favDb.findOne({user:ObjectId(userId)})
             fav = wishlist?.products
             req.session.isUserLogin = true;
-            console.log(userDb);
-            res.status(200).render('user/Home', { products,cartCount,fav,isUserLogin:req.session.isUserLogin })
+            res.status(200).render('user/Home', { banners,products,cartCount,fav,isUserLogin:req.session.isUserLogin })
         } else {
             res.render('user/user_login', { error: "Invalid Username and Password" })
         }

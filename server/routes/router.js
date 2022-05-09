@@ -10,6 +10,7 @@ const catController = require("../controller/catController");
 const dashController = require("../controller/dashController")
 const orderController = require('../controller/orderController')
 const brandController = require("../controller/brandController");
+const bannerController = require("../controller/bannerController")
 const productController = require("../controller/productController");
 
 const session = require("express-session");
@@ -91,7 +92,6 @@ route.get("/search", controller.search);
 route.patch("/status/:id", controller.block);
 
 
-
 // ------------------------------------PRODUCTS---------------------------------------------------------
 
 route.get("/admin-products", productController.find);
@@ -111,13 +111,20 @@ route.get("/update", productController.updatepage);
 
 route.put("/update/:id", productController.update);
 
-
 route.delete("/delete/:id", productController.delete);
 
 route.get("/users", (req, res) => {
     res.render("admin_home", { users: data });
 });
-
+// -------------------------------------------------- Banner -------------------------------------------
+route.get('/banner',bannerController.showBanner)
+route.get('/banner-add',(req, res)=>{
+    res.render('admin/banner_add')
+})
+route.post('/banner-add',bannerController.addBanner)
+route.get('/banner-update',bannerController.updatePage)
+route.put('/banner-update/:id',bannerController.update)
+route.delete('/banner-delete/:id',bannerController.deleteBanner)
 // -------------------------------------------------- Brands -------------------------------------------
 
 route.get("/brand", async (req, res) => {

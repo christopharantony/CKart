@@ -4,6 +4,7 @@ const favDb = require('../model/favModel')
 const cartDb = require('../model/cartModel')
 const orderDb = require('../model/orderModel')
 const productDb = require("../model/productModel");
+const bannerDb = require("../model/bannerModel")
 const controller = require("../controller/controller");
 const otpcontroller = require("../controller/otpController")
 const favController = require("../controller/favController")
@@ -35,20 +36,19 @@ const client = require("twilio")(accountSid, authToken);
 userRoute.get("/", async(req, res) => {
     try {
         const products =await productDb.find()
+        const banners = await bannerDb.find()
             if (req.session.isUserLogin) {
-                // let userDb = null
-                // req.session.user = userDb;
                 console.log(req.session.user);
             let cartCount = 0
             let cart = await cartDb.findOne({user:req.session.user._id})
             if (cart) {
                 cartCount = cart.products.length
             }
-                res.status(200).render("user/Home", { products,isUserLogin:req.session.isUserLogin,cartCount});
+                res.status(200).render("user/Home", { banners,products,isUserLogin:req.session.isUserLogin,cartCount});
             } else {
                 req.session.isUserLogin = false;
                 console.log("Im Landed Now........................");
-                res.status(200).render("user/Home", { products,isUserLogin:req.session.isUserLogin});
+                res.status(200).render("user/Home", { banners,products,isUserLogin:req.session.isUserLogin});
             }
     } catch (error) {
         console.log(error.message);

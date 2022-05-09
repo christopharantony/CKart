@@ -48,7 +48,7 @@
                             <!-- <div class="secondDiv"> -->
                               <img src="<%=product.Image[1]%>" id="imgView2" alt="" style="height:100px">
                               <input type="file" id="id_image2" name="Image2" accept="image/*" onchange="viewImage2(event)"
-                                style="width:100%;"><br>
+                                style="width:100%;" value="<%=product.Image[1]%>" /><br>
                               <div class="vald-info" id="info"></div>
                               <h5 class="error_form text-danger" id="image2_error_message"></h5>
                               <div style="display:flex">
@@ -61,7 +61,7 @@
                             <!-- <div class="thirdDiv"> -->
                               <img src="<%=product.Image[2]%>" id="imgView3" alt="" style="height:100px">
                               <input type="file" id="id_image3" name="Image3" accept="image/*" onchange="viewImage3(event)"
-                                style="width:100%;"><br>
+                                style="width:100%;" value="<%=product.Image[2]%>"><br>
                               <div class="vald-info" id="info"></div>
                               <h5 class="error_form text-danger" id="image3_error_message"></h5>
                               <div style="display:flex">

@@ -44,67 +44,68 @@
         <div class="cart">
 
             <div class="products">
-                <% if (cartItems.length == 0) { %>
+                <% if (cartItems.length==0) { %>
                     <h2>Cart is Empty</h2>
-                <% } else { %>
-                <% for ( let i=0; i < cartItems.length; i++) { %>
-                    <div class="product">
-                        <a href="/productDetail?image=<%=cartItems[i]?.product.Image %>">
-                        <img style="width: 250px;padding: 35px;padding-top: 46px;" src="<%= cartItems[i].product.Image[0] %>">
-                        </a>
-                        <div class="product-info">
+                    <% } else { %>
+                        <% for ( let i=0; i < cartItems.length; i++) { %>
+                            <div class="product">
+                                <a href="/productDetail?image=<%=cartItems[i]?.product.Image %>">
+                                    <img style="width: 250px;padding: 35px;padding-top: 46px;"
+                                        src="<%= cartItems[i].product.Image[0] %>">
+                                </a>
+                                <div class="product-info">
 
-                            <h3 class="product-name">
-                                <%= cartItems[i].product.Name %>
-                            </h3>
+                                    <h3 class="product-name">
+                                        <%= cartItems[i].product.Name %>
+                                    </h3>
 
-                            <h4 class="product-price">$ <%= cartItems[i].product.Price %>
-                            </h4>
+                                    <h4 class="product-price">$ <%= cartItems[i].product.Price %>
+                                    </h4>
 
-                            <h4 class="product-offer">
-                                <%= cartItems[i].product.Description %>
-                            </h4>
+                                    <h4 class="product-offer">
+                                        <%= cartItems[i].product.Description %>
+                                    </h4>
 
 
-                            <p class="product-quantity">Qnt:
+                                    <p class="product-quantity">Qnt:
 
-                            <div class="input-group" style="width: 110px;">
-                                <span class="input-group-btn">
-                                    <button type="button" class="btn btn-danger btn-number" data-type="minus"
-                                        data-field="quant[2]"
-                                        onclick="changeQuantity('<%=cartItems[i]._id%>' , '<%=cartItems[i].product._id%>', '<%=user._id%>' , -1)">
-                                        <span class="glyphicon glyphicon-minus"></span>
+                                    <div class="input-group" style="width: 110px;">
+                                        <span class="input-group-btn">
+                                            <button type="button" class="btn btn-danger btn-number" data-type="minus"
+                                                data-field="quant[2]"
+                                                onclick="changeQuantity('<%=cartItems[i]._id%>' , '<%=cartItems[i].product._id%>', '<%=user._id%>' , -1)">
+                                                <span class="glyphicon glyphicon-minus"></span>
+                                            </button>
+                                        </span>
+                                        <span type="text" name="quant[2]" class="form-control input-number"
+                                            id="<%=cartItems[i].product._id%>" value="<%=cartItems[i].quantity%>"
+                                            min="1" max="10" style="width: 42px;">
+                                            <%=cartItems[i].quantity%>
+                                        </span>
+                                        <span class="input-group-btn">
+                                            <button type="button" class="btn btn-success btn-number" data-type="plus"
+                                                data-field="quant[2]"
+                                                onclick="changeQuantity('<%=cartItems[i]._id%>' , '<%=cartItems[i].product._id%>', '<%=user._id%>' , 1)">
+                                                <span class="glyphicon glyphicon-plus"></span>
+                                            </button>
+                                        </span>
+                                    </div>
+
+                                    <button class="product-remove"
+                                        onclick="removeProcart('<%=cartItems[i]._id%>' , '<%=cartItems[i].product._id%>')">
+
+                                        <i class="fa fa-trash" aria-hidden="true"></i>
+
+                                        <span class="remove">Remove</span>
+
                                     </button>
-                                </span>
-                                <span type="text" name="quant[2]" class="form-control input-number"
-                                    id="<%=cartItems[i].product._id%>" value="<%=cartItems[i].quantity%>" min="1"
-                                    max="10" style="width: 42px;">
-                                    <%=cartItems[i].quantity%>
-                                </span>
-                                <span class="input-group-btn">
-                                    <button type="button" class="btn btn-success btn-number" data-type="plus"
-                                        data-field="quant[2]"
-                                        onclick="changeQuantity('<%=cartItems[i]._id%>' , '<%=cartItems[i].product._id%>', '<%=user._id%>' , 1)">
-                                        <span class="glyphicon glyphicon-plus"></span>
-                                    </button>
-                                </span>
+
+                                </div>
+
                             </div>
 
-                            <button class="product-remove"
-                                onclick="removeProcart('<%=cartItems[i]._id%>' , '<%=cartItems[i].product._id%>')">
+                            <% } %>
 
-                                <i class="fa fa-trash" aria-hidden="true"></i>
-
-                                <span class="remove">Remove</span>
-
-                            </button>
-
-                        </div>
-
-                    </div>
-
-                    <% } %>
-                    
 
             </div>
 
@@ -124,7 +125,9 @@
 
                     <span>Number of Items</span>
 
-                    <span id="totalNo"><%=totalNo%></span>
+                    <span id="totalNo">
+                        <%=totalNo%>
+                    </span>
 
                 </p>
 
@@ -143,9 +146,9 @@
         </div>
 
     </div>
-<% } %>
+    <% } %>
 
-    <!-- complete: function(data) {
+        <!-- complete: function(data) {
         alert('hi');
     } -->
 
@@ -169,11 +172,30 @@
             success: (response) => {
 
                 if (response.removeProduct) {
-                    alert("Product removed from cart")
-                    location.reload()
+                    const Toast = Swal.mixin({
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true,
+                        didOpen: (toast) => {
+                            toast.addEventListener('mouseenter', Swal.stopTimer)
+                            toast.addEventListener('mouseleave', Swal.resumeTimer)
+                        }
+                    })
+                    setTimeout(() => {
+                        location.reload()
+                    }, 1500)
+                    Toast.fire({
+                        icon: 'success',
+                        title: 'Removed from cart'
+                    })
+
+
                 } else {
                     document.getElementById(proId).innerHTML = quantity + count
                     document.getElementById("total").innerHTML = response.total
+                    location.reload()
                 }
                 // let quant = $('#pro-quant').html()
                 // quant = parseInt(quant)+count

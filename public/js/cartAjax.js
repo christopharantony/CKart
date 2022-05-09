@@ -9,6 +9,21 @@ function addToCart(proId) {
                 count = parseInt(count)+1
                 $("#cart-count").html(count)
             }
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 800,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+            })
+            Toast.fire({
+                icon: 'success',
+                title: 'Added to cart'
+            })
             // console.log('Cart AJAX'+proId);
             // alert('Added to cart');
         },

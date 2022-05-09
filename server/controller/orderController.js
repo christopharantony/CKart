@@ -159,9 +159,7 @@ exports.myOrders = async(req,res)=>{
 
 // --------------------------------------------- Order Placing -----------------------------------------------
 exports.orderPlacing = async(req,res)=>{
-    console.log('REQ.BODY',req.body)
     const userId = req.body.userId
-    console.log("User ID : ",req.body.userId)
     let cart = await cartDb.findOne({user:ObjectId(userId)})
     let totalPrize = await cartDb.aggregate([
         {

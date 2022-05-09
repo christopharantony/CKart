@@ -66,6 +66,9 @@
                         <a class="nav-link active" href="/admin-products">Products</a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="/banner">Banner</a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="/brand">Brands</a>
                     </li>
                     <li class="nav-item">
@@ -88,7 +91,8 @@
         <div class="chartCard">
         <div class="chartBox">
             <canvas id="myChart"></canvas>
-            <button class=" ms-2 btn btn-light" onclick="timeFrame(this)" value="day">Day</button>
+            <% console.log("Unique",uniqueDates,"count",counts); %>
+            <button class=" ms-2 btn btn-light" onclick="timeFrame('<%=counts%>','<%=uniqueDates%>')" value="day">Day</button>
             <button  class="btn btn-light" onclick="timeFrame(this)" value="week">Week</button>
             <button class="btn btn-light" onclick="timeFrame(this)" value="month">Month</button>
         </div>
@@ -110,11 +114,14 @@
             })
         }
         // setup 
+        // console.log("Unique",uniqueDates,"count",counts);
         const data = {
-            labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+            // labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+            labels: "<%=uniqueDates%>",
             datasets: [{
                 label: 'Weekly Sales',
-                data: [18, 12, 6, 9, 12, 3, 9],
+                // data: [18, 12, 6, 9, 12, 3, 9],
+                data: "<%=counts%>",
                 backgroundColor: [
                     'rgba(255, 26, 104, 0.2)',
                     'rgba(54, 162, 235, 0.2)',

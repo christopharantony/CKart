@@ -1,0 +1,49 @@
+<%-include('../include/_adminhead')%>
+
+
+    <!--Main-->
+
+    <section>
+        <div class="container mt-4">
+            <div class="row">
+                <div class="col-md-6">
+                    <h2 class="text-center">Add Offer</h2>
+                    <form action="/offer-add" method="post">
+                        <div class="m-2 mt-5">
+                            <label for="products" class="form-label">Product </label>
+                            <select value="" id="products" name="product" style="width: 29rem;text-align: center;margin-left: 6px;height: 38px;border:outline">
+                                <% for ( const pro of pros){ %>
+                                        <option value="<%=pro._id%>">
+                                            <%=pro.Name%>
+                                        </option>
+                                <% } %>
+                            </select>
+                        </div>
+                        <label for="">Percentage</label>
+                        <input type="number" name="percentage" value="" placeholder="0" class="form-control">
+                        <label for="">From</label>
+                        <input type="date" name="fromDate" value="" placeholder="Description for the banner"
+                            class="form-control">
+                        <label for="">To</label>
+                        <input type="date" name="toDate" value="" placeholder="Description for the banner"
+                            class="form-control">
+
+                        <button type="submit" class="btn btn-success mt-4">Submit</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!--/Main-->
+
+
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"
+        integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"
+        integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF"
+        crossorigin="anonymous"></script>
+    </body>
+
+    </html>

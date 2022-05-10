@@ -4,6 +4,7 @@ const productDb = require("../model/productModel");
 const cartDb  = require('../model/cartModel')
 const favDb = require('../model/favModel')
 const bannerDb = require('../model/bannerModel')
+const offerDb = require('../model/offerModel')
 
 var ObjectId = require('mongoose').Types.ObjectId;
 
@@ -59,11 +60,34 @@ exports.Find = async (req, res) => {
             if (cart) {
                 cartCount = cart.products.length
             }
+            const offers = await offerDb.aggregate([
+                {
+                    $lookup:{
+                        from: 'productdbs',
+                        localField:'proId',
+                        foreignField:'_id',
+                        as:'products'
+                    }
+                },
+                {
+                    $unwind:'$products'
+                },
+                {
+                    $project:{
+                        id:'$products._id',
+                        price:'$products.Price',
+                        products:'$products',
+                        percentage:'$percentage',
+                        offerPrice:{ $divide: [{$multiply: ['$products.Price','$percentage']},100 ]}
+                    }
+                }
+            ])
+            console.log('Home ==============>>',offers);
             const products = await productDb.find()
             const wishlist = await favDb.findOne({user:ObjectId(userId)})
             fav = wishlist?.products
             req.session.isUserLogin = true;
-            res.status(200).render('user/Home', { banners,products,cartCount,fav,isUserLogin:req.session.isUserLogin })
+            res.status(200).render('user/Home', { offers,banners,products,cartCount,fav,isUserLogin:req.session.isUserLogin })
         } else {
             res.render('user/user_login', { error: "Invalid Username and Password" })
         }

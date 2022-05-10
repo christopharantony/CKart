@@ -2,6 +2,7 @@ const express = require("express");
 const userRoute = express.Router();
 const favDb = require('../model/favModel')
 const cartDb = require('../model/cartModel')
+const offerDb = require("../model/offerModel")
 const orderDb = require('../model/orderModel')
 const productDb = require("../model/productModel");
 const bannerDb = require("../model/bannerModel")
@@ -37,6 +38,29 @@ userRoute.get("/", async(req, res) => {
     try {
         const products =await productDb.find()
         const banners = await bannerDb.find()
+        const offers = await offerDb.aggregate([
+            {
+                $lookup:{
+                    from: 'productdbs',
+                    localField:'proId',
+                    foreignField:'_id',
+                    as:'products'
+                }
+            },
+            {
+                $unwind:'$products'
+            },
+            {
+                $project:{
+                    id:'$products._id',
+                    price:'$products.Price',
+                    products:'$products',
+                    percentage:'$percentage',
+                    offerPrice:{ $divide: [{$multiply: ['$products.Price','$percentage']},100 ]}
+                }
+            }
+        ])
+        console.log('Home ==============>>',offers);
             if (req.session.isUserLogin) {
                 console.log(req.session.user);
             let cartCount = 0
@@ -44,11 +68,11 @@ userRoute.get("/", async(req, res) => {
             if (cart) {
                 cartCount = cart.products.length
             }
-                res.status(200).render("user/Home", { banners,products,isUserLogin:req.session.isUserLogin,cartCount});
+                res.status(200).render("user/Home", { offers,banners,products,isUserLogin:req.session.isUserLogin,cartCount});
             } else {
                 req.session.isUserLogin = false;
                 console.log("Im Landed Now........................");
-                res.status(200).render("user/Home", { banners,products,isUserLogin:req.session.isUserLogin});
+                res.status(200).render("user/Home", { offers,banners,products,isUserLogin:req.session.isUserLogin});
             }
     } catch (error) {
         console.log(error.message);

@@ -8,6 +8,7 @@ const categoryDb = require("../model/categoryModel");
 const controller = require("../controller/controller");
 const catController = require("../controller/catController");
 const dashController = require("../controller/dashController")
+const offerController = require("../controller/offerController")
 const orderController = require('../controller/orderController')
 const brandController = require("../controller/brandController");
 const bannerController = require("../controller/bannerController")
@@ -162,6 +163,10 @@ route.get("/update-cate", catController.updatepage);
 route.put("/update-cate/:id", catController.update);
 
 route.delete("/delete-cate/:id", catController.delete);
+// --------------------------------------------- Offers -----------------------------------------------
+route.get("/offer",offerController.showOffer)
+route.get("/offer-add",offerController.adding)
+route.post("/offer-add",offerController.addOffer)
 
 // --------------------------------------------- Orders -----------------------------------------------
 route.get('/admin-orders',orderController.find)

@@ -71,21 +71,21 @@
                                     <% } %>
                                  </a>
                                  <h1>
-                                    <%=offer[i].products.Name%>
+                                    <%=offers[i].products.Name%>
                                  </h1>
 
+                                 <h1 style="text-decoration: line-through; opacity: 50%; font-size:1rem; color:red; padding:0">$<%=offers[i].price%>
+                                 </h1>
                                  <h1>$<%=offers[i].offerPrice%>
                                  </h1>
-                                 <h1 style="text-decoration: line-through; opacity: 50%">$<%=offers[i].Price%>
-                                 </h1>
                                  <% if (isUserLogin) { %>
-                                    <% if (fav?.includes(products[i]._id)) { %>
+                                    <% if (fav?.includes(offers[i].products._id)) { %>
                                        <button onclick="addToFav('<%=offers[i].products._id%>')"><i
                                              class="fa-solid fa-heart" style="color: red;"
                                              id="<%=offers[i].products._id%>"></i></button>
-                                    <% } else {%>
+                                    <% } else { %>
                                           <button onclick="addToFav('<%=offers[i].products._id%>')"><i
-                                                class="fa-solid fa-heart" id="<%=offers[i]products._id%>"></i></button>
+                                                class="fa-solid fa-heart" id="<%=offers[i].products._id%>"></i></button>
                                     <% } %>
                                              <button onclick="addToCart('<%=offers[i].products._id%>')"
                                                 class="btc_home"> Add

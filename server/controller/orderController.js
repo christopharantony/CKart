@@ -97,7 +97,6 @@ exports.statusUpdate = async(req, res) => {
 exports.cancel = async(req,res)=>{
         const id = req.params.id;
         const order = await orderDb.findOne({_id:id})
-        console.log("^^^^^^^^^^^^^^^",order.products[0].item)
         const proId = order.products[0].item
         await productDb.updateOne({"_id": ObjectId(proId)},
         {

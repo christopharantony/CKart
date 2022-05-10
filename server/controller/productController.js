@@ -80,15 +80,19 @@ exports.updatepage = async(req,res)=>{
 //  Edit Product
 exports.update = (req,res)=>{
     const id = req.params.id;
-    let images = [req.files?.Image1,req.files?.Image2,req.files?.Image3]
+    let images = []
+        if(req.files?.Image1){images.push(req.files?.Image1)}
+        if(req.files?.Image2){images.push(req.files?.Image2)}
+        if(req.files?.Image3){images.push(req.files?.Image3)}
+    console.log("req.files: " + images);
+    console.log("Images.length",images.length);
     const imgPath = []
-    if(images){
-        for (const image of images){
-        var uploadPath = './public/productsImg/' + Date.now()+'.jpeg'
-        var img ='productsImg/' + Date.now()+'.jpeg'
+    if(images.length){
+        for (let i = 0; i < images.length; i++) {
+        var uploadPath = './public/productsImg/' + Date.now()+i+'.jpeg'
+        var img ='productsImg/' + Date.now()+i+'.jpeg'
         imgPath.push(img)
-        console.log('img',img);
-        image?.mv(uploadPath,(err)=>{
+        images[i]?.mv(uploadPath,(err)=>{
         console.log(uploadPath);
         if(err){
             console.log(err);
@@ -97,26 +101,45 @@ exports.update = (req,res)=>{
         })
         }
         console.log('imgPath',imgPath);
+
+        const product = {
+            Name:req.body.Name,
+            Price:req.body.Price,
+            Quantity:req.body.Quantity,
+            Description: req.body.Description,
+            Brand: req.body.Brand,
+            Category:req.body.Category,
+            Image:imgPath
+            
+        };
+        console.log('Type of Product : ',typeof(product.Quantity))
+        console.log('ProductId : ',id);
+        productDb.updateOne({_id:id},{$set: product })
+        .then(()=>{
+            res.redirect('/admin-products')
+        })
+        .catch(err=>{
+            res.send(err.message)
+        })
+    }else{
+        const product = {
+            Name:req.body.Name,
+            Price:req.body.Price,
+            Quantity:req.body.Quantity,
+            Description: req.body.Description,
+            Brand: req.body.Brand,
+            Category:req.body.Category            
+        };
+        console.log('Type of Product : ',typeof(product.Quantity))
+        console.log('ProductId : ',id);
+        productDb.updateOne({_id:id},{$set: product })
+        .then(()=>{
+            res.redirect('/admin-products')
+        })
+        .catch(err=>{
+            res.send(err.message)
+        })
     }
-    const product = {
-        Name:req.body.Name,
-        Price:req.body.Price,
-        Quantity:req.body.Quantity,
-        Description: req.body.Description,
-        Brand: req.body.Brand,
-        Category:req.body.Category,
-        Image:imgPath
-        
-    };
-    console.log('Type of Product : ',typeof(product.Quantity))
-    console.log('ProductId : ',id);
-    productDb.updateOne({_id:id},{$set: product })
-    .then(()=>{
-        res.redirect('/admin-products')
-    })
-    .catch(err=>{
-        res.send(err.message)
-    })
 }
 // )}
 

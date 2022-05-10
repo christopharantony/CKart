@@ -43,7 +43,6 @@ app.use('/js',express.static(path.join(__dirname,"/public/js")));
 app.use('/productsImg',express.static(path.join(__dirname,"/public/productsImg")));
 app.use('/datatables',express.static(path.join(__dirname,"/public/DataTables")));
 
-
 app.use(function (req, res, next) {
     if (!req.user) {
         res.header("Cache-Control", "private, no-cache, no-store, must-revalidate");

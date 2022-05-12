@@ -1,3 +1,4 @@
+const Joi = require('joi')
 const bannerDb = require('../model/bannerModel')
 const objectId = require('mongoose').Types.ObjectId
 
@@ -14,28 +15,28 @@ exports.showBanner = async (req,res) => {
 
 exports.addBanner = async (req, res) => {
     try {
-        if (!req.body) {
-            res.send("Content can't be empty")
-        } else {
             console.log("body",req.body,"files",req.files);
-            let image = req.files.Image
+            if (!req.files){
+                res.render('admin/banner_add', { error: "Banner Image is required"})
+            }else{
+            let image = req.files?.Image
             var uploadPath = './public/productsImg/' + Date.now()+'.jpeg'
             var imgPath ='productsImg/' + Date.now()+'.jpeg'
             console.log(image);
-            image.mv(uploadPath,(err)=>{
+            image?.mv(uploadPath,(err)=>{
                 if (err) {
                     log.error(err)
                     res.send(err.message)
                 }
             })
-            const banner = new bannerDb({
+            const bannerObj = {
                 label:req.body.label,
                 description:req.body.description,
                 image:imgPath
-            })
+            }
+            const banner = new bannerDb(bannerObj);
             await banner.save()
             res.redirect('/banner')
-
         }
     } catch (error) {
         res.send(error.message)
@@ -45,7 +46,7 @@ exports.addBanner = async (req, res) => {
 
 exports.updatePage = async (req, res)=>{
     const banner = await bannerDb.findOne({_id:objectId(req.query.id)})
-    res.status(200).render('admin/banner_update',{banner})
+    res.status(200).render('admin/banner_update',{banner,error:""})
 }
 
 exports.update = async (req, res)=>{

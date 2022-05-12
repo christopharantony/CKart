@@ -1,12 +1,13 @@
-const productDb = require('../model/productModel')
 const categoryDb = require('../model/categoryModel')
+const productDb = require('../model/productModel')
 const brandDb = require('../model/brandModel')
 const cartDb = require('../model/cartModel')
-
+const objectId = require('mongoose').Types.ObjectId
 const path = require('path');
+const Joi = require('joi');
 
 // --------------------------------------------- New Product -----------------------------------------------
-exports.create = (req,res)=>{
+exports.create = async(req,res)=>{
     if(!req.body){
         res.status(400).send({ message :"Content can not be empty!"});
         return;
@@ -22,7 +23,7 @@ exports.create = (req,res)=>{
             var img ='productsImg/' + Date.now()+'.jpeg'
             imgPath.push(img)
             console.log('img',img);
-            image.mv(uploadPath,(err)=>{
+            image?.mv(uploadPath,(err)=>{
             console.log(uploadPath);
             if(err){
                 console.log(err);
@@ -30,19 +31,23 @@ exports.create = (req,res)=>{
             }
             })
             }
-            console.log('imgPath',imgPath);
         }
-        
-    const product = new productDb({
-        Name:req.body.Name,
-        Price:req.body.Price,
-        Quantity:req.body.Quantity,
-        Description: req.body.Description,
-        Brand: req.body.Brand,
-        Category:req.body.Category,
-        Image:imgPath
-        
-    });
+        const proObj = {
+            Name:req.body.Name,
+            Price:req.body.Price,
+            Quantity:req.body.Quantity,
+            Description: req.body.Description,
+            Brand: req.body.Brand,
+            Category:req.body.Category,
+            Image:imgPath
+        }
+    const product = new productDb(proObj);
+    const { error } = validate(proObj)
+    if (error) {
+        const brand = await brandDb.find();
+        const cate = await categoryDb.find();
+        return res.render('admin/add_products',{ brand, cate, error: error.details[0].message});
+    }
         product.save(product)
     .then((data)=>{
         console.log(data);
@@ -51,10 +56,19 @@ exports.create = (req,res)=>{
     .catch(err=>{
         console.log(err.message);
     });
-        
-    
-
 }
+}
+const validate = (data) => {
+    const schema = Joi.object({
+        Name: Joi.string().required().label("Name"),
+        Price: Joi.number().required().label("Price"),
+        Quantity: Joi.number().required().label("Quantity"),
+        Description: Joi.string().required().label("Description"),
+        Brand: Joi.string().required().label("Brand"),
+        Category: Joi.string().required().label("Category"),
+        Image: Joi.allow()
+    })
+    return schema.validate(data)
 }
 // --------------------------------------------- All Products -----------------------------------------------
 exports.find = (req,res)=>{
@@ -74,18 +88,17 @@ exports.updatepage = async(req,res)=>{
         const product =await productDb.findOne({_id:req.query.id})
         const brand =await brandDb.find()
         const cate =await categoryDb.find()
-            console.log(`Brand : ${brand} Category: ${cate}`);
-            res.render('admin/product_update',{product,cate,brand})
+            res.render('admin/product_update',{error:"",product,cate,brand})
 }
 //  Edit Product
-exports.update = (req,res)=>{
-    const id = req.params.id;
-    let images = []
+exports.update = async(req,res)=>{
+    try {
+        
+        const id = req.params.id;
+        let images = []
         if(req.files?.Image1){images.push(req.files?.Image1)}
         if(req.files?.Image2){images.push(req.files?.Image2)}
         if(req.files?.Image3){images.push(req.files?.Image3)}
-    console.log("req.files: " + images);
-    console.log("Images.length",images.length);
     const imgPath = []
     if(images.length){
         for (let i = 0; i < images.length; i++) {
@@ -93,15 +106,12 @@ exports.update = (req,res)=>{
         var img ='productsImg/' + Date.now()+i+'.jpeg'
         imgPath.push(img)
         images[i]?.mv(uploadPath,(err)=>{
-        console.log(uploadPath);
         if(err){
             console.log(err);
             return res.status(500).send(err);
         }
         })
         }
-        console.log('imgPath',imgPath);
-
         const product = {
             Name:req.body.Name,
             Price:req.body.Price,
@@ -110,10 +120,14 @@ exports.update = (req,res)=>{
             Brand: req.body.Brand,
             Category:req.body.Category,
             Image:imgPath
-            
-        };
-        console.log('Type of Product : ',typeof(product.Quantity))
-        console.log('ProductId : ',id);
+        }
+        const { error } = validate(product)
+        if (error) {
+            const product =await productDb.findOne({_id:objectId(id)})
+            const brand =await brandDb.find()
+            const cate =await categoryDb.find()
+            res.render('admin/product_update',{error:error.details[0].message,product,cate,brand})
+        }else{
         productDb.updateOne({_id:id},{$set: product })
         .then(()=>{
             res.redirect('/admin-products')
@@ -121,6 +135,7 @@ exports.update = (req,res)=>{
         .catch(err=>{
             res.send(err.message)
         })
+    }
     }else{
         const product = {
             Name:req.body.Name,
@@ -130,8 +145,16 @@ exports.update = (req,res)=>{
             Brand: req.body.Brand,
             Category:req.body.Category            
         };
+        const { error } = validate(product)
         console.log('Type of Product : ',typeof(product.Quantity))
         console.log('ProductId : ',id);
+        if (error) {
+            const product =await productDb.findOne({_id:objectId(id)})
+            const brand =await brandDb.find()
+            const cate =await categoryDb.find()
+                res.render('admin/product_update',{error:error.details[0].message,product,cate,brand})
+
+        }else{
         productDb.updateOne({_id:id},{$set: product })
         .then(()=>{
             res.redirect('/admin-products')
@@ -140,6 +163,11 @@ exports.update = (req,res)=>{
             res.send(err.message)
         })
     }
+}
+} catch (error) {
+    console.log(error);
+    res.send("Error in updating",error.message);
+}
 }
 // )}
 
@@ -165,7 +193,5 @@ exports.productDetails = async (req,res)=>{
             if (cart) {
                 cartCount = cart.products.length
             }
-        console.log('req.query.image',(req.query.image.split(',')));
-        console.log("==============>",image,products,cartCount);
     res.render('user/product_details',{image:image, products,cartCount,isUserLogin:req.session.isUserLogin})
 }

@@ -1,4 +1,5 @@
 const productDb = require('../model/productModel')
+const categoryDb = require('../model/categoryModel')
 const orderDb = require('../model/orderModel')
 const userDb = require('../model/model')
 const cartDb = require('../model/cartModel') 
@@ -6,8 +7,20 @@ const cartDb = require('../model/cartModel')
 exports.dash = async(req,res)=>{
     if (req.session.isAdminLogin){
         const orders = await orderDb.find()
-        const users = await userDb.find()
+        // const users = await userDb.find()
         const products = await productDb.find()
+        const USERS =await userDb.aggregate([
+            {
+                $project:{
+                    _id:0,isBlocked:1
+                }
+            }
+        ])
+        let blockedCount = 0
+        let activeCount = 0
+        for (const user of USERS) {
+            user.isBlocked?blockedCount++:activeCount++
+        }
         const DATES = await orderDb.aggregate([
             {
                 $project:{
@@ -15,10 +28,8 @@ exports.dash = async(req,res)=>{
                 }
             }
         ])
-        console.log(DATES);
         const dateFormatted = DATES.map(date =>{return date.date.toDateString()})
         const uniqueDates = [...new Set(dateFormatted)];
-        console.log(uniqueDates);
         const counts = []
         for (const unique of uniqueDates){
             let count = 0;
@@ -29,10 +40,26 @@ exports.dash = async(req,res)=>{
             }
             counts.push(count)
         }
-        console.log(counts);
-
+        const CATEGORY = await productDb.aggregate([
+            {
+                $project:{
+                    Category:1,_id:0
+                }
+            }
+        ])
+        const uniqueCategories = [...new Set(CATEGORY)];
+        const catCounts = []
+        for (const unique of uniqueCategories){
+            let count = 0;
+            for (const category of CATEGORY) {
+                if (unique === category) {
+                    count ++
+                }
+            }
+            catCounts.push(count)
+        }
         
-        res.status(200).render('admin/dashboard',{counts,uniqueDates,ordercount:orders.length,usercount:users.length,productcount:products.length})
+        res.status(200).render('admin/dashboard',{activeCount,blockedCount,catCounts,uniqueCategories,counts,uniqueDates,ordercount:orders.length,usercount:USERS.length,productcount:products.length})
     }else{
         req.session.isAdminLogin = false;
         res.render('admin/admin_login', { error: "" });

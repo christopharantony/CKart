@@ -4,26 +4,30 @@
         <div class="container mt-4">
             <div class="row">
                 <div class="col-md-6">
-                    <h2 class="text-center">Add Offer</h2>
+                    <h2 class="text-center">Edit Offer</h2>
                     <p class="wrong"> <%=error%> </p>
-                    <form action="/offer-add" method="post">
+                    <form action="/offer-update/<%=offer._id%>?_method=PUT" method="post">
                         <div class="m-2 mt-5">
                             <label for="products" class="form-label">Product </label>
                             <select value="" id="products" name="product" style="width: 29rem;text-align: center;margin-left: 6px;height: 38px;border:outline">
                                 <% for ( const pro of pros){ %>
+                                <% if (pro._id.toString()==offer.proId.toString()) { %>
+                                    <option value="<%=offer.proId%>" selected disabled><%=pro.Name%></option>
+                                <% } else { %>
                                         <option value="<%=pro._id%>">
                                             <%=pro.Name%>
                                         </option>
                                 <% } %>
+                                <% } %>
                             </select>
                         </div>
                         <label for="">Percentage</label>
-                        <input type="number" name="percentage" value="" placeholder="0" class="form-control">
+                        <input type="number" name="percentage" value="<%=offer.percentage%>" placeholder="0" class="form-control">
                         <label for="">From</label>
-                        <input type="date" name="fromDate" value="" placeholder="Description for the banner"
+                        <input type="date" name="fromDate" value="<%=offer.fromDate.toISOString().split('T')[0]%>" placeholder="Description for the banner"
                             class="form-control">
                         <label for="">To</label>
-                        <input type="date" name="toDate" value="" placeholder="Description for the banner"
+                        <input type="date" name="toDate" value="<%=offer.toDate.toISOString().split('T')[0]%>" placeholder="Description for the banner"
                             class="form-control">
                         <button type="submit" class="btn btn-success mt-4">Submit</button>
                     </form>

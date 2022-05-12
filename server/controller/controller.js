@@ -5,38 +5,43 @@ const cartDb  = require('../model/cartModel')
 const favDb = require('../model/favModel')
 const bannerDb = require('../model/bannerModel')
 const offerDb = require('../model/offerModel')
+const Joi = require('joi');
+const passwordComplexity = require('joi-password-complexity');
 
 var ObjectId = require('mongoose').Types.ObjectId;
 
 // SignUp
 exports.Create = (req, res) => {
-    if (!req.body) {
-        res.status(400).send({ message: "Content can not be empty!" });
-        return;
-    } else {
-        console.log(req.body)
-        const user = new Userdb({
-            name: req.body.name,
-            email: req.body.email,
-            password: req.body.password,
-            gender: req.body.gender,
-            number: req.body.number
-
-        });
-        if (user.password.length > 7) {
-            user.save()
-                .then(() => {
-                    res.status(201).render('user/user_login', { error: "" })
-                })
-                .catch(err => {
-                    console.log(err.message);
-                    res.status(401).render('user/user_signup', { error: "Account already in use" })
-                })
-        } else {
-            res.render('user/user_signup', { error: "Password must contain atleast 8 characters" })
+        try {
+            const userObj = {
+                name: req.body.name,
+                email: req.body.email,
+                password: req.body.password,
+                gender: req.body.gender,
+                number: req.body.number
+            }
+            const user = new Userdb(userObj);
+            const { error } = validate(userObj)
+            if (error) {
+                return res.render('user/user_signup',{error: error.details[0].message})
+            }
+            if (user.password.length > 7) {
+                user.save()
+                    .then(() => {
+                        res.status(201).render('user/user_login', { error: "" })
+                    })
+                    .catch(err => {
+                        console.log(err.message);
+                        res.status(401).render('user/user_signup', { error: "Account already in use" })
+                    })
+            } else {
+                res.render('user/user_signup', { error: "Password must contain atleast 8 characters" })
+            }
+            
+        } catch (error) {
+            console.log(error.message);
+            res.send("Error Message: " + error.message)
         }
-
-    }
 }
 
 
@@ -98,28 +103,36 @@ exports.Find = async (req, res) => {
 // Create and Save new user
 
 exports.create = (req, res) => {
-    const user = new Userdb({
-        name: req.body.name,
-        number: req.body.number,
-        email: req.body.email,
-        password: req.body.password,
-        gender: req.body.gender
-
-
-    });
-    console.log(user);
+    try {
+        const userObj = {
+            name: req.body.name,
+            email: req.body.email,
+            password: req.body.password,
+            gender: req.body.gender,
+            number: req.body.number
+        }
+        const user = new Userdb(userObj);
+        const { error } = validate(userObj);
+        if (error) {
+            return res.render('admin/add_user',{error: error.details[0].message})
+        }else{
     if (user.password.length > 7) {
         user.save(user)
-            .then(() => {
-                res.render('admin/add_user', { error: "" })
+        .then(() => {
+            res.render('admin/add_user', { error: "" })
             })
             .catch(err => {
                 console.log(err.message);
                 res.render('admin/add_user', { error: "Account is already in use" })
-
+                
             })
-    } else {
-        res.render('admin/add_user', { error: "Password must contain at least 8 characters" })
+        } else {
+            res.render('admin/add_user', { error: "Password must contain at least 8 characters" })
+        }
+    }
+}catch(err) {
+    console.log(err.message);
+        res.send("Error During creating user: " + err.message)
     }
 
 }
@@ -191,27 +204,13 @@ exports.block = async (req,res)=>{
     }
 }
 
-// New User
-exports.create = (req, res) => {
-    if (!req.body) {
-        res.status(400).send({ message: "Content can not be empty!" });
-        return;
-    } else {
-        const user = new Userdb({
-            name: req.body.name,
-            email: req.body.email,
-            password: req.body.password,
-            gender: req.body.gender,
-            status: req.body.status
-        });
-
-        user.save(user)
-            .then(() => {
-                res.redirect('/')
+        const validate = (data) => {
+            const schema = Joi.object({
+                name: Joi.string().required().label("Name"),
+                email: Joi.string().required().label("Email"),
+                password: passwordComplexity().required().label("Password"),
+                number:Joi.string().length(10).pattern(/^[0-9]+$/).required().label("Number"),
+                gender: Joi.allow()
             })
-            .catch(err => {
-                console.log(err.message);
-                res.status(401).render('admin_login', { error: "Invalid Input" })
-            });
-    }
-}
+            return schema.validate(data)
+        }

@@ -1,7 +1,7 @@
 <%-include('../include/_adminhead')%>
 
 <section>
-    <div class="container">
+    <div class="container" style="color:white;">
         <div class="row mt-4">
             <a href="/offer-add" class="btn btn-success ml-auto proadd">Add Offer</a>
         </div>
@@ -28,7 +28,7 @@
                     <td><%=offer[i].percentage%></td>
                     <td><%=offer[i].status%></td>
                     <td>
-                        <a href="/offer-update?id=<%= offer[i]._id %>" class="btn border-shadow update">
+                        <a href="/offer-update/<%= offer[i]._id %>" class="btn border-shadow update">
                             <i class="fa-solid fa-pencil"></i>
                         </a>
                         <div>

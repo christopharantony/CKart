@@ -1,3 +1,4 @@
+const Joi = require('joi');
 const offerDb = require('../model/offerModel')
 const productDb = require('../model/productModel')
 const objectId = require('mongoose').Types.ObjectId
@@ -26,7 +27,7 @@ exports.showOffer = async(req,res)=>{
 exports.adding = async(req, res) => {
     try{
         const pros = await productDb.find()
-        res.render('admin/offer_add',{pros})
+        res.render('admin/offer_add',{pros,error:""})
     }catch(e){
         console.log(e);
         res.send("Can't load Add Offers page")
@@ -35,16 +36,75 @@ exports.adding = async(req, res) => {
 
 exports.addOffer = async(req, res) => {
     try{
-        const offer = new offerDb({
+        const offerObj = {
             proId:req.body.product,
             percentage:req.body.percentage,
             fromDate:req.body.fromDate,
             toDate:req.body.toDate
-        })
-        await offer.save()
-        res.redirect('/offer')
+        }
+        const offer = new offerDb(offerObj);
+        const { error } = validate(offerObj);
+        if (error) {
+            const pros = await productDb.find()
+            return res.render('admin/offer_add',{pros,error: error.details[0].message})
+        }else{
+            await offer.save()
+            res.redirect('/offer')
+        }
     }catch(e){
         console.log(e);
-        res.send("Can't add this offer'")
+        res.send("Can't add this offer",e.message)
     }
+}
+
+exports.editOffer = async(req, res)=>{
+    try {
+        const pros = await productDb.find()
+        const offer = await offerDb.findOne({_id:req.params.id})
+        console.log(offer,pros);
+        res.render('admin/offer_update',{pros,offer,error:""})
+    } catch (error) {
+        console.log(error);
+        res.send("Error in loading offer edit"+error.message)
+    }
+}
+
+exports.update = async (req, res) => {
+    try {
+        const id = req.params.id;
+        const offerObj = {
+            proId:req.body.product,
+            percentage:req.body.percentage,
+            fromDate:req.body.fromDate,
+            toDate:req.body.toDate
+        }
+        const { error } = validate(offerObj);
+        if (error) {
+            const pros = await productDb.find()
+            return res.render('admin/offer_add',{pros,error: error.details[0].message})
+        }else{
+            await offerDb.updateOne({_id:id},{$set: offerObj});
+            res.redirect('/offer')
+        }
+    }catch (error) {
+        console.log(error);
+        res.send("Error updating offer"+error.message)
+    }
+}
+
+exports.delete = (req, res)=>{
+    const id = req.params.id
+    offerDb.findByIdAndDelete(id).then(()=>{
+        res.redirect('/offer')
+    })
+}
+
+const validate = (data) => {
+    const schema = Joi.object({
+        proId: Joi.allow(),
+        percentage: Joi.number().required().label("Percentage"),
+        fromDate: Joi.date().required().label("From date"),
+        toDate: Joi.date().required().label("To date")
+    })
+    return schema.validate(data)
 }

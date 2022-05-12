@@ -38,11 +38,12 @@
         }
 
         .chartBox {
-            width: 700px;
-            padding: 20px;
-            border-radius: 20px;
-            border: solid 3px rgba(255, 26, 104, 1);
-            background: white;
+    width: 300px;
+    padding: 20px;
+    border-radius: 20px;
+    border: solid 3px rgba(255, 26, 104, 1);
+    background: white;
+    position: absolute;
         }
     </style>
 </head>
@@ -91,13 +92,15 @@
 <div class="btn btn-light" style="background: #ebe0ff;padding: 3rem;width: 20%;border-radius: 5rem;text-align: center;">Total Products <br> <%=productcount %></div>
 <div class="btn btn-light" style="background: #ebe0ff;padding: 3rem;width: 20%;border-radius: 5rem;text-align: center;">Total Orders <br> <%=ordercount %></div>
 </div>
-        <div class="chartCard">
-        <div class="chartBox">
+    <div class="chartCard">
+        <div class="chartBox" style="top:15rem;left:16rem">
             <canvas id="myChart"></canvas>
-            <% console.log("Unique",uniqueDates,"count",counts); %>
-            <button class=" ms-2 btn btn-light" onclick="timeFrame('<%=counts%>','<%=uniqueDates%>')" value="day">Day</button>
-            <button  class="btn btn-light" onclick="timeFrame(this)" value="week">Week</button>
-            <button class="btn btn-light" onclick="timeFrame(this)" value="month">Month</button>
+        </div>
+    </div>
+    <% console.log("activeCount,blockedCount",activeCount,blockedCount);%>
+    <div class="chartCard">
+        <div class="chartBox" style="top:15rem;left:45rem">
+            <canvas id="userChart"></canvas>
         </div>
     </div>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -119,8 +122,8 @@
         // setup 
         // console.log("Unique",uniqueDates,"count",counts);
         const data = {
-            // labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-            labels: "<%=uniqueDates%>",
+            labels: ['Mon', 'Tue', 'Wed'],
+            // labels: "<%=uniqueDates%>",
             datasets: [{
                 label: 'Weekly Sales',
                 // data: [18, 12, 6, 9, 12, 3, 9],
@@ -129,42 +132,93 @@
                     'rgba(255, 26, 104, 0.2)',
                     'rgba(54, 162, 235, 0.2)',
                     'rgba(255, 206, 86, 0.2)',
-                    'rgba(75, 192, 192, 0.2)',
-                    'rgba(153, 102, 255, 0.2)',
-                    'rgba(255, 159, 64, 0.2)',
-                    'rgba(0, 0, 0, 0.2)'
+                    // 'rgba(75, 192, 192, 0.2)',
+                    // 'rgba(153, 102, 255, 0.2)',
+                    // 'rgba(255, 159, 64, 0.2)',
+                    // 'rgba(0, 0, 0, 0.2)'
                 ],
                 borderColor: [
                     'rgba(255, 26, 104, 1)',
                     'rgba(54, 162, 235, 1)',
                     'rgba(255, 206, 86, 1)',
-                    'rgba(75, 192, 192, 1)',
-                    'rgba(153, 102, 255, 1)',
-                    'rgba(255, 159, 64, 1)',
-                    'rgba(0, 0, 0, 1)'
+                    // 'rgba(75, 192, 192, 1)',
+                    // 'rgba(153, 102, 255, 1)',
+                    // 'rgba(255, 159, 64, 1)',
+                    // 'rgba(0, 0, 0, 1)'
+                ],
+                borderWidth: 1
+            }]
+        };
+        
+        const data2 = {
+            labels: ['Active', 'Blocked'],
+            // labels: "<%=uniqueDates%>",
+            datasets: [{
+                label: 'Users Status ',
+                // data: [18, 12, 6, 9, 12, 3, 9],
+                // data: ['<%=activeCount%>','<%=blockedCount%>'],
+                data: [56,7],
+                backgroundColor: [
+                    'rgba(255, 26, 104, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    // 'rgba(255, 206, 86, 0.2)',
+                    // 'rgba(75, 192, 192, 0.2)',
+                    // 'rgba(153, 102, 255, 0.2)',
+                    // 'rgba(255, 159, 64, 0.2)',
+                    // 'rgba(0, 0, 0, 0.2)'
+                ],
+                borderColor: [
+                    'rgba(255, 26, 104, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    // 'rgba(255, 206, 86, 1)',
+                    // 'rgba(75, 192, 192, 1)',
+                    // 'rgba(153, 102, 255, 1)',
+                    // 'rgba(255, 159, 64, 1)',
+                    // 'rgba(0, 0, 0, 1)'
                 ],
                 borderWidth: 1
             }]
         };
 
+        // const data2 = {
+        //     labels: ['Active','Blocked'],
+        //     datasets:[{
+        //         label:'User Status',
+        //         data:['<%=activeCount%>','<%=blockedCount%>'],
+        //         backgroundColor:[
+        //             'rgba(153, 102, 255, 1)',
+        //             'rgba(255, 159, 64, 1)'
+        //         ],
+        //         borderColor:[
+        //             'rgba(75, 192, 192, 1)',
+        //             'rgba(153, 102, 255, 1)'
+        //         ],
+        //         borderWidth:1
+        //     }]
+        // };
+
         // config 
         const config = {
-            type: 'bar',
+            type: 'pie',
             data,
             options: {
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                }
+                
             }
         };
+        const config2 = {
+            type: 'pie',
+            data2
+        }
 
         // render init block
         const myChart = new Chart(
             document.getElementById('myChart'),
             config
         );
+        const userChart = new Chart(
+            document.getElementById('userChart'),
+            config2
+        )
     </script>
 
 </body>

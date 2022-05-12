@@ -101,7 +101,7 @@ route.get("/admin-products", productController.find);
 route.get("/add-product", async (req, res) => {
     const brand = await brandDb.find();
     const cate = await categoryDb.find();
-    res.status(200).render("admin/add_products", { brand, cate });
+    res.status(200).render("admin/add_products", { brand, cate, error:"" });
 });
 
 // Adding Product
@@ -120,7 +120,7 @@ route.get("/users", (req, res) => {
 // -------------------------------------------------- Banner -------------------------------------------
 route.get('/banner',bannerController.showBanner)
 route.get('/banner-add',(req, res)=>{
-    res.render('admin/banner_add')
+    res.render('admin/banner_add',{error:""})
 })
 route.post('/banner-add',bannerController.addBanner)
 route.get('/banner-update',bannerController.updatePage)
@@ -134,7 +134,7 @@ route.get("/brand", async (req, res) => {
 });
 
 route.get("/add-brand", (req, res) => {
-    res.status(200).render("admin/add_brand");
+    res.status(200).render("admin/add_brand",{error:""});
 });
 
 route.post("/add-brand", brandController.create);
@@ -153,7 +153,7 @@ route.get("/category", async (req, res) => {
 });
 
 route.get("/add-category", (req, res) => {
-    res.status(200).render("admin/add_category");
+    res.status(200).render("admin/add_category",{error:""});
 });
 
 route.post("/add-category", catController.create);
@@ -165,8 +165,11 @@ route.put("/update-cate/:id", catController.update);
 route.delete("/delete-cate/:id", catController.delete);
 // --------------------------------------------- Offers -----------------------------------------------
 route.get("/offer",offerController.showOffer)
-route.get("/offer-add",offerController.adding)
+route.get("/offer-add",offerController.adding) //Adding page
 route.post("/offer-add",offerController.addOffer)
+route.get("/offer-update/:id",offerController.editOffer) //Update page
+route.put("/offer-update/:id",offerController.update)
+route.delete("/offer-delete/:id",offerController.delete)
 
 // --------------------------------------------- Orders -----------------------------------------------
 route.get('/admin-orders',orderController.find)
@@ -176,8 +179,6 @@ route.put('/cancel-admin/:id',orderController.cancelOrder)
 
 // Update the status
 route.post('/statusUpdate',orderController.statusUpdate)
-
-
 
 // --------------------------------------------- LogOut -----------------------------------------------
 // Admin Logout

@@ -1,13 +1,14 @@
+var ObjectId = require('mongoose').Types.ObjectId;
 const productDb = require('../model/productModel')
 const orderDb = require('../model/orderModel')
-const userDb = require('../model/model')
 const cartDb = require('../model/cartModel')
-
-var ObjectId = require('mongoose').Types.ObjectId;
-
+const userDb = require('../model/model')
 const crypto = require('crypto');
+const Joi = require('joi');
 
-const Razorpay = require('razorpay')
+
+const Razorpay = require('razorpay');
+const { string } = require('joi');
 var instance = new Razorpay({
     key_id: 'rzp_test_GHZ8qfO5RgHRDG',
     key_secret: '96OZZd2cbBqVjnR6ZLeQrGOU',
@@ -196,11 +197,6 @@ exports.orderPlacing = async(req,res)=>{
     const order = req.body
     var total = totalPrize[0].total
     let products = cart.products
-    console.log('======================',products);
-
-    console.log(total);
-    console.log("Products here",products[0].item)
-
     let status = order['payment-method']==='COD'?'placed':'pending'
     let orderObj = new orderDb({
         deliveryDetails:{
@@ -216,6 +212,7 @@ exports.orderPlacing = async(req,res)=>{
         status:status,
         date: new Date()
     })
+    const { error } = validate(deliveryDetails)
     orderObj.save()
     await productDb.updateOne({"_id": ObjectId(products[0].item)},
     {
@@ -250,6 +247,15 @@ exports.orderPlacing = async(req,res)=>{
     }
     
     console.log('Place order post req.body')
+}
+const validate = (data) => {
+    const schema = Joi.object({
+        name: Joi.string().required().label("Name"),
+        mobile:Joi.string().length(10).pattern(/^[0-9]+$/).required().label("Mobile number"),
+        address: string().required().label("Address"),
+        pincode:Joi.string().length(6).pattern(/^[0-9]+$/).required().label("Pincode"),
+    })
+    return schema.validate(data)
 }
 // --------------------------------------------- Payment Verification -----------------------------------------------
 exports.paymentVerification = async(req, res)=>{

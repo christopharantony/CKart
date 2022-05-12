@@ -4,28 +4,36 @@ const productDb = require('../model/productModel')
 
 exports.create =async (req,res)=>{
     try{
-        const brand = new brandDb({
-            name:req.body.name,
-        })
-        await brand.save()
-        res.redirect('/brand')
+        if (!req.body.name){
+            res.render('admin/add_brand',{error:"Enter the Name of the brand"})
+        }else{
+            const brand = new brandDb({
+                name:req.body.name,
+            })
+            await brand.save()
+            res.redirect('/brand')
+        }
     }catch (error) {
         res.status(400).send(error)
     }
 }
 
 exports.updatepage =async (req,res)=>{
-    console.log(req.query.id);
     const brand = await brandDb.findOne({_id:req.query.id})
-    res.render('admin/brand_update',{brand})
+    res.render('admin/brand_update',{error:"",brand})
 }
 
 exports.update = async (req,res)=>{
     const id = req.params.id;
+    if (!req.body.name){
+        const brand = await brandDb.findOne({_id:id})
+        res.render('admin/brand_update',{error:"Enter the Name of the brand",brand})
+    }else{
     const brand = await brandDb.findOne({_id:id}) 
     await brandDb.findByIdAndUpdate(id,req.body,{useFindAndModify:false})
     await productDb.updateMany({"Brand": brand.name},{$set:{"Brand": req.body.name}})
         res.redirect('/brand')
+    }
 }
 
 exports.delete = async (req,res)=>{

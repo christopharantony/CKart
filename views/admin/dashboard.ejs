@@ -5,9 +5,9 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>CKart: Admin</title>
-        <!-- Ajax -->
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    <!-- Ajax -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <style>
         * {
@@ -38,12 +38,12 @@
         }
 
         .chartBox {
-    width: 300px;
-    padding: 20px;
-    border-radius: 20px;
-    border: solid 3px rgba(255, 26, 104, 1);
-    background: white;
-    position: absolute;
+            width: 300px;
+            padding: 20px;
+            border-radius: 20px;
+            border: solid 3px rgba(255, 26, 104, 1);
+            background: white;
+            position: absolute;
         }
     </style>
 </head>
@@ -86,141 +86,201 @@
             </div>
         </div>
     </nav>
-<!----------------------------------------------------------------------------------------->
-<div style="background: #ffd1e1;display: flex;justify-content: space-around; padding-top:1rem">
-<div class="btn btn-light" style="background: #ebe0ff;padding: 3rem;width: 20%;border-radius: 5rem;text-align: center;">Total Users <br> <%=usercount %> </div>
-<div class="btn btn-light" style="background: #ebe0ff;padding: 3rem;width: 20%;border-radius: 5rem;text-align: center;">Total Products <br> <%=productcount %></div>
-<div class="btn btn-light" style="background: #ebe0ff;padding: 3rem;width: 20%;border-radius: 5rem;text-align: center;">Total Orders <br> <%=ordercount %></div>
-</div>
+    <!----------------------------------------------------------------------------------------->
+    <div style="background: #ffd1e1;display: flex;justify-content: space-around; padding-top:1rem">
+        <div class="btn btn-light"
+            style="background: #ebe0ff;padding: 3rem;width: 20%;border-radius: 5rem;text-align: center;">Total Users
+            <br>
+            <%=usercount %>
+        </div>
+        <div class="btn btn-light"
+            style="background: #ebe0ff;padding: 3rem;width: 20%;border-radius: 5rem;text-align: center;">Total Products
+            <br>
+            <%=productcount %>
+        </div>
+        <div class="btn btn-light"
+            style="background: #ebe0ff;padding: 3rem;width: 20%;border-radius: 5rem;text-align: center;">Total Orders
+            <br>
+            <%=ordercount %>
+        </div>
+    </div>
     <div class="chartCard">
-        <div class="chartBox" style="top:15rem;left:21rem">
+        <div class="chartBox" style="top:15rem;left:4rem">
             <canvas id="myChart"></canvas>
         </div>
-        
+
     </div>
     <% console.log("activeCount,blockedCount",activeCount,blockedCount);%>
-    <div class="chartCard">
-        <div class="chartBox" style="top:15rem;left:45rem">
-            <canvas id="userChart"></canvas>
+        <div class="chartCard">
+            <div class="chartBox" style="top:15rem;left:57rem">
+                <canvas id="userChart"></canvas>
+            </div>
         </div>
-    </div>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script>
-        function adminLogout() {
-            Swal.fire({
-                title: 'Are you want to logout?',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Logout'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    location.href = "/logout_admin";
-                }
-            })
-        }
-        // setup 
-        // console.log("Unique",uniqueDates,"count",counts);
-        const data = {
-            labels: ['Mon', 'Tue', 'Wed' , 'Thu', 'Fri', 'Sat', 'Sun'],
-            // labels: "<%=uniqueDates%>",
-            datasets: [{
-                label: 'Weekly Sales',
-                // data: [18, 12, 6, 9, 12, 3, 9],
-                data: "<%=counts%>",
-                backgroundColor: [
-                    'rgba(255, 26, 104, 0.2)',
-                    'rgba(54, 162, 235, 0.2)',
-                    'rgba(255, 206, 86, 0.2)',
-                    'rgba(75, 192, 192, 0.2)',
-                    'rgba(153, 102, 255, 0.2)',
-                    'rgba(255, 159, 64, 0.2)',
-                    'rgba(0, 0, 0, 0.2)'
-                ],
-                borderColor: [
-                    'rgba(255, 26, 104, 1)',
-                    'rgba(54, 162, 235, 1)',
-                    'rgba(255, 206, 86, 1)',
-                    'rgba(75, 192, 192, 1)',
-                    'rgba(153, 102, 255, 1)',
-                    'rgba(255, 159, 64, 1)',
-                    'rgba(0, 0, 0, 1)'
-                ],
-                borderWidth: 1
-            }]
-        };
-        
-        const data2 = {
-            labels: ['Active', 'Blocked'],
-            // labels: "<%=uniqueDates%>",
-            datasets: [{
-                label: 'Users Status ',
-                // data: [18, 12, 6, 9, 12, 3, 9],
-                // data: ['<%=activeCount%>','<%=blockedCount%>'],
-                data: [56,7],
-                backgroundColor: [
-                    'rgba(255, 26, 104, 0.2)',
-                    'rgba(54, 162, 235, 0.2)',
-                    // 'rgba(255, 206, 86, 0.2)',
-                    // 'rgba(75, 192, 192, 0.2)',
-                    // 'rgba(153, 102, 255, 0.2)',
-                    // 'rgba(255, 159, 64, 0.2)',
-                    // 'rgba(0, 0, 0, 0.2)'
-                ],
-                borderColor: [
-                    'rgba(255, 26, 104, 1)',
-                    'rgba(54, 162, 235, 1)',
-                    // 'rgba(255, 206, 86, 1)',
-                    // 'rgba(75, 192, 192, 1)',
-                    // 'rgba(153, 102, 255, 1)',
-                    // 'rgba(255, 159, 64, 1)',
-                    // 'rgba(0, 0, 0, 1)'
-                ],
-                borderWidth: 1
-            }]
-        };
-
-        // const data2 = {
-        //     labels: ['Active','Blocked'],
-        //     datasets:[{
-        //         label:'User Status',
-        //         data:['<%=activeCount%>','<%=blockedCount%>'],
-        //         backgroundColor:[
-        //             'rgba(153, 102, 255, 1)',
-        //             'rgba(255, 159, 64, 1)'
-        //         ],
-        //         borderColor:[
-        //             'rgba(75, 192, 192, 1)',
-        //             'rgba(153, 102, 255, 1)'
-        //         ],
-        //         borderWidth:1
-        //     }]
-        // };
-
-        // config 
-        const config = {
-            type: 'pie',
-            data,
-            options: {
-                
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script>
+            function adminLogout() {
+                Swal.fire({
+                    title: 'Are you want to logout?',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Logout'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        location.href = "/logout_admin";
+                    }
+                })
             }
-        };
-        const config2 = {
-            type: 'pie',
-            data2
-        }
+            // setup 
+            // console.log("Unique",uniqueDates,"count",counts);
+            var xValues = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+            var yValues = '<%=counts%>';
+            var barColors = [
+                "#b91d47",
+                "#00aba9",
+                "#2b5797",
+                "#e8c3b9",
+                "#1e7145",
+                'rgba(255, 26, 104, 0.2)',
+                'violet'
+            ];
+            var x2Values = ['Active', 'Blocked'];
+            var y2Values = ['<%=activeCount%>', '<%=blockedCount%>'];
+            var statusColors = ['green', 'red']
+            // const data = {
+            //     labels: ['Mon', 'Tue', 'Wed' , 'Thu', 'Fri', 'Sat', 'Sun'],
+            //     // labels: "<%=uniqueDates%>",
+            //     datasets: [{
+            //         label: 'Weekly Sales',
+            //         // data: [18, 12, 6, 9, 12, 3, 9],
+            //         data: "<%=counts%>",
+            //         backgroundColor: [
+            //             'rgba(255, 26, 104, 0.2)',
+            //             'rgba(54, 162, 235, 0.2)',
+            //             'rgba(255, 206, 86, 0.2)',
+            //             'rgba(75, 192, 192, 0.2)',
+            //             'rgba(153, 102, 255, 0.2)',
+            //             'rgba(255, 159, 64, 0.2)',
+            //             'rgba(0, 0, 0, 0.2)'
+            //         ],
+            //         borderColor: [
+            //             'rgba(255, 26, 104, 1)',
+            //             'rgba(54, 162, 235, 1)',
+            //             'rgba(255, 206, 86, 1)',
+            //             'rgba(75, 192, 192, 1)',
+            //             'rgba(153, 102, 255, 1)',
+            //             'rgba(255, 159, 64, 1)',
+            //             'rgba(0, 0, 0, 1)'
+            //         ],
+            //         borderWidth: 1
+            //     }]
+            // };
+
+            // const data2 = {
+            //     labels: ['Active', 'Blocked'],
+            //     // labels: "<%=uniqueDates%>",
+            //     datasets: [{
+            //         label: 'Users Status ',
+            //         // data: [18, 12, 6, 9, 12, 3, 9],
+            //         // data: ['<%=activeCount%>','<%=blockedCount%>'],
+            //         data: [56,7],
+            //         backgroundColor: [
+            //             'rgba(255, 26, 104, 0.2)',
+            //             'rgba(54, 162, 235, 0.2)',
+            //             // 'rgba(255, 206, 86, 0.2)',
+            //             // 'rgba(75, 192, 192, 0.2)',
+            //             // 'rgba(153, 102, 255, 0.2)',
+            //             // 'rgba(255, 159, 64, 0.2)',
+            //             // 'rgba(0, 0, 0, 0.2)'
+            //         ],
+            //         borderColor: [
+            //             'rgba(255, 26, 104, 1)',
+            //             'rgba(54, 162, 235, 1)',
+            //             // 'rgba(255, 206, 86, 1)',
+            //             // 'rgba(75, 192, 192, 1)',
+            //             // 'rgba(153, 102, 255, 1)',
+            //             // 'rgba(255, 159, 64, 1)',
+            //             // 'rgba(0, 0, 0, 1)'
+            //         ],
+            //         borderWidth: 1
+            //     }]
+            // };
+
+            // const data2 = {
+            //     labels: ['Active','Blocked'],
+            //     datasets:[{
+            //         label:'User Status',
+            //         data:['<%=activeCount%>','<%=blockedCount%>'],
+            //         backgroundColor:[
+            //             'rgba(153, 102, 255, 1)',
+            //             'rgba(255, 159, 64, 1)'
+            //         ],
+            //         borderColor:[
+            //             'rgba(75, 192, 192, 1)',
+            //             'rgba(153, 102, 255, 1)'
+            //         ],
+            //         borderWidth:1
+            //     }]
+            // };
+
+            // config 
+            // const config = {
+            //     type: 'pie',
+            //     data,
+            //     options: {
+
+            //     }
+            // };
+
+            new Chart("myChart", {
+                type: "pie",
+                data: {
+                    labels: xValues,
+                    datasets: [{
+                        backgroundColor: barColors,
+                        data: yValues
+                    }]
+                },
+                options: {
+                    title: {
+                        display: true,
+                        text: "World Wide Wine Production 2018"
+                    }
+                }
+            });
+
+            new Chart("userChart", {
+                type: "pie",
+                data: {
+                    labels: x2Values,
+                    datasets: [{
+                        backgroundColor: statusColors,
+                        data: y2Values
+                    }]
+                },
+                options: {
+                    title: {
+                        display: true,
+                        text: "World Wide Wine Production 2018"
+                    }
+                }
+            });
+        // const config2 = {
+        //     type: 'pie',
+        //     data2
+        // }
 
         // render init block
-        const myChart = new Chart(
-            document.getElementById('myChart'),
-            config
-        );
-        const userChart = new Chart(
-            document.getElementById('userChart'),
-            config2
-        )
-    </script>
+        // const myChart = new Chart(
+        //     document.getElementById('myChart'),
+        //     config
+        // );
+        // const userChart = new Chart(
+        //     document.getElementById('userChart'),
+        //     config2
+        // )
+        </script>
 
 </body>
 

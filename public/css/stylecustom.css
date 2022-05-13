@@ -43,6 +43,7 @@ a{
     width: auto !important;
     margin-left: auto;
     margin-top: inherit !important;
+    margin-bottom: 1rem;
 }
 .d-flex{
     display: flex;

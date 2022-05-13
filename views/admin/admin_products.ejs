@@ -2,12 +2,12 @@
 
     <!-- Products -->
 
-    <section>
+    <section style="margin-bottom:40px">
         <div class="container">
             <div class="row mt-4">
                 <a href="/add-product" class="btn btn-success ml-auto proadd">Add product</a>
             </div>
-            <table class="table mt-4">
+            <table class="table mt-4" id="proTable">
                 <thead>
                     <tr>
                         <th scope="col">No.</th>
@@ -57,6 +57,9 @@
 
     <!-- Swal sweetalert -->
     <script>
+        $(document).ready( function () {
+    $('#proTable').DataTable();
+} );
         // function deleteProduct(){
         //     Swal.fire({
         //         title: 'Are you want to delete?',

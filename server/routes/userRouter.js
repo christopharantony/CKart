@@ -124,10 +124,42 @@ userRoute.get('/productDetail', productController.productDetails)
 userRoute.get('/buy-now',async (req, res)=>{
     const user = req.session.user;
     const product = req.query.id;
-    console.log(`user : ${user} product : ${product}`);
     const pro = await productDb.findById(product)
-    console.log(`pro.Price : ${pro.Price}`)
     res.render('user/buyplace_order',{total:pro.Price,user,product})
+})
+userRoute.get('/buy-nowOff',async (req, res)=>{
+    const user = req.session.user;
+    const product = req.query.id;
+    // const pro = await productDb.findById(product)
+    const offers = await offerDb.aggregate([
+        {
+            $match:{
+                proId:ObjectId(product)
+            }
+        },
+        {
+            $lookup:{
+                from: 'productdbs',
+                localField:'proId',
+                foreignField:'_id',
+                as:'products'
+            }
+        },
+        {
+            $unwind:'$products'
+        },
+        {
+            $project:{
+                id:'$products._id',
+                price:'$products.Price',
+                products:'$products',
+                percentage:'$percentage',
+                offerPrice:{ $divide: [{$multiply: ['$products.Price','$percentage']},100 ]}
+            }
+        }
+    ])
+    console.log(offers[0].offerPrice);
+    res.render('user/buyplace_order',{total:offers[0].offerPrice,user,product})
 })
 
 userRoute.post('/buyplace-order/:price/:proId',async (req, res)=>{
@@ -200,6 +232,14 @@ userRoute.get('/place-order',orderController.myOrders)
 
 userRoute.post('/place-order',orderController.orderPlacing)
 
+userRoute.get('/place-order-error/:error/:user/:total',(req,res)=>{
+    console.log(req.params);
+    const error = req.params.error;
+    const user = req.params.user;
+    const total = req.params.total;
+    res.render('user/place_order',{error,user:req.session.user,total})
+})
+
 userRoute.post('/verify-payment',orderController.paymentVerification)
 
 // ------------------ Order Placed ------------------------
@@ -209,6 +249,8 @@ userRoute.get('/order-success',(req,res)=>{
 
 // Add to cart
 userRoute.get("/add-to-cart:id",cartcontroller.addToCart)
+// userRoute.get("/add-to-cartOff:id",cartcontroller.addToCartOff)
+
 
 //--------------------------------------------------------------------------------------------------------------------------------------------
 // ------------------ Add Favorites ------------------------
@@ -222,7 +264,11 @@ userRoute.post("/remove-product-fav",favController.removeProfav)
 userRoute.get('/user-orders',orderController.Find)
 
 // Cancel the orders
-userRoute.put('/cancel/:id',orderController.cancel)
+userRoute.get('/cancel/:id',orderController.cancel)
+userRoute.put('/cancel/:id',(req,res)=>{
+    console.log('uyyyyyyyyyyy');
+    console.log(req.params.id);
+})
 
 
 userRoute.get("/logout_user", (req, res) => {

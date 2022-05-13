@@ -48,7 +48,6 @@ exports.Create = (req, res) => {
 
 // User Login
 exports.Find = async (req, res) => {
-
     if (req.session.isUserLogin) {
         res.redirect('/')
     } else {
@@ -87,7 +86,6 @@ exports.Find = async (req, res) => {
                     }
                 }
             ])
-            console.log('Home ==============>>',offers);
             const products = await productDb.find()
             const wishlist = await favDb.findOne({user:ObjectId(userId)})
             fav = wishlist?.products
@@ -207,7 +205,7 @@ exports.block = async (req,res)=>{
         const validate = (data) => {
             const schema = Joi.object({
                 name: Joi.string().required().label("Name"),
-                email: Joi.string().required().label("Email"),
+                email: Joi.string().email().required().label("Email"),
                 password: passwordComplexity().required().label("Password"),
                 number:Joi.string().length(10).pattern(/^[0-9]+$/).required().label("Number"),
                 gender: Joi.allow()

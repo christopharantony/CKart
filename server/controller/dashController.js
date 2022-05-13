@@ -30,8 +30,9 @@ exports.dash = async(req,res)=>{
         ])
         const dateFormatted = DATES.map(date =>{return date.date.toDateString()})
         const uniqueDates = [...new Set(dateFormatted)];
+        const Days = uniqueDates.slice(0,7)
         const counts = []
-        for (const unique of uniqueDates){
+        for (const unique of Days){
             let count = 0;
             for (const Date of dateFormatted){
                 if (unique === Date) {
@@ -59,7 +60,7 @@ exports.dash = async(req,res)=>{
             catCounts.push(count)
         }
         
-        res.status(200).render('admin/dashboard',{activeCount,blockedCount,catCounts,uniqueCategories,counts,uniqueDates,ordercount:orders.length,usercount:USERS.length,productcount:products.length})
+        res.status(200).render('admin/dashboard',{activeCount,blockedCount,catCounts,uniqueCategories,counts,uniqueDates:Days,ordercount:orders.length,usercount:USERS.length,productcount:products.length})
     }else{
         req.session.isAdminLogin = false;
         res.render('admin/admin_login', { error: "" });

@@ -97,7 +97,7 @@ exports.statusUpdate = async(req, res) => {
 
 exports.cancel = async(req,res)=>{
         const id = req.params.id;
-        const order = await orderDb.findOne({_id:id})
+        const order = await orderDb.findOne({_id:ObjectId(id)})
         const proId = order.products[0].item
         await productDb.updateOne({"_id": ObjectId(proId)},
         {
@@ -109,6 +109,8 @@ exports.cancel = async(req,res)=>{
 
 exports.cancelOrder = async(req,res)=>{
     const id = req.params?.id;
+    const order = await orderDb.findOne({_id:ObjectId(id)})
+    const proId = order.products[0].item
     await orderDb.updateOne({_id:id},{$set: {"status":"Canceled"}})
     await productDb.updateOne({"_id": ObjectId(proId)},
     {
@@ -154,7 +156,7 @@ exports.myOrders = async(req,res)=>{
         }
     ])
     console.log(total[0]?.total);
-    res.render('user/place_order',{total:total[0]?.total,user:req.session.user})
+    res.render('user/place_order',{error:"",total:total[0]?.total,user:req.session.user})
 }
 
 // --------------------------------------------- Order Placing -----------------------------------------------
@@ -197,14 +199,21 @@ exports.orderPlacing = async(req,res)=>{
     const order = req.body
     var total = totalPrize[0].total
     let products = cart.products
+    let deliveryDetails = {
+        name:order.Name,
+        mobile:order.mobile,
+        address:order.address,
+        pincode:order.Pincode
+    }
+    const { error } = validate(deliveryDetails) 
+    console.log("Error===========================",error?.details[0].message);
+    if (error){
+        // return res.render('user/place_order',{error: error.details[0].message,user:userId,total})
+        res.json({error: error.details[0].message,user:userId,total:total})
+    }else{
     let status = order['payment-method']==='COD'?'placed':'pending'
     let orderObj = new orderDb({
-        deliveryDetails:{
-            name:order.Name,
-            mobile:order.mobile,
-            address:order.address,
-            pincode:order.Pincode
-        },
+        deliveryDetails:deliveryDetails,
         userId:ObjectId(userId),
         paymentMethod:order['payment-method'],
         products:products,
@@ -212,57 +221,42 @@ exports.orderPlacing = async(req,res)=>{
         status:status,
         date: new Date()
     })
-    const { error } = validate(deliveryDetails)
-    orderObj.save()
-    await productDb.updateOne({"_id": ObjectId(products[0].item)},
-    {
-        $inc: { Quantity : -products[0].quantity }
-    })
-    await cartDb.deleteOne({user:ObjectId(order.userId)})
-    if(req.body['payment-method']=='COD'){
-        res.json({codSuccess:true})
-    }
-    // else if(req.body['payment-method']=='ONLINE') {
-    // }
-    else{
-        console.log(`total : ${total} Product : ${products[0].item} `)
-        var options = {
-            amount: total*100,
-            currency: "INR",
-            receipt: ""+products[0].item,
-            notes: {
-                key1: "value3",
-                key2: "value2"
-            }
-        }
-        instance.orders.create(options, function(err, order) {
-            if (err) {
-                console.log(err);
-            }else {
-                console.log("New Order",order);
-                res.json(order);
-            }
+        orderObj.save()
+        await productDb.updateOne({"_id": ObjectId(products[0].item)},
+        {
+            $inc: { Quantity : -products[0].quantity }
         })
-        
-    }
-    
-    console.log('Place order post req.body')
-}
-const validate = (data) => {
-    const schema = Joi.object({
-        name: Joi.string().required().label("Name"),
-        mobile:Joi.string().length(10).pattern(/^[0-9]+$/).required().label("Mobile number"),
-        address: string().required().label("Address"),
-        pincode:Joi.string().length(6).pattern(/^[0-9]+$/).required().label("Pincode"),
-    })
-    return schema.validate(data)
+        await cartDb.deleteOne({user:ObjectId(order.userId)})
+        if(req.body['payment-method']=='COD'){
+            res.json({codSuccess:true})
+        }
+        else if(req.body['payment-method']=='ONLINE') {
+            // }
+            // else{
+                var options = {
+                    amount: total*100,
+                    currency: "INR",
+                    receipt: ""+products[0].item,
+                    // notes: {
+                        //     key1: "value3",
+                        //     key2: "value2"
+                        // }
+                    }
+                    instance.orders.create(options, function(err, order) {
+                        if (err) {
+                            console.log(err);
+                        }else {
+                            console.log("New Order",order);
+                            res.json(order);
+                        }
+                    })
+                }
+                console.log('Place order post req.body')
+            }
 }
 // --------------------------------------------- Payment Verification -----------------------------------------------
 exports.paymentVerification = async(req, res)=>{
     let hmac = crypto.createHmac('sha256', '96OZZd2cbBqVjnR6ZLeQrGOU');
-    console.log('Payment Verification BODY :', req.body)
-    console.log(req.body.payment.razorpay_order_id);
-    console.log(req.body.payment.razorpay_payment_id);
     hmac.update(req.body.payment.razorpay_order_id+'|'+req.body.payment.razorpay_payment_id);
     hmac = hmac.digest('hex')
 if(hmac==req.body.payment.razorpay_signature){
@@ -281,3 +275,12 @@ if(hmac==req.body.payment.razorpay_signature){
     res.json({status: false,errMsg:''})
 }
 }
+    const validate = (data) => {
+        const schema = Joi.object({
+            name: Joi.string().required().label("Name"),
+            mobile:Joi.string().length(10).pattern(/^[0-9]+$/).required().label("Mobile number"),
+            address: Joi.string().required().length(10).label("Address"),
+            pincode:Joi.string().length(6).pattern(/^[0-9]+$/).required().label("Pincode"),
+        })
+        return schema.validate(data)
+    }

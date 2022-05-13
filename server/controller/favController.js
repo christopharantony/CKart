@@ -5,12 +5,9 @@ var ObjectId = require('mongoose').Types.ObjectId;
 exports.fav = async (req,res)=>{
     const userId = req.session.user?._id;
     const proId = req.params.id;
-    console.log("Product ID : ",proId);
-    console.log("User ID : ",userId);
     let favList = await favDb.findOne({user:ObjectId(userId)})
     if (favList) {
         let data = favList.products
-        console.log("data",data)
         let proExist = data.findIndex(product => {
             let val1 = JSON.stringify(product)
             let val2 = JSON.stringify(ObjectId(proId))
@@ -64,7 +61,6 @@ exports.find = async (req, res)=>{
             }
         }
     ])
-    console.log(wishlist[0]?.product)
     res.render('user/fav',{cartItems:wishlist,user:req.session.user})
 }
 

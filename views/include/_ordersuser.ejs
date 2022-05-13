@@ -1,24 +1,69 @@
-<% for ( let i = 0; i < orderData.length; i++){ %>
+
+<% for ( let i=0; i < orderData.length; i++){ %>
     <% if ( orderData[i].productData[0]?.Name ) { %>
-    <tr>
-    <td><%= i+1 %></td>
-    <td><%= orderData[i].productData[0]?.Name %></td>
-    <td><%= orderData[i].products.quantity %></td>
-    <td><%= orderData[i].deliveryDetails.mobile %></td>
-    <td><%= orderData[i].deliveryDetails.address %></td>
-    <td><%= orderData[i].date.toDateString() %></td>
-    <td><%= orderData[i].totalAmount %></td>
-    <td><%= orderData[i].paymentMethod %></td>
-    <td><%= orderData[i].status %></td>
-    <% if(orderData[i].status == "Canceled") { %>
-        <td><button class="btn btn-outline-danger" disabled>Cancel</button></td>
-    <% }else{ %>
-    <td><form action="/cancel/<%= orderData[i]._id %>?_method=PUT" method="post">
-        <a href="" onclick="return confirm('Are want to cancel <%= orderData[i].productData[0]?.Name %> ?')">
-            <button class="btn btn-outline-danger" type="submit">Cancel</button>
-        </a>
-    </form></td>
-    <% } %>
-    </tr>
-    <% } %>
-    <% } %>
+        <tr>
+            <td>
+                <%= i+1 %>
+            </td>
+            <td>
+                <%= orderData[i].productData[0]?.Name %>
+            </td>
+            <td>
+                <%= orderData[i].products?.quantity %>
+            </td>
+            <td>
+                <%= orderData[i].deliveryDetails?.mobile %>
+            </td>
+            <td>
+                <%= orderData[i].deliveryDetails?.address %>
+            </td>
+            <td>
+                <%= orderData[i].date?.toDateString() %>
+            </td>
+            <td>
+                <%= orderData[i]?.totalAmount %>
+            </td>
+            <td>
+                <%= orderData[i]?.paymentMethod %>
+            </td>
+            <td>
+                <%= orderData[i]?.status %>
+            </td>
+            <% if(orderData[i]?.status=="Canceled" ) { %>
+                <td><button class="btn btn-outline-danger" disabled>Cancel</button></td>
+                <% }else{ %>
+                    <td>
+                        <!-- <form action="/cancel/<%= orderData[i]._id %>?_method=PUT" method="post"> -->
+                            <!-- <a href="" onclick="return confirm('Are want to cancel <%= orderData[i].productData[0]?.Name %> ?')"> -->
+                            <button class="btn btn-outline-danger" onclick="userOrderCancel('<%= orderData[i]._id %>')">Cancel</button>
+                            <!-- </a> -->
+                        <!-- </form> -->
+                    </td>
+                    <% } %>
+        </tr>
+        <% } %>
+            <% } %>
+
+        <script>
+        function userOrderCancel(id){
+            Swal.fire({
+                title: 'Are you want to Cancel ?',
+                icon: 'error',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Order Cancel'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    type="put",
+                    // method="post",
+                    location.href = `/cancel/${id}?_method=PUT`
+                    Swal.fire(
+                        'Order Canceled!',
+                        'Your order has been canceled.',
+                        'success'
+                    )
+                }
+            })
+        }
+        </script>

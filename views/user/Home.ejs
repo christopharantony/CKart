@@ -41,7 +41,7 @@
       </div>
 
       <!---------------------- /Banner--------------------------------------------------- -->
-      <!-- Offer -->
+      <!----------------------  Offer --------------------------------------------------- -->
       <div class="products">
          <div class="container">
             <div class="row">
@@ -79,24 +79,27 @@
                                  <h1>$<%=offers[i].offerPrice%>
                                  </h1>
                                  <% if (isUserLogin) { %>
-                                    <% if (fav?.includes(offers[i].products._id)) { %>
+                                    <!-- <% if (fav?.includes(offers[i].products._id)) { %>
                                        <button onclick="addToFav('<%=offers[i].products._id%>')"><i
                                              class="fa-solid fa-heart" style="color: red;"
                                              id="<%=offers[i].products._id%>"></i></button>
                                     <% } else { %>
                                           <button onclick="addToFav('<%=offers[i].products._id%>')"><i
                                                 class="fa-solid fa-heart" id="<%=offers[i].products._id%>"></i></button>
-                                    <% } %>
-                                             <button onclick="addToCart('<%=offers[i].products._id%>')"
-                                                class="btc_home"> Add
+                                    <% } %> -->
+                                             <button onclick="addToCartOff('<%=offers[i]._id%>')"
+                                                class="btc_home" style="margin-left:2rem"> Add
                                                 to cart</button>
-                                             <a href="/buy-now?id=<%= offers[i].products._id%> ">
+                                             <a href="/buy-nowOff?id=<%= offers[i].products._id%> ">
                                                 <h3 class="atc_home" style="margin-left: 119px;">Buy Now</h3>
                                              </a>
                                  <% } else {%>
-                                                <a href="/login">
-                                                   <h3 class="atc_home">Add to cart</h3>
-                                                </a>
+                                                <!-- <a href="/login"> -->
+                                                   <button class="btc_home" onclick="addCartButton()">
+                                                      Add to cart
+                                                   </button>
+                                                   
+                                                <!-- </a> -->
                                                 <a href="/buy-now?id=<%= offers[i].products._id%> ">
                                                    <h3 class="atc_home">Buy Now</h3>
                                                 </a>
@@ -142,7 +145,6 @@
                                  <h1>
                                     <%=products[i].Name%>
                                  </h1>
-
                                  <h1>$<%=products[i].Price%>
                                  </h1>
                                  <% if (isUserLogin) { %>
@@ -162,9 +164,9 @@
                                                    <h3 class="atc_home" style="margin-left: 119px;">Buy Now</h3>
                                                 </a>
                                                 <% } else {%>
-                                                   <a href="/login">
-                                                      <h3 class="atc_home">Add to cart</h3>
-                                                   </a>
+                                                   <button class="btc_home" onclick="addCartButton()">
+                                                      Add to cart
+                                                   </button>
                                                    <a href="/buy-now?id=<%= products[i]._id%> ">
                                                       <h3 class="atc_home">Buy Now</h3>
                                                    </a>
@@ -172,57 +174,6 @@
                               </div>
                            </div>
                            <% } %>
-                              <!-- <div class="col-md-4 margin_bottom1">
-                           <div class="product_box">
-                              <figure><img src="images/product2.png" alt="#"/></figure>
-                              <h3>Laptop</h3>
-                           </div>
-                        </div>
-                        <div class="col-md-4 margin_bottom1">
-                           <div class="product_box">
-                              <figure><img src="images/product3.png" alt="#"/></figure>
-                              <h3>Tablet</h3>
-                           </div>
-                        </div>
-                        <div class="col-md-4 margin_bottom1">
-                           <div class="product_box">
-                              <figure><img src="images/product4.png" alt="#"/></figure>
-                              <h3>Speakers</h3>
-                           </div>
-                        </div>
-                        <div class="col-md-4 margin_bottom1">
-                           <div class="product_box">
-                              <figure><img src="images/product5.png" alt="#"/></figure>
-                              <h3>internet</h3>
-                           </div>
-                        </div>
-                        <div class="col-md-4 margin_bottom1">
-                           <div class="product_box">
-                              <figure><img src="images/product6.png" alt="#"/></figure>
-                              <h3>Hardisk</h3>
-                           </div>
-                        </div>
-                        <div class="col-md-4">
-                           <div class="product_box">
-                              <figure><img src="images/product7.png" alt="#"/></figure>
-                              <h3>Rams</h3>
-                           </div>
-                        </div>
-                        <div class="col-md-4">
-                           <div class="product_box">
-                              <figure><img src="images/product8.png" alt="#"/></figure>
-                              <h3>Bettery</h3>
-                           </div>
-                        </div>
-                        <div class="col-md-4">
-                           <div class="product_box">
-                              <figure><img src="images/product9.png" alt="#"/></figure>
-                              <h3>Drive</h3>
-                           </div>
-                        </div>
-                        <div class="col-md-12">
-                           <a class="read_more" href="#">See More</a>
-                        </div> -->
                      </div>
                   </div>
                </div>
@@ -230,8 +181,7 @@
          </div>
       </div>
       <!-- end products -->
-      <!-- laptop  section -->
-      <div class="laptop">
+      <!-- <div class="laptop">
          <div class="container">
             <div class="row">
                <div class="col-md-6">
@@ -248,124 +198,7 @@
                </div>
             </div>
          </div>
-      </div>
+      </div> -->
    </div>
-   <!-- end laptop  section -->
-   <!-- customer -->
-   <!-- <div class="customer">
-         <div class="container">
-            <div class="row">
-               <div class="col-md-12">
-                  <div class="titlepage">
-                     <h2>Customer Review</h2>
-                  </div>
-               </div>
-            </div>
-            <div class="row">
-               <div class="col-md-12">
-                  <div id="myCarousel" class="carousel slide customer_Carousel " data-ride="carousel">
-                     <ol class="carousel-indicators">
-                        <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-                        <li data-target="#myCarousel" data-slide-to="1"></li>
-                        <li data-target="#myCarousel" data-slide-to="2"></li>
-                     </ol>
-                     <div class="carousel-inner">
-                        <div class="carousel-item active">
-                           <div class="container">
-                              <div class="carousel-caption ">
-                                 <div class="row">
-                                    <div class="col-md-9 offset-md-3">
-                                       <div class="test_box">
-                                          <i><img src="images/cos.png" alt="#"/></i>
-                                          <h4>Sandy Miller</h4>
-                                          <p>ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id</p>
-                                       </div>
-                                    </div>
-                                 </div>
-                              </div>
-                           </div>
-                        </div>
-                        <div class="carousel-item">
-                           <div class="container">
-                              <div class="carousel-caption">
-                                 <div class="row">
-                                    <div class="col-md-9 offset-md-3">
-                                       <div class="test_box">
-                                          <i><img src="images/cos.png" alt="#"/></i>
-                                          <h4>Sandy Miller</h4>
-                                          <p>ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id</p>
-                                       </div>
-                                    </div>
-                                 </div>
-                              </div>
-                           </div>
-                        </div>
-                        <div class="carousel-item">
-                           <div class="container">
-                              <div class="carousel-caption">
-                                 <div class="row">
-                                    <div class="col-md-9 offset-md-3">
-                                       <div class="test_box">
-                                          <i><img src="images/cos.png" alt="#"/></i>
-                                          <h4>Sandy Miller</h4>
-                                          <p>ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id</p>
-                                       </div>
-                                    </div>
-                                 </div>
-                              </div>
-                           </div>
-                        </div>
-                     </div>
-                     <a class="carousel-control-prev" href="#myCarousel" role="button" data-slide="prev">
-                     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                     <span class="sr-only">Previous</span>
-                     </a>
-                     <a class="carousel-control-next" href="#myCarousel" role="button" data-slide="next">
-                     <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                     <span class="sr-only">Next</span>
-                     </a>
-                  </div>
-               </div>
-            </div>
-         </div>
-      </div> -->
-   <!-- end customer -->
-
-   <!--  contact -->
-   <!-- <div class="contact">
-         <div class="container">
-            <div class="row">
-               <div class="col-md-12">
-                  <div class="titlepage">
-                     <h2>Contact Now</h2>
-                  </div>
-               </div>
-            </div>
-            <div class="row">
-               <div class="col-md-10 offset-md-1">
-                  <form id="request" class="main_form">
-                     <div class="row">
-                        <div class="col-md-12 ">
-                           <input class="contactus" placeholder="Name" type="type" name="Name"> 
-                        </div>
-                        <div class="col-md-12">
-                           <input class="contactus" placeholder="Email" type="type" name="Email"> 
-                        </div>
-                        <div class="col-md-12">
-                           <input class="contactus" placeholder="Phone Number" type="type" name="Phone Number">                          
-                        </div>
-                        <div class="col-md-12">
-                           <textarea class="textarea" placeholder="Message" type="type" Message="Name">Message </textarea>
-                        </div>
-                        <div class="col-md-12">
-                           <button class="send_btn">Send</button>
-                        </div>
-                     </div>
-                  </form>
-               </div>
-            </div>
-         </div>
-      </div> -->
-   <!-- end contact -->
 
    <%-include('../include/_userfooter')%>

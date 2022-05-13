@@ -14,19 +14,20 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <!-- my custom css -->
-    <link rel="stylesheet" href="css/usercss.css">
+    <!-- <link rel="stylesheet" href="css/usercss.css"> -->
     <!-- Cart css -->
     <!-- <link rel="stylesheet" href="css/cart.css"> -->
     <!-- bootstrap css -->
-    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <!-- <link rel="stylesheet" href="css/bootstrap.min.css"> -->
     <!-- style css -->
+    <script src="js/orderValidate.js"></script>
     <link rel="stylesheet" href="css/style.css">
     <!-- Responsive-->
-    <link rel="stylesheet" href="css/responsive.css">
+    <!-- <link rel="stylesheet" href="css/responsive.css"> -->
     <!-- fevicon -->
-    <link rel="icon" href="images/fevicon.png" type="image/gif" />
+    <!-- <link rel="icon" href="images/fevicon.png" type="image/gif" /> -->
     <!-- Scrollbar Custom CSS -->
-    <link rel="stylesheet" href="css/jquery.mCustomScrollbar.min.css">
+    <!-- <link rel="stylesheet" href="css/jquery.mCustomScrollbar.min.css"> -->
     <!-- Tweaks for older IEs-->
     <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css"
@@ -37,46 +38,54 @@
     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 
     <!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script><![endif]-->
+        <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script><![endif]-->
 </head>
 <!-- body -->
 
-<body class="main-layout inner_posituong computer_page">
+<body class="main-layout inner_posituong computer_page" style="margin: 0;">
     <!-- loader  -->
     <div class="loader_bg">
         <div class="loader"><img src="images/loading.gif" alt="#" /></div>
     </div>
     <!-- end loader -->
     <!-- header -->
+    <nav class=" navbar-light bg-light"
+    style="background-color: #4843a3;height: 4em; color: white; padding-left: 5em;">
+    <a href="/" style="    float: left; margin-top: 1em; color: white;">Home</a>
+    <a class="navbar-brand" href="#" style="margin-left: 26rem; font-size: xx-large; line-height:5rem; font-weight: bold; color: white;">CKart</a>
+    </nav>
     <header>
         <!-- header inner -->
         <div class="header">
             <div class="container-fluid">
                 <div class="row">
-                    <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col logo_section">
+                    <!-- <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col logo_section">
                         <div class="full">
                             <div class="center-desk">
                                 <div class="logo">
                                     <a href="/"><img src="images/logo.png" alt="#" /></a>
                                 </div>
+                                <div>
+                                    <a  class="nav-link" href="/">Home</a>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
                     <div class="col-xl-9 col-lg-9 col-md-9 col-sm-9">
                         <nav class="navigation navbar navbar-expand-md navbar-dark ">
                             <button class="navbar-toggler" type="button" data-toggle="collapse"
                                 data-target="#navbarsExample04" aria-controls="navbarsExample04" aria-expanded="false"
                                 aria-label="Toggle navigation">
                                 <span class="navbar-toggler-icon"></span>
+                                <!-- <div class="collapse navbar-collapse" id="navbarsExample04">
+                                    <ul class="navbar-nav mr-auto">
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="/">Home</a>
+                                        </li>
+                                    </ul>
+                                </div> -->
                             </button>
-                            <div class="collapse navbar-collapse" id="navbarsExample04">
-                                <ul class="navbar-nav mr-auto">
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="/">Home</a>
-                                    </li>
-                                </ul>
-                            </div>
                         </nav>
                     </div>
                     <!-- ======================================================= -->
@@ -90,28 +99,32 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="row">
+                            <div class="row" style="padding: 6rem;    padding-top: 3rem;">
                                 <div class="col-md-10 offset-md-1">
                                     <form id="request"  class="main_form" action="">
                                         <div class="row">
                                             <div class="col-md-12 ">
-                                                <input class="contactus" placeholder="Name" type="type" name="Name">
+                                                <input class="contactus" type="text" placeholder="Name" oninput="namevalid();numchange()" id="fname" name="Name">
+                                                <p class="help-block" id="pname"></p>
                                             </div>
                                             <div class="col-md-12">
-                                                <input class="contactus" placeholder="Phone Number" type="type"
+                                                <input class="contactus" placeholder="Phone Number" oninput="numvalid()"  id="fnum" type="text"
                                                     name="mobile">
+                                                    <p class="help-block" id="pnum"></p>
                                                     <input type="text" name="userId" id="" value="<%=user._id%>" hidden>
                                             </div>
                                             <div class="col-md-12">
-                                                <input class="contactus" placeholder="Pincode" type="type"
+                                                <input class="contactus" placeholder="Pincode" oninput="pinvalid()" id="fpin" type="type"
                                                     name="Pincode">
+                                                    <p class="help-block" id="ppin"></p>
                                             </div>
                                             <div class="col-md-12">
-                                                <textarea class="textarea" placeholder="Address" type="type" name="address"
+                                                <textarea class="textarea" placeholder="Address" id="faddress" oninput="addressvalid()" type="type" name="address"
                                                     Message="Name"></textarea>
+                                                    <p class="help-block" id="paddress"></p>
                                             </div>
                                             <div class="col-md-12">
-                                                <h1 style="color: white;font-weight: bold;">Total $<%=total%>
+                                                <h1 style="color: black;font-weight: bold;">Total $<%=total%>
                                                         </h3>
                                             </div>
                                             <div class="col-md-12">
@@ -126,7 +139,7 @@
                                                 </div>
                                             </div>
                                             <div class="col-md-12">
-                                                <button class="send_btn" type="submit ">Checkout</button>
+                                                <button class="send_btn" type="submit" onclick="namevalid();numchange();numvalid();pinvalid();addressvalid();" id="submit_btn">Checkout</button>
                                             </div>
                                         </div>
                                     </form>
@@ -140,19 +153,24 @@
                     <script>
                         $("#request").submit((e)=>{
                             e.preventDefault()
+                            if ( value1 && value2 && value3 && value4 && value5){
                             $.ajax({
                                 url:'/place-order',
                                 method:'post',
                                 data:$('#request').serialize(),
                                 success:(response)=>{
-                                    console.log(response);
-                                    if(response.codSuccess){
+                                    if (response.error) {
+                                        console.log(response);
+                                        location.href = `/place-order-error/${response.error}/${response.user}/${response.total}`;
+                                    }
+                                    else if(response.codSuccess){
                                         location.href='/order-success'
                                     }else{
                                         razorpayPayment(response)
                                     }
                                 }
                             })
+                            }
                         })
 
                         function razorpayPayment(order){
@@ -166,14 +184,14 @@
                             "order_id": order.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
                             "handler": function (response){
                                 verifyPayment(response,order)
-                            },
+                            }, 
                             "prefill": {
-                                "name": "Gaurav Kumar",
-                                "email": "gaurav.kumar@example.com",
-                                "contact": "9999999999"
+                                "name": "Christophar Antony",
+                                "email": "christopharantony@gmail.com",
+                                "contact": "7012049963"
                             },
                             "notes": {
-                                "address": "Razorpay Corporate Office"
+                                "address": "CKart Corporate Office"
                             },
                             "theme": {
                                 "color": "#3d389c"
@@ -196,6 +214,8 @@
                                 }
                             })
                         }
+
+
                     </script>
 
                     <!-- Javascript files-->

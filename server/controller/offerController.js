@@ -102,7 +102,7 @@ exports.delete = (req, res)=>{
 const validate = (data) => {
     const schema = Joi.object({
         proId: Joi.allow(),
-        percentage: Joi.number().required().label("Percentage"),
+        percentage: Joi.number().max(100).required().label("Percentage"),
         fromDate: Joi.date().required().label("From date"),
         toDate: Joi.date().required().label("To date")
     })

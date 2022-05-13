@@ -38,7 +38,7 @@ html {
 }
 
 body {
-     color: #ffffff;
+     color: #000;
      font-size: 20px;
      font-family: 'Poppins', sans-serif;
      line-height: 1.80857;
@@ -132,6 +132,9 @@ p {
      font-weight: 500;
      font-size: 15px;
      line-height: 24px;
+}
+.help-block{
+     color: red;
 }
 
 a {
@@ -367,6 +370,9 @@ ul.btn li:last-child {
      background: transparent;
      position: absolute;
      z-index: 999;
+}
+.head{
+     background-color: #4843a3;
 }
 
 .logo a {
@@ -782,43 +788,43 @@ ul.btn li:last-child {
 
 /** contact section **/
 
-.contact {
+/* .contact {
      background: url(../images/contact_g.jpg);
      background-repeat: no-repeat;
      background-size: 100% 100%;
      padding: 90px 0;
-}
+} */
 
 .contact .titlepage h2 {
-     color: #fff;
-     border-bottom: #fff solid 1px;
+     color: #000;
+     border-bottom: #000 solid 1px;
 }
 
 .main_form {
      padding: 70px 50px;
-     border: #fff solid 2px;
+     border: #000 solid 2px;
      margin: 0 50px;
 }
 
 .main_form .contactus {
-     border: #fff solid 2px;
+     border: #000 solid 2px;
      padding: 0px 15px;
-     margin-bottom: 25px;
+     margin-top: 25px;
      width: 100%;
      height: 57px;
      background: transparent;
-     color: #fff;
+     color: #000;
      font-size: 18px;
      font-weight: normal;
 }
 
 .main_form .textarea {
-     border: #fff solid 2px;
+     border: #000 solid 2px;
      padding: 0px 15px;
-     margin-bottom: 25px;
+     margin-top: 25px;
      width: 100%;
      background: transparent;
-     color: #fff;
+     color: #000;
      font-size: 18px;
      font-weight: normal;
      padding-top: 56px;
@@ -848,7 +854,7 @@ ul.btn li:last-child {
 }
 
 #request *::placeholder {
-     color: #fff;
+     color: #000;
      opacity: 1;
 }
 
@@ -1005,7 +1011,6 @@ ul.social_icon li a:hover {
 
 .inner_posituong .header {
      position: inherit;
-     background: #4843a3;
 }
 
 .computer_page .laptop {

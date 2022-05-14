@@ -1,4 +1,4 @@
-
+<% const orderData = orderDatas.sort((dateA, dateB) => dateA.date - dateB.date)%>
 <% for ( let i=0; i < orderData.length; i++){ %>
     <% if ( orderData[i].productData[0]?.Name ) { %>
         <tr>

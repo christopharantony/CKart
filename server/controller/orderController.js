@@ -42,7 +42,7 @@ exports.Find = async (req,res)=>{
                 as:'productData'
             }
         }
-    ])
+    ]) 
     let cartCount = 0
             let cart = await cartDb.findOne({user:req.session.user._id})
             console.log('cart',cart);
@@ -50,7 +50,7 @@ exports.Find = async (req,res)=>{
                 cartCount = cart.products.length
             }
     console.log("Error finding in My orders",orderDetails[0])
-    res.render('user/my_orders',{orderData:orderDetails,cartCount,isUserLogin:req.session.isUserLogin})
+    res.render('user/my_orders',{orderDatas:orderDetails,cartCount,isUserLogin:req.session.isUserLogin})
 }
 // --------------------------------------------- Orders in admin side -----------------------------------------------
 exports.find = async (req,res)=>{

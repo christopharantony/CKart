@@ -1,18 +1,20 @@
-var Userdb = require('../model/model');
-const adminDb = require('../model/adminModel')
-const productDb = require("../model/productModel");
-const cartDb  = require('../model/cartModel')
-const favDb = require('../model/favModel')
-const bannerDb = require('../model/bannerModel')
-const offerDb = require('../model/offerModel')
 const Joi = require('joi');
+const bcrypt = require('bcrypt');
+var Userdb = require('../model/model');
+const favDb = require('../model/favModel')
+const cartDb  = require('../model/cartModel')
+const offerDb = require('../model/offerModel')
+const adminDb = require('../model/adminModel')
+const bannerDb = require('../model/bannerModel')
+const productDb = require("../model/productModel");
 const passwordComplexity = require('joi-password-complexity');
 
 var ObjectId = require('mongoose').Types.ObjectId;
 
 // SignUp
-exports.Create = (req, res) => {
+exports.Create = async (req, res) => {
         try {
+            req.body.password = await bcrypt.hash(req.body.password,10)
             const userObj = {
                 name: req.body.name,
                 email: req.body.email,
@@ -51,25 +53,34 @@ exports.Find = async (req, res) => {
     if (req.session.isUserLogin) {
         res.redirect('/')
     } else {
-        let userDb = await Userdb.findOne({ email: req.body.email, password: req.body.password })
+        let userDb = await Userdb.findOne({ email: req.body.email})
         if (userDb) {
             if (userDb.isBlocked) {
                 res.render('user/user_login', { error: "Your account is blocked" })
-            }
+            }else{
             req.session.user = userDb;
             const userId = req.session.user?._id
+            bcrypt.compare(req.body.password,userDb.password).then((status)=>{
+                if(status){
+
+
             let cartCount = 0
-            let cart = await cartDb.findOne({user:userDb._id})
-            const banners = await bannerDb.find()
-            if (cart) {
-                cartCount = cart.products.length
-            }
-            const offers = await offerDb.aggregate([
-                {
-                    $lookup:{
-                        from: 'productdbs',
-                        localField:'proId',
-                        foreignField:'_id',
+            // let cart = await cartDb.findOne({user:userDb._id})
+            cartDb.findOne({user:userDb._id})
+            .then((cart)=>{
+                // const banners = await bannerDb.find()
+                bannerDb.find()
+                .then((banners)=>{
+                    if (cart) {
+                        cartCount = cart.products.length
+                }
+                // const offers = await offerDb.aggregate([
+                offerDb.aggregate([
+                    {
+                        $lookup:{
+                            from: 'productdbs',
+                            localField:'proId',
+                            foreignField:'_id',
                         as:'products'
                     }
                 },
@@ -85,12 +96,21 @@ exports.Find = async (req, res) => {
                         offerPrice:{ $divide: [{$multiply: ['$products.Price','$percentage']},100 ]}
                     }
                 }
-            ])
-            const products = await productDb.find()
-            const wishlist = await favDb.findOne({user:ObjectId(userId)})
-            fav = wishlist?.products
-            req.session.isUserLogin = true;
-            res.status(200).render('user/Home', { offers,banners,products,cartCount,fav,isUserLogin:req.session.isUserLogin })
+            ]).then(async(offers)=>{
+
+                const products = await productDb.find()
+                const wishlist = await favDb.findOne({user:ObjectId(userId)})
+                fav = wishlist?.products
+                req.session.isUserLogin = true;
+                res.status(200).render('user/Home', { offers,banners,products,cartCount,fav,isUserLogin:req.session.isUserLogin })
+            })
+        })
+        })
+        }else{
+            res.render('user/user_login', { error: "Invalid Password" })
+        }
+    })
+}
         } else {
             res.render('user/user_login', { error: "Invalid Username and Password" })
         }
@@ -204,9 +224,9 @@ exports.block = async (req,res)=>{
 
         const validate = (data) => {
             const schema = Joi.object({
-                name: Joi.string().required().label("Name"),
+                name: Joi.string().min(3).max(10).required().label("Name"),
                 email: Joi.string().email().required().label("Email"),
-                password: passwordComplexity().required().label("Password"),
+                password: new passwordComplexity({min:8,max:100,lowerCase:1,upperCase:1,numeric:1}).required().label("Password"),
                 number:Joi.string().length(10).pattern(/^[0-9]+$/).required().label("Number"),
                 gender: Joi.allow()
             })

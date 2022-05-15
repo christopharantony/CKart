@@ -45,8 +45,8 @@ exports.addOffer = async(req, res) => {
         const offer = new offerDb(offerObj);
         const { error } = validate(offerObj);
         if (error) {
-            const pros = await productDb.find()
-            return res.render('admin/offer_add',{pros,error: error.details[0].message})
+            req.session.error = error.details[0].message
+            res.redirect('/offerAddErr')
         }else{
             await offer.save()
             res.redirect('/offer')
@@ -80,8 +80,8 @@ exports.update = async (req, res) => {
         }
         const { error } = validate(offerObj);
         if (error) {
-            const pros = await productDb.find()
-            return res.render('admin/offer_add',{pros,error: error.details[0].message})
+            req.session.error = error.details[0].message
+            res.redirect('/offerEditErr')
         }else{
             await offerDb.updateOne({_id:id},{$set: offerObj});
             res.redirect('/offer')

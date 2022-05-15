@@ -21,9 +21,9 @@ var instance = new Razorpay({
     });
 
 const crypto = require('crypto');
-const { check, validationResult } = require("express-validator");
-const { redirect } = require("express/lib/response");
-const { findById } = require("../model/cartModel");
+// const { check, validationResult } = require("express-validator");
+// const { redirect } = require("express/lib/response");
+// const { findById } = require("../model/cartModel");
 
 var ObjectId = require('mongoose').Types.ObjectId;
 
@@ -34,50 +34,7 @@ var serviceSid = process.env.TWILIO_SERVICE_SID;
 const client = require("twilio")(accountSid, authToken);
 
 // --------------------------------------------- User Landing -----------------------------------------------
-userRoute.get("/", async(req, res) => {
-    try {
-        const products =await productDb.find()
-        const banners = await bannerDb.find()
-        const offers = await offerDb.aggregate([
-            {
-                $lookup:{
-                    from: 'productdbs',
-                    localField:'proId',
-                    foreignField:'_id',
-                    as:'products'
-                }
-            },
-            {
-                $unwind:'$products'
-            },
-            {
-                $project:{
-                    id:'$products._id',
-                    price:'$products.Price',
-                    products:'$products',
-                    percentage:'$percentage',
-                    offerPrice:{ $divide: [{$multiply: ['$products.Price','$percentage']},100 ]}
-                }
-            }
-        ])
-        console.log('Home ==============>>',offers);
-            if (req.session.isUserLogin) {
-                console.log(req.session.user);
-            let cartCount = 0
-            let cart = await cartDb.findOne({user:req.session.user._id})
-            if (cart) {
-                cartCount = cart.products.length
-            }
-                res.status(200).render("user/Home", { offers,banners,products,isUserLogin:req.session.isUserLogin,cartCount});
-            } else {
-                req.session.isUserLogin = false;
-                console.log("Im Landed Now........................");
-                res.status(200).render("user/Home", { offers,banners,products,isUserLogin:req.session.isUserLogin});
-            }
-    } catch (error) {
-        console.log(error.message);
-    }
-});
+userRoute.get("/", controller.landing);
 
 // --------------------------------------------- User Login -----------------------------------------------
 
@@ -90,11 +47,20 @@ userRoute.get("/login", (req, res) => {
 
 // ------------------ Login with Mobile Number -----------------
 userRoute.get("/loginotp", (req, res) => {
+    if (req.session.isUserLogin){
+        res.redirect('/')
+    }
     res.status(200).render("user/user_loginotp", { error: "" });
 });
-
 // ------------------- OTP page -------------------
 userRoute.post("/mobile", otpcontroller.mobileNum);
+
+userRoute.get("/blockedLogin", (req, res) => {
+    res.render('user/user_loginotp',{error:"Your account is blocked"})
+})
+userRoute.get('/notFound', (req, res) => {
+    res.render('user/user_loginotp',{error:"This Number is not registered"})
+})
 
 // ------------------- OTP Submit -----------------
 userRoute.post("/otp", otpcontroller.otp);
@@ -107,8 +73,22 @@ userRoute.get("/signup", (req, res) => {
 
 userRoute.post("/signup", controller.Create);
 
+userRoute.get('/signupError',(req, res) => {
+    const error = req.session.error;
+    res.session.error = null;
+    res.render('user/user_signup',{ error });
+})
+
+
+
 // ----------- User Home ---------------
 userRoute.post("/home",controller.Find);
+
+userRoute.get('/loginError', (req, res) => {
+    const error = req.session.error;
+    // res.session.error = null;
+    res.render('user/user_login', { error });
+})
 
 // ------------------ Product Details ---------------------------
 userRoute.get('/productDetail', productController.productDetails)
@@ -162,63 +142,7 @@ userRoute.get('/buy-nowOff',async (req, res)=>{
     res.render('user/buyplace_order',{total:offers[0].offerPrice,user,product})
 })
 
-userRoute.post('/buyplace-order/:price/:proId',async (req, res)=>{
-    const userId = req.body.userId
-    const proId = req.body.proId
-    const total = parseInt(req.params.price);
-    console.log(`req.body : ${req.body}`)
-    console.log("Price", req.params.price);
-    console.log("User ID : ",req.body.userId)
-
-    let products = [{item:ObjectId(proId),quantity: 1}]
-
-    let status = req.body['payment-method']==='COD'?'placed':'pending'
-    let orderObj = new orderDb({
-        deliveryDetails:{
-            name:req.body.Name,
-            mobile:req.body.mobile,
-            address:req.body.address,
-            pincode:req.body.Pincode
-        },
-        userId:ObjectId(userId),
-        paymentMethod:req.body['payment-method'],
-        products:products,
-        totalAmount:total,
-        status:status,
-        date: new Date()
-    })
-    orderObj.save()
-    await productDb.updateOne({"_id": ObjectId(proId)},
-    {
-        $inc: { Quantity : -1 }
-    })
-    if(req.body['payment-method']=='COD'){
-        res.json({codSuccess:true})
-    }else{
-        console.log(`total : ${total} Product : ${products[0].item} `)
-        var options = {
-            amount: total*100,
-            currency: "INR",
-            receipt: ""+products[0].item,
-            notes: {
-                key1: "value3",
-                key2: "value2"
-            }
-        }
-        instance.orders.create(options, function(err, order) {
-            if (err) {
-                console.log('error',err);
-            }else {
-                console.log("New Order",order);
-                res.json(order);
-            }
-        })
-        
-    }
-    
-    
-
-})
+userRoute.post('/buyplace-order/:price/:proId',orderController.buynow)
 
 // ------------------ Cart -------------------
 userRoute.get('/cart',cartcontroller.userCart)
@@ -232,13 +156,13 @@ userRoute.get('/place-order',orderController.myOrders)
 
 userRoute.post('/place-order',orderController.orderPlacing)
 
-userRoute.get('/place-order-error/:error/:user/:total',(req,res)=>{
-    console.log(req.params);
-    const error = req.params.error;
-    const user = req.params.user;
-    const total = req.params.total;
-    res.render('user/place_order',{error,user:req.session.user,total})
-})
+// userRoute.get('/place-order-error/:error/:user/:total',(req,res)=>{
+//     console.log(req.params);
+//     const error = req.params.error;
+//     const user = req.params.user;
+//     const total = req.params.total;
+//     res.render('user/place_order',{error,user:req.session.user,total})
+// })
 
 userRoute.post('/verify-payment',orderController.paymentVerification)
 
@@ -265,10 +189,7 @@ userRoute.get('/user-orders',orderController.Find)
 
 // Cancel the orders
 userRoute.get('/cancel/:id',orderController.cancel)
-userRoute.put('/cancel/:id',(req,res)=>{
-    console.log('uyyyyyyyyyyy');
-    console.log(req.params.id);
-})
+
 
 
 userRoute.get("/logout_user", (req, res) => {

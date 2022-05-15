@@ -14,35 +14,35 @@ var serviceSid = process.env.TWILIO_SERVICE_SID;
 const client = require("twilio")(accountSid, authToken);
 
 exports.mobileNum = async (req, res) => {
+    if (req.session.isUserLogin) {
+        res.redirect('/')
+    } else {
     const user = await Userdb.findOne({number:req.body.number})
-    
-    console.log('------------- Number in Body: ',req.body.number,'----------Number in database : ',user)
     if (user){
         if (user.isBlocked){
-            res.render('user/user_loginotp',{error:"Your account is blocked"})
+            res.redirect('/blockedLogin')
         }else{
-
-        console.log("number", req.body.number);
     client.verify
         .services(serviceSid)
         .verifications.create({
             to: `+91${req.body.number}`,
             channel: "sms"
         })
-        .then((resp) => {
-            console.log("response ", resp);
+        .then(() => {
             res.status(200).render("user/user_login-otp",{error:false,number:req.body.number});
         });
     }
     }else{
-        res.render('user/user_loginotp',{error:"This Number is not registered"})
+        res.redirect('/notFound')
     }
-    
+}
 }
 
 exports.otp = async(req, res) => {
+    if (req.session.isUserLogin) {
+        res.redirect('/')
+    } else {
     const otp = req.body.otp;
-    console.log("otp", otp);
     client.verify
         .services(serviceSid)
         .verificationChecks.create({
@@ -50,8 +50,6 @@ exports.otp = async(req, res) => {
             code: otp,
         })
         .then(async(resp) => {
-            
-            console.log("response ", resp);
             if (resp.valid) {
                 const user = await Userdb.findOne({number:req.body.number})
                 req.session.user = user;
@@ -84,18 +82,19 @@ exports.otp = async(req, res) => {
                         }
                     }
                 ])
-                console.log('Home ==============>>',offers);
                 const products = await productDb.find()
                 const wishlist = await favDb.findOne({user:ObjectId(userId)})
                 fav = wishlist?.products
                 req.session.isUserLogin = true;
-                res.status(200).render('user/Home', { offers,banners,products,cartCount,fav,isUserLogin:req.session.isUserLogin })
+                // res.status(200).render('user/Home', { offers,banners,products,cartCount,fav,isUserLogin:req.session.isUserLogin })
+                res.redirect('/')
                 
             }else{
                 res.render('user/user_login-otp',{error:true,number:req.body.number});
             }
             
         });
+    }
 }
 
 exports.resend = (req,res)=>{
@@ -109,16 +108,4 @@ exports.resend = (req,res)=>{
                 console.log("response ", resp);
                 res.status(200).render("user/user_login-otp",{error:false,number:req.body.number});
             });
-        
-    console.log('*******************    req.body.number',req.body.number);
-    // client.verify
-    //     .services(serviceSid)
-    //     .verifications.create({
-    //         to: `+91${req.body.number}`,
-    //         channel: "sms"
-    //     })
-    //     .then((resp) => {
-    //         console.log("response ", resp);
-    //         res.status(200).render("user_login-otp",{error:false,number:req.body.number});
-    //     });
 }

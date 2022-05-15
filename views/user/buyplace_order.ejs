@@ -20,6 +20,7 @@
     <!-- bootstrap css -->
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <!-- style css -->
+    <script src="js/orderValidate.js"></script>
     <link rel="stylesheet" href="css/style.css">
     <!-- Responsive-->
     <link rel="stylesheet" href="css/responsive.css">
@@ -43,6 +44,11 @@
 <!-- body -->
 
 <body class="main-layout inner_posituong computer_page">
+    <nav class=" navbar-light "
+    style="background-color: #4843a3;height: 4em; color: white; padding-left: 42em;">
+    <a href="/" style="float: left;margin-left: -38em;margin-top: 1em;color: white;">Home</a>
+    <a class="navbar-brand" href="#" style="font-size: xx-large;font-weight: bold;color: white;position: absolute;left: 35rem;padding-top: 1rem;align-items: center;">CKart</a>
+    </nav>
     <!-- loader  -->
     <div class="loader_bg">
         <div class="loader"><img src="images/loading.gif" alt="#" /></div>
@@ -54,7 +60,7 @@
         <div class="header">
             <div class="container-fluid">
                 <div class="row">
-                    <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col logo_section">
+                    <!-- <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col logo_section">
                         <div class="full">
                             <div class="center-desk">
                                 <div class="logo">
@@ -62,7 +68,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
                     <div class="col-xl-9 col-lg-9 col-md-9 col-sm-9">
                         <nav class="navigation navbar navbar-expand-md navbar-dark ">
                             <button class="navbar-toggler" type="button" data-toggle="collapse"
@@ -95,25 +101,29 @@
                                     <form id="buyrequest"  class="main_form" action="">
                                         <div class="row">
                                             <div class="col-md-12 ">
-                                                <input class="contactus" placeholder="Name" type="type" name="Name">
+                                                <input class="contactus" placeholder="Name" type="type" oninput="namevalid()" id="fname" name="Name">
+                                                <p class="help-block" id="pname"></p>
                                             </div>
                                             <div class="col-md-12">
-                                                <input class="contactus" placeholder="Phone Number" type="type"
+                                                <input class="contactus" placeholder="Phone Number" oninput="numvalid()"  id="fnum" type="text"
                                                     name="mobile">
+                                                    <p class="help-block" id="pnum"></p>
                                                     <input type="text" name="userId" id="" value="<%=user._id%>" hidden>
                                             </div>
                                             <div class="col-md-12">
                                                 <input type="text" name="proId" id="proId" value="<%=product%>" hidden>
                                                 <input type="text" name="total" id="tot" value="<%=total%>" hidden>
-                                                <input class="contactus" placeholder="Pincode" type="type"
+                                                <input class="contactus" placeholder="Pincode" oninput="pinvalid()" id="fpin" type="type"
                                                     name="Pincode">
+                                                    <p class="help-block" id="ppin"></p>
                                             </div>
                                             <div class="col-md-12">
-                                                <textarea class="textarea" placeholder="Address" type="type" name="address"
+                                                <textarea class="textarea" placeholder="Address" id="faddress" oninput="addressvalid()" type="type" name="address"
                                                     Message="Name"></textarea>
+                                                    <p class="help-block" id="paddress"></p>
                                             </div>
                                             <div class="col-md-12">
-                                                <h1 style="color: white;font-weight: bold;">Total $<%=total%>
+                                                <h1 style="color: black;font-weight: bold;">Total $<%=total%>
                                                         </h3>
                                             </div>
                                             <div class="col-md-12">
@@ -128,7 +138,7 @@
                                                 </div>
                                             </div>
                                             <div class="col-md-12">
-                                                <button class="send_btn" type="submit ">Checkout</button>
+                                                <button class="send_btn" type="submit" onclick="namevalid();numvalid();pinvalid();addressvalid();" id="submit_btn">Checkout</button>
                                             </div>
                                         </div>
                                     </form>
@@ -142,22 +152,24 @@
                     <script>
                         $("#buyrequest").submit((e)=>{
                             e.preventDefault()
+                            if ( value1 && value2 && value3 && value4 && value5){
                             console.log(document.getElementById("tot").value)
                             price = parseFloat(document.getElementById("tot").value)
                             product = document.getElementById("proId").value
-                            $.ajax({
+                                $.ajax({
                                 url:`/buyplace-order/${price}/${product}`,
-                                method:'post',
-                                data:$('#buyrequest').serialize(),
-                                success:(response)=>{
-                                    console.log(response);
-                                    if(response.codSuccess){
-                                        location.href='/order-success'
-                                    }else{
-                                        razorpayPayment(response)
+                                    method:'post',
+                                    data:$('#buyrequest').serialize(),
+                                    success:(response)=>{
+                                        console.log(response);
+                                        if(response.codSuccess){
+                                            location.href='/order-success'
+                                        }else{
+                                            razorpayPayment(response)
+                                        }
                                     }
-                                }
-                            })
+                                })
+                            }
                         })
 
                         function razorpayPayment(order){

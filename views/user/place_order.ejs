@@ -104,7 +104,7 @@
                                     <form id="request"  class="main_form" action="">
                                         <div class="row">
                                             <div class="col-md-12 ">
-                                                <input class="contactus" type="text" placeholder="Name" oninput="namevalid();numchange()" id="fname" name="Name">
+                                                <input class="contactus" type="text" placeholder="Name" oninput="namevalid()" id="fname" name="Name">
                                                 <p class="help-block" id="pname"></p>
                                             </div>
                                             <div class="col-md-12">
@@ -139,7 +139,7 @@
                                                 </div>
                                             </div>
                                             <div class="col-md-12">
-                                                <button class="send_btn" type="submit" onclick="namevalid();numchange();numvalid();pinvalid();addressvalid();" id="submit_btn">Checkout</button>
+                                                <button class="send_btn" type="submit" onclick="namevalid();numvalid();pinvalid();addressvalid();" id="submit_btn">Checkout</button>
                                             </div>
                                         </div>
                                     </form>
@@ -159,11 +159,8 @@
                                 method:'post',
                                 data:$('#request').serialize(),
                                 success:(response)=>{
-                                    if (response.error) {
-                                        console.log(response);
-                                        location.href = `/place-order-error/${response.error}/${response.user}/${response.total}`;
-                                    }
-                                    else if(response.codSuccess){
+                                    console.log("RESPONSE",response);
+                                    if(response.codSuccess){
                                         location.href='/order-success'
                                     }else{
                                         razorpayPayment(response)

@@ -5,7 +5,7 @@ const orderDb = require('../model/orderModel');
 exports.create =async (req,res)=>{
     try{
         if (!req.body.name){
-            res.render('admin/add_category',{error:"Enter the Name of the Category"})
+            res.redirect('/CategoryErr')
         }else{
             const category = new categoryDb({
                 name:req.body.name,
@@ -27,8 +27,8 @@ exports.updatepage =async (req,res)=>{
 exports.update = async (req,res)=>{
     const id = req.params.id;
     if(!req.body.name){
-        const cate = await categoryDb.findOne({_id:id})
-        res.render('admin/category_update',{error:"Enter the name of the Category",cate})
+        req.session.id = id;
+        res.redirect('/editCateErr')
     }else{
     const cat = await categoryDb.findOne({_id:id})
     await categoryDb.findByIdAndUpdate(id,req.body,{useFindAndModify:false})
@@ -43,9 +43,5 @@ exports.delete = async (req,res)=>{
     await categoryDb.findByIdAndDelete(id)
     const products = await productDb.find({"Category":cat.name})
     await productDb.deleteMany({"Category":cat.name})
-    // for (const product of products){
-    //     console.log("Product ID : ",product._id);
-    //     await orderDb.deleteMany({"Category":cat.name})
-    // }
     res.redirect('/category')
 }

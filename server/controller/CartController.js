@@ -109,9 +109,7 @@ exports.changeProductQuantity =async (req,res,next)=>{
                 }
             }
         ])
-        console.log(totalValue);
         product.total = totalValue[0]?.total
-        console.log(product);
     res.json(product)
     }else{
         const userId = req.body.user

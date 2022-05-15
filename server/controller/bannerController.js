@@ -15,9 +15,8 @@ exports.showBanner = async (req,res) => {
 
 exports.addBanner = async (req, res) => {
     try {
-            console.log("body",req.body,"files",req.files);
             if (!req.files){
-                res.render('admin/banner_add', { error: "Banner Image is required"})
+                res.redirect('/bannerAddErr')
             }else{
             let image = req.files?.Image
             var uploadPath = './public/productsImg/' + Date.now()+'.jpeg'
@@ -57,7 +56,6 @@ exports.update = async (req, res)=>{
         var imgPath ='productsImg/' + Date.now()+'.jpeg'
         image.mv(uploadPath);
         }
-    console.log("id",id)
     const banner = {
         label:req.body.label,
         description:req.body.description,

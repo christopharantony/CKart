@@ -8,14 +8,7 @@ const Joi = require('joi');
 
 // --------------------------------------------- New Product -----------------------------------------------
 exports.create = async(req,res)=>{
-    if(!req.body){
-        res.status(400).send({ message :"Content can not be empty!"});
-        return;
-    }else{
-        console.log("req.body",req.body);
-        console.log("req.files",req.files);
         let images = [req.files?.Image1,req.files?.Image2,req.files?.Image3]
-        console.log(images);
         const imgPath = []
         if(images){
             for (const image of images){
@@ -44,19 +37,16 @@ exports.create = async(req,res)=>{
     const product = new productDb(proObj);
     const { error } = validate(proObj)
     if (error) {
-        const brand = await brandDb.find();
-        const cate = await categoryDb.find();
-        return res.render('admin/add_products',{ brand, cate, error: error.details[0].message});
+        req.session.error = error.details[0].message
+        res.redirect('/addProErr')
     }
         product.save(product)
-    .then((data)=>{
-        console.log(data);
+    .then(()=>{
         res.redirect('/admin-products')
     })
     .catch(err=>{
         console.log(err.message);
     });
-}
 }
 const validate = (data) => {
     const schema = Joi.object({
@@ -93,7 +83,6 @@ exports.updatepage = async(req,res)=>{
 //  Edit Product
 exports.update = async(req,res)=>{
     try {
-        
         const id = req.params.id;
         let images = []
         if(req.files?.Image1){images.push(req.files?.Image1)}
@@ -123,10 +112,9 @@ exports.update = async(req,res)=>{
         }
         const { error } = validate(product)
         if (error) {
-            const product =await productDb.findOne({_id:objectId(id)})
-            const brand =await brandDb.find()
-            const cate =await categoryDb.find()
-            res.render('admin/product_update',{error:error.details[0].message,product,cate,brand})
+            req.session.id = id;
+            req.session.error = error.details[0].message;
+            res.redirect('/updateProErr')
         }else{
         productDb.updateOne({_id:id},{$set: product })
         .then(()=>{
@@ -146,14 +134,10 @@ exports.update = async(req,res)=>{
             Category:req.body.Category            
         };
         const { error } = validate(product)
-        console.log('Type of Product : ',typeof(product.Quantity))
-        console.log('ProductId : ',id);
         if (error) {
-            const product =await productDb.findOne({_id:objectId(id)})
-            const brand =await brandDb.find()
-            const cate =await categoryDb.find()
-                res.render('admin/product_update',{error:error.details[0].message,product,cate,brand})
-
+            req.session.id = id;
+            req.session.error = error.details[0].message;
+            res.redirect('/updateProErr')
         }else{
         productDb.updateOne({_id:id},{$set: product })
         .then(()=>{

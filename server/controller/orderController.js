@@ -155,9 +155,72 @@ exports.myOrders = async(req,res)=>{
             }
         }
     ])
-    console.log(total[0]?.total);
     res.render('user/place_order',{error:"",total:total[0]?.total,user:req.session.user})
 }
+
+// --------------------------------------------- Buy now  -----------------------------------------------
+exports.buynow = async (req, res)=>{
+    const userId = req.body.userId
+    const proId = req.body.proId
+    const total = parseInt(req.params.price);
+
+    let products = [{item:ObjectId(proId),quantity: 1}]
+    const order = req.body
+    // let status = req.body['payment-method']==='COD'?'placed':'pending'
+    let status = 'pending'
+    let deliveryDetails = {
+        name:order.Name,
+        mobile:order.mobile,
+        address:order.address,
+        pincode:order.Pincode
+    }
+    const { error } = validate(deliveryDetails)
+    if (error){
+        // return res.render('user/place_order',{error: error.details[0].message,user:userId,total})
+        res.json({error: error.details[0].message,user:userId,total:total})
+    }else{
+    let orderObj = new orderDb({
+        deliveryDetails:deliveryDetails,
+        userId:ObjectId(userId),
+        paymentMethod:req.body['payment-method'],
+        products:products,
+        totalAmount:total,
+        status:status,
+        date: new Date()
+    })
+    orderObj.save()
+    await productDb.updateOne({"_id": ObjectId(proId)},
+    {
+        $inc: { Quantity : -1 }
+    })
+    if(req.body['payment-method']=='COD'){
+        res.json({codSuccess:true})
+    }else{
+        console.log(`total : ${total} Product : ${products[0].item} `)
+        var options = {
+            amount: total*100,
+            currency: "INR",
+            receipt: ""+products[0].item,
+            notes: {
+                key1: "value3",
+                key2: "value2"
+            }
+        }
+        instance.orders.create(options, function(err, order) {
+            if (err) {
+                console.log('error',err);
+            }else {
+                console.log("New Order",order);
+                res.json(order);
+            }
+        })
+    }
+    }
+}
+
+
+
+
 
 // --------------------------------------------- Order Placing -----------------------------------------------
 exports.orderPlacing = async(req,res)=>{
@@ -205,12 +268,11 @@ exports.orderPlacing = async(req,res)=>{
         address:order.address,
         pincode:order.Pincode
     }
-    const { error } = validate(deliveryDetails) 
-    console.log("Error===========================",error?.details[0].message);
-    if (error){
+    // const { error } = validate(deliveryDetails) 
+    // if (error){
         // return res.render('user/place_order',{error: error.details[0].message,user:userId,total})
-        res.json({error: error.details[0].message,user:userId,total:total})
-    }else{
+        // res.json({error: error.details[0].message,user:userId,total:total})
+    // }else{
     let status = order['payment-method']==='COD'?'placed':'pending'
     let orderObj = new orderDb({
         deliveryDetails:deliveryDetails,
@@ -251,8 +313,7 @@ exports.orderPlacing = async(req,res)=>{
                         }
                     })
                 }
-                console.log('Place order post req.body')
-            }
+            // }
 }
 // --------------------------------------------- Payment Verification -----------------------------------------------
 exports.paymentVerification = async(req, res)=>{
@@ -279,7 +340,7 @@ if(hmac==req.body.payment.razorpay_signature){
         const schema = Joi.object({
             name: Joi.string().required().label("Name"),
             mobile:Joi.string().length(10).pattern(/^[0-9]+$/).required().label("Mobile number"),
-            address: Joi.string().required().length(10).label("Address"),
+            address: Joi.string().required().min(10).label("Address"),
             pincode:Joi.string().length(6).pattern(/^[0-9]+$/).required().label("Pincode"),
         })
         return schema.validate(data)

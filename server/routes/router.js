@@ -85,13 +85,18 @@ route.get("/add", (req, res) => {
 
 route.post("/adding", controller.create);
 
+route.get('/adduserError', (req, res) => {
+    const error = req.session.error;
+    res.session.error = null;
+    res.render('admin/add_user',{ error })
+})
+
 // Searching User
 route.get("/search", controller.search);
 
 // User Status
 
 route.patch("/status/:id", controller.block);
-
 
 // ------------------------------------PRODUCTS---------------------------------------------------------
 
@@ -107,10 +112,30 @@ route.get("/add-product", async (req, res) => {
 // Adding Product
 route.post("/add-product", productController.create);
 
+route.get('/addProErr', async (req, res) => {
+    const error = req.session.error;
+    const cate = await categoryDb.find();
+    const brand = await brandDb.find();
+    res.session.error = null;
+    res.render('admin/add_products',{ brand, cate, error });
+})
+
 // Edit Product
 route.get("/update", productController.updatepage);
 
 route.put("/update/:id", productController.update);
+
+route.get("/updateProErr", async (req, res) => {
+    const error = req.session.error;
+    const id = req.session.id;
+    const product = await productDb.findOne({_id:objectId(id)})
+    const brand = await brandDb.find()
+    const cate = await categoryDb.find()
+    req.session.id = null;
+    req.session.error = null;
+    res.render('admin/product_update',{error,product,cate,brand})
+
+})
 
 route.delete("/delete/:id", productController.delete);
 
@@ -123,6 +148,10 @@ route.get('/banner-add',(req, res)=>{
     res.render('admin/banner_add',{error:""})
 })
 route.post('/banner-add',bannerController.addBanner)
+
+route.get('/bannerAddErr', (req, res)=>{
+    res.render('admin/banner_add', { error: "Banner Image is required"})
+})
 route.get('/banner-update',bannerController.updatePage)
 route.put('/banner-update/:id',bannerController.update)
 route.delete('/banner-delete/:id',bannerController.deleteBanner)
@@ -139,9 +168,20 @@ route.get("/add-brand", (req, res) => {
 
 route.post("/add-brand", brandController.create);
 
+route.get('/BrandErr', (req, res) => {
+    res.render('admin/add_brand',{error:"Enter the Name of the brand"})
+})
+
 route.get("/update-brand", brandController.updatepage);
 
 route.put("/update-brand/:id", brandController.update);
+
+route.get('/editBrandErr', async (req, res)=>{
+    const id = req.session.id;
+    req.session.id = null;
+    const brand = await brandDb.findOne({_id:id})
+    res.render('admin/brand_update',{error:"Enter the Name of the brand",brand})
+})
 
 route.delete("/delete-brand/:id", brandController.delete);
 
@@ -158,17 +198,44 @@ route.get("/add-category", (req, res) => {
 
 route.post("/add-category", catController.create);
 
+route.get('/CategoryErr', (req, res) => {
+    res.render('admin/add_category',{error:"Enter the Name of the Category"})
+})
+
 route.get("/update-cate", catController.updatepage);
 
 route.put("/update-cate/:id", catController.update);
+
+route.get('/editCateErr', async (req, res)=>{
+    const id = req.session.id;
+    req.session.id = null;
+    const cate = await categoryDb.findOne({_id:id})
+    res.render('admin/category_update',{error:"Enter the Name of the Category",cate})
+})
 
 route.delete("/delete-cate/:id", catController.delete);
 // --------------------------------------------- Offers -----------------------------------------------
 route.get("/offer",offerController.showOffer)
 route.get("/offer-add",offerController.adding) //Adding page
 route.post("/offer-add",offerController.addOffer)
+
+route.get('/offerAddErr', async (req, res)=>{
+    const error = req.session.error;
+    req.session.error = null;
+    const pros = await productDb.find()
+    return res.render('admin/offer_add',{pros,error})
+})
+
 route.get("/offer-update/:id",offerController.editOffer) //Update page
 route.put("/offer-update/:id",offerController.update)
+
+route.get('/offerEditErr', async (req, res)=>{
+    const error = req.session.error;
+    req.session.error = null;
+    const pros = await productDb.find()
+    return res.render('admin/offer_add',{pros,error})
+})
+
 route.delete("/offer-delete/:id",offerController.delete)
 
 // --------------------------------------------- Orders -----------------------------------------------

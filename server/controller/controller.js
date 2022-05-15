@@ -11,9 +11,59 @@ const passwordComplexity = require('joi-password-complexity');
 
 var ObjectId = require('mongoose').Types.ObjectId;
 
+exports.landing = async(req, res) => {
+    try {
+        const products =await productDb.find()
+        const banners = await bannerDb.find()
+        const offers = await offerDb.aggregate([
+            {
+                $lookup:{
+                    from: 'productdbs',
+                    localField:'proId',
+                    foreignField:'_id',
+                    as:'products'
+                }
+            },
+            {
+                $unwind:'$products'
+            },
+            {
+                $project:{
+                    id:'$products._id',
+                    price:'$products.Price',
+                    products:'$products',
+                    percentage:'$percentage',
+                    offerPrice:{ $divide: [{$multiply: ['$products.Price','$percentage']},100 ]}
+                }
+            }
+        ])
+            if (req.session.isUserLogin) {
+            let cartCount = 0
+            let cart = await cartDb.findOne({user:req.session.user._id})
+            if (cart) {
+                cartCount = cart.products.length
+            }
+            const userId = req.session.user?._id
+            const wishlist = await favDb.findOne({user:ObjectId(userId)})
+            fav = wishlist?.products
+                res.status(200).render("user/Home", { offers,banners,products,isUserLogin:req.session.isUserLogin,fav,cartCount});
+            } else {
+                req.session.isUserLogin = false;
+                res.status(200).render("user/Home", { offers,banners,products,isUserLogin:req.session.isUserLogin});
+            }
+    } catch (error) {
+        console.log(error.message);
+    }
+}
+
 // SignUp
 exports.Create = async (req, res) => {
         try {
+            const USER = await Userdb.findOne({ $or: [{email: req.body.email},{number: req.body.number}]})
+            if (USER){
+                req.session.error = "Account already in use"
+                res.redirect('/signupError')
+            }
             req.body.password = await bcrypt.hash(req.body.password,10)
             const userObj = {
                 name: req.body.name,
@@ -25,21 +75,17 @@ exports.Create = async (req, res) => {
             const user = new Userdb(userObj);
             const { error } = validate(userObj)
             if (error) {
-                return res.render('user/user_signup',{error: error.details[0].message})
+                req.session.error = error.details[0].message
+                return res.redirect('/signupError')
             }
-            if (user.password.length > 7) {
                 user.save()
                     .then(() => {
-                        res.status(201).render('user/user_login', { error: "" })
+                        res.status(201).redirect('/login')
                     })
                     .catch(err => {
-                        console.log(err.message);
-                        res.status(401).render('user/user_signup', { error: "Account already in use" })
+                        console.log(err);
+                        res.send("Error: " + err.message)
                     })
-            } else {
-                res.render('user/user_signup', { error: "Password must contain atleast 8 characters" })
-            }
-            
         } catch (error) {
             console.log(error.message);
             res.send("Error Message: " + error.message)
@@ -56,63 +102,65 @@ exports.Find = async (req, res) => {
         let userDb = await Userdb.findOne({ email: req.body.email})
         if (userDb) {
             if (userDb.isBlocked) {
-                res.render('user/user_login', { error: "Your account is blocked" })
+                req.session.error = "Your account is blocked";
+                res.redirect("/loginError")
             }else{
             req.session.user = userDb;
             const userId = req.session.user?._id
             bcrypt.compare(req.body.password,userDb.password).then((status)=>{
                 if(status){
-
-
-            let cartCount = 0
-            // let cart = await cartDb.findOne({user:userDb._id})
-            cartDb.findOne({user:userDb._id})
-            .then((cart)=>{
-                // const banners = await bannerDb.find()
-                bannerDb.find()
-                .then((banners)=>{
-                    if (cart) {
-                        cartCount = cart.products.length
-                }
-                // const offers = await offerDb.aggregate([
-                offerDb.aggregate([
-                    {
-                        $lookup:{
-                            from: 'productdbs',
-                            localField:'proId',
-                            foreignField:'_id',
-                        as:'products'
-                    }
-                },
-                {
-                    $unwind:'$products'
-                },
-                {
-                    $project:{
-                        id:'$products._id',
-                        price:'$products.Price',
-                        products:'$products',
-                        percentage:'$percentage',
-                        offerPrice:{ $divide: [{$multiply: ['$products.Price','$percentage']},100 ]}
-                    }
-                }
-            ]).then(async(offers)=>{
-
-                const products = await productDb.find()
-                const wishlist = await favDb.findOne({user:ObjectId(userId)})
-                fav = wishlist?.products
-                req.session.isUserLogin = true;
-                res.status(200).render('user/Home', { offers,banners,products,cartCount,fav,isUserLogin:req.session.isUserLogin })
-            })
-        })
-        })
+                    req.session.isUserLogin = true;
+                    res.redirect('/')
+        //     let cartCount = 0
+        //     // let cart = await cartDb.findOne({user:userDb._id})
+        //     cartDb.findOne({user:userDb._id})
+        //     .then((cart)=>{
+        //         // const banners = await bannerDb.find()
+        //         bannerDb.find()
+        //         .then((banners)=>{
+        //             if (cart) {
+        //                 cartCount = cart.products.length
+        //         }
+        //         // const offers = await offerDb.aggregate([
+        //         offerDb.aggregate([
+        //             {
+        //                 $lookup:{
+        //                     from: 'productdbs',
+        //                     localField:'proId',
+        //                     foreignField:'_id',
+        //                 as:'products'
+        //             }
+        //         },
+        //         {
+        //             $unwind:'$products'
+        //         },
+        //         {
+        //             $project:{
+        //                 id:'$products._id',
+        //                 price:'$products.Price',
+        //                 products:'$products',
+        //                 percentage:'$percentage',
+        //                 offerPrice:{ $divide: [{$multiply: ['$products.Price','$percentage']},100 ]}
+        //             }
+        //         }
+        //     ]).then(async(offers)=>{
+        //         const products = await productDb.find()
+        //         const wishlist = await favDb.findOne({user:ObjectId(userId)})
+        //         fav = wishlist?.products
+        //         req.session.isUserLogin = true;
+        //         res.status(200).render('user/Home', { offers,banners,products,cartCount,fav,isUserLogin:req.session.isUserLogin })
+        //     })
+        // })
+        // })
         }else{
-            res.render('user/user_login', { error: "Invalid Password" })
+            req.session.error = "Invalid Password";
+            res.redirect('/loginError')
         }
     })
 }
         } else {
-            res.render('user/user_login', { error: "Invalid Username and Password" })
+            req.session.error = "Invalid Username and Password";
+            res.redirect('/loginError')
         }
         
     }
@@ -120,8 +168,14 @@ exports.Find = async (req, res) => {
 
 // Create and Save new user
 
-exports.create = (req, res) => {
+exports.create = async (req, res) => {
     try {
+        const USER = await Userdb.findOne({ $or: [{email: req.body.email},{number: req.body.number}]})
+        if (USER){
+            req.session.error = "Account already in use"
+            res.redirect('/adduserError')
+        }
+        req.body.password = await bcrypt.hash(req.body.password,10)
         const userObj = {
             name: req.body.name,
             email: req.body.email,
@@ -132,27 +186,24 @@ exports.create = (req, res) => {
         const user = new Userdb(userObj);
         const { error } = validate(userObj);
         if (error) {
-            return res.render('admin/add_user',{error: error.details[0].message})
+            req.session.error = error.details[0].message
+            return res.redirect('/adduserError')
         }else{
-    if (user.password.length > 7) {
         user.save(user)
         .then(() => {
-            res.render('admin/add_user', { error: "" })
+            req.session.error = ""
+            res.redirect('/adduserError')
             })
             .catch(err => {
-                console.log(err.message);
-                res.render('admin/add_user', { error: "Account is already in use" })
+                console.log(err);
+                res.send('Error',err.message)
                 
             })
-        } else {
-            res.render('admin/add_user', { error: "Password must contain at least 8 characters" })
         }
-    }
-}catch(err) {
-    console.log(err.message);
+    }catch(err) {
+    console.log(err);
         res.send("Error During creating user: " + err.message)
     }
-
 }
 
 // Admin Home

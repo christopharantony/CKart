@@ -5,7 +5,7 @@ const productDb = require('../model/productModel')
 exports.create =async (req,res)=>{
     try{
         if (!req.body.name){
-            res.render('admin/add_brand',{error:"Enter the Name of the brand"})
+            res.redirect('/BrandErr')
         }else{
             const brand = new brandDb({
                 name:req.body.name,
@@ -26,8 +26,8 @@ exports.updatepage =async (req,res)=>{
 exports.update = async (req,res)=>{
     const id = req.params.id;
     if (!req.body.name){
-        const brand = await brandDb.findOne({_id:id})
-        res.render('admin/brand_update',{error:"Enter the Name of the brand",brand})
+        req.session.id = id;
+        res.redirect('/editBrandErr')
     }else{
     const brand = await brandDb.findOne({_id:id}) 
     await brandDb.findByIdAndUpdate(id,req.body,{useFindAndModify:false})

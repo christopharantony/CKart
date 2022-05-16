@@ -229,12 +229,12 @@ exports.myOrders = async(req,res)=>{
 
 // --------------------------------------------- Buy now  -----------------------------------------------
 exports.buynow = async (req, res)=>{
-    const userId = req.body.userId
-    const proId = req.body.proId
+    const userId = req.body.userId;
+    const proId = req.body.proId;
     const total = parseInt(req.params.price);
     // console.log(userId,proId,total);
     let products = [{item:ObjectId(proId),quantity: 1}]
-    const order = req.body
+    const order = req.body;
     // let status = req.body['payment-method']==='COD'?'placed':'pending'
     let status = 'pending'
     let deliveryDetails = {
@@ -242,12 +242,12 @@ exports.buynow = async (req, res)=>{
         mobile:order.mobile,
         address:order.address,
         pincode:order.Pincode
-    }
-    const { error } = validate(deliveryDetails)
-    if (error){
-        // return res.render('user/place_order',{error: error.details[0].message,user:userId,total})
-        res.json({error: error.details[0].message,user:userId,total:total})
-    }else{
+    };
+    // const { error } = validate(deliveryDetails)
+    // if (error){
+    //     // return res.render('user/place_order',{error: error.details[0].message,user:userId,total})
+    //     res.json({error: error.details[0].message,user:userId,total:total})
+    // }else{
     let orderObj = new orderDb({
         deliveryDetails:deliveryDetails,
         userId:ObjectId(userId),
@@ -256,15 +256,15 @@ exports.buynow = async (req, res)=>{
         totalAmount:total,
         status:status,
         date: new Date()
-    })
-    orderObj.save()
+    });
+    orderObj.save();
     await productDb.updateOne({"_id": ObjectId(proId)},
     {
         $inc: { Quantity : -1 }
-    })
+    });
     if(req.body['payment-method']=='COD'){
         res.json({codSuccess:true})
-    }else{
+    }else if(req.body['payment-method']=='ONLINE'){
         console.log(`total : ${total} Product : ${products[0].item}`)
         var options = {
             amount: total*100,
@@ -278,13 +278,14 @@ exports.buynow = async (req, res)=>{
         instance.orders.create(options, function(err, order) {
             if (err) {
                 console.log('error',err);
+                
             }else {
                 console.log("New Order",order);
                 res.json(order);
             }
         })
     }
-    }
+    // }
 }
 
 

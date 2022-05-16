@@ -519,7 +519,7 @@ ul.btn li:last-child {
 
 .titlepage {
      text-align: center;
-     padding-bottom: 60px;
+     /* padding-bottom: 60px; */
 }
 
 .titlepage h2 {
@@ -802,12 +802,12 @@ ul.btn li:last-child {
 
 .main_form {
      padding: 70px 50px;
-     border: #000 solid 2px;
+     border: #4843a3 solid 2px;
      margin: 0 50px;
 }
 
 .main_form .contactus {
-     border: #000 solid 2px;
+     border: #4843a3 solid 2px;
      padding: 0px 15px;
      margin-top: 25px;
      width: 100%;
@@ -819,7 +819,7 @@ ul.btn li:last-child {
 }
 
 .main_form .textarea {
-     border: #000 solid 2px;
+     border: #4843a3 solid 2px;
      padding: 0px 15px;
      margin-top: 25px;
      width: 100%;

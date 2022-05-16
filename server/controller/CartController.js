@@ -6,24 +6,17 @@ var ObjectId = require('mongoose').Types.ObjectId;
 exports.addToCart = async(req,res)=>{
     const userId = req.session.user?._id;
     const proId = req.params.id;
-    console.log("Product ID : ",proId);
-    console.log("User ID : ",userId);
     let proObj={
         item:ObjectId(proId),
         quantity:1
     }
     let userCart = await cartDb.findOne({user:ObjectId(userId)})
-    console.log('userCart.products : ',userCart?.products);   
-    console.log('ProductId : ',ObjectId(proId));
     if (userCart) {
         let data = userCart.products
-        console.log("data",data)
         let proExist = data.findIndex(product => {
             console.log(product.item, ObjectId(proId));
             let val1 = JSON.stringify(product.item)
             let val2 = JSON.stringify(ObjectId(proId))
-            
-            console.log('check', typeof(val1), typeof(val2), val1, val2)
             if(val1 == val2){
                     return true
                 
@@ -31,10 +24,8 @@ exports.addToCart = async(req,res)=>{
                 return false
             }
         } )
-        console.log('Product Exist in : ' ,proExist);
         if(proExist != -1){
-            console.log('Im going to increment the quantity');
-            const product = await cartDb.updateOne({"user":ObjectId(userId),"products.item":ObjectId(proId)},
+            await cartDb.updateOne({"user":ObjectId(userId),"products.item":ObjectId(proId)},
             {
                 $inc:{"products.$.quantity":1}
             }
@@ -180,8 +171,10 @@ exports.getTotalAmount
 // --------------------------------------------- View Cart {User} -----------------------------------------------
 
 exports.userCart = async(req,res)=>{
-    const userId = req.session.user?._id;
-    let cartItems = await cartDb.aggregate([
+    try {
+        
+        const userId = req.session.user?._id;
+        let cartItems = await cartDb.aggregate([
         {
             $match:{user:ObjectId(userId)}
         },
@@ -208,7 +201,71 @@ exports.userCart = async(req,res)=>{
             }
         }
     ])
-    
+
+    let offerPrice = await cartDb.aggregate([
+        {
+            $match:{user:ObjectId(userId)}
+        },
+        {
+            $unwind:'$products'
+        },
+        {
+            $project:{
+                item:'$products.item',
+                quantity:'$products.quantity'
+            }
+        },
+        {
+            $lookup:{
+                from:'offerdbs',
+                localField:'item',
+                foreignField:'proId',
+                as:'offerCart'
+            }
+        },
+        {
+            $unwind: '$offerCart'
+        },
+        {
+            $project:{
+                percentage:'$offerCart.percentage',
+                status:'$offerCart.status',
+                proId:'$item',
+                quantity: 1
+            }
+        },
+        {
+            $lookup:{
+                from: 'productdbs',
+                localField:'proId',
+                foreignField:'_id',
+                as:'products'
+            }
+        },
+        {
+            $unwind:'$products'
+        },
+        {
+            $project:{
+                percentage: 1,
+                status: 1,
+                proId: 1,
+                quantity: 1,
+                offerPrice:{ $divide: [{$multiply: ['$quantity','$products.Price','$percentage']},100 ]},
+                productPrice: {$multiply: ['$products.Price', '$quantity'] },
+                // saving:{ $subtract: [ '$products.Price', { $divide: [{$multiply: ['$products.Price','$quantity','$percentage']},100 ]} ] }
+            }
+        },
+
+    ])
+    console.log("OoooooferPrice",offerPrice);
+    const saving = offerPrice.map(data => data.saving).reduce((total, save)=>{
+        return total + save;
+    },0)
+    const totalOffer = offerPrice.map(data => data.offerPrice).reduce((total, save)=>{
+        return total + save;
+    },0)
+    console.log(saving);
     let totalValue = await cartDb.aggregate([
         {
             $match:{user:ObjectId(userId)}
@@ -249,8 +306,12 @@ exports.userCart = async(req,res)=>{
     for (const cart of cartItems) {
         totalNo = cart.quantity + totalNo;
     }
-    console.log(totalNo)
-    res.render('user/cart',{cartItems,totalNo,user:req.session.user,totalValue:totalValue[0]?.total})
+    const save = (totalValue[0]?.total) - totalOffer;
+    res.render('user/cart',{save,totalOffer,cartItems,totalNo,user:req.session.user,totalValue:totalValue[0]?.total})
+} catch (error) {
+    console.log(error)
+    res.status(400).send("Error"+error.message)
+}
 }
 
 

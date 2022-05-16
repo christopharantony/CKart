@@ -122,7 +122,64 @@ exports.cancelOrder = async(req,res)=>{
 // --------------------------------------------- My Order -----------------------------------------------
 exports.myOrders = async(req,res)=>{
     const userId = req.session.user?._id;
-    let total = await cartDb.aggregate([
+
+    let offerPrice = await cartDb.aggregate([
+        {
+            $match:{user:ObjectId(userId)}
+        },
+        {
+            $unwind:'$products'
+        },
+        {
+            $project:{
+                item:'$products.item',
+                quantity:'$products.quantity'
+            }
+        },
+        {
+            $lookup:{
+                from:'offerdbs',
+                localField:'item',
+                foreignField:'proId',
+                as:'offerCart'
+            }
+        },
+        {
+            $unwind: '$offerCart'
+        },
+        {
+            $project:{
+                percentage:'$offerCart.percentage',
+                status:'$offerCart.status',
+                proId:'$item',
+                quantity: 1
+            }
+        },
+        {
+            $lookup:{
+                from: 'productdbs',
+                localField:'proId',
+                foreignField:'_id',
+                as:'products'
+            }
+        },
+        {
+            $unwind:'$products'
+        },
+        {
+            $project:{
+                percentage: 1,
+                status: 1,
+                proId: 1,
+                quantity: 1,
+                offerPrice:{ $divide: [{$multiply: ['$quantity','$products.Price','$percentage']},100 ]},
+                productPrice: {$multiply: ['$products.Price', '$quantity'] },
+                // saving:{ $subtract: [ '$products.Price', { $divide: [{$multiply: ['$products.Price','$quantity','$percentage']},100 ]} ] }
+            }
+        },
+
+    ])
+    let totalValue = await cartDb.aggregate([
         {
             $match:{user:ObjectId(userId)}
         },
@@ -151,11 +208,23 @@ exports.myOrders = async(req,res)=>{
         {
             $group:{
                 _id:null,
-                total:{$sum: { $multiply: ['$quantity','$product.Price']}}
+                total:{$sum: { $multiply: ['$quantity','$product.Price']}},
+                totalCount:{$sum: '$quantity'}
             }
         }
     ])
-    res.render('user/place_order',{error:"",total:total[0]?.total,user:req.session.user})
+    console.log(totalValue);
+    console.log("OoooooferPrice",offerPrice);
+    const totalOffer = offerPrice.map(data => data.offerPrice).reduce((total, save)=>{
+        return total + save;
+    },0)
+    // const normalPrice = offerPrice.map(data => data.productPrice).reduce((normal, save)=>{
+    //     return normal + save;
+    // },0)
+    const total = totalValue[0].total - totalOffer;
+    console.log(`Total : ${total} Normal Price : ${totalValue[0].total} totalOffer : ${totalOffer}`);
+    
+    res.render('user/place_order',{error:"",total,user:req.session.user})
 }
 
 // --------------------------------------------- Buy now  -----------------------------------------------
@@ -196,7 +265,7 @@ exports.buynow = async (req, res)=>{
     if(req.body['payment-method']=='COD'){
         res.json({codSuccess:true})
     }else{
-        console.log(`total : ${total} Product : ${products[0].item} `)
+        console.log(`total : ${total} Product : ${products[0].item}`)
         var options = {
             amount: total*100,
             currency: "INR",
@@ -225,8 +294,65 @@ exports.buynow = async (req, res)=>{
 // --------------------------------------------- Order Placing -----------------------------------------------
 exports.orderPlacing = async(req,res)=>{
     const userId = req.body.userId
+    console.log(userId);
     let cart = await cartDb.findOne({user:ObjectId(userId)})
-    let totalPrize = await cartDb.aggregate([
+    let offerPrice = await cartDb.aggregate([
+        {
+            $match:{user:ObjectId(userId)}
+        },
+        {
+            $unwind:'$products'
+        },
+        {
+            $project:{
+                item:'$products.item',
+                quantity:'$products.quantity'
+            }
+        },
+        {
+            $lookup:{
+                from:'offerdbs',
+                localField:'item',
+                foreignField:'proId',
+                as:'offerCart'
+            }
+        },
+        {
+            $unwind: '$offerCart'
+        },
+        {
+            $project:{
+                percentage:'$offerCart.percentage',
+                status:'$offerCart.status',
+                proId:'$item',
+                quantity: 1
+            }
+        },
+        {
+            $lookup:{
+                from: 'productdbs',
+                localField:'proId',
+                foreignField:'_id',
+                as:'products'
+            }
+        },
+        {
+            $unwind:'$products'
+        },
+        {
+            $project:{
+                percentage: 1,
+                status: 1,
+                proId: 1,
+                quantity: 1,
+                offerPrice:{ $divide: [{$multiply: ['$quantity','$products.Price','$percentage']},100 ]},
+                productPrice: {$multiply: ['$products.Price', '$quantity'] },
+                // saving:{ $subtract: [ '$products.Price', { $divide: [{$multiply: ['$products.Price','$quantity','$percentage']},100 ]} ] }
+            }
+        },
+
+    ])
+    let totalValue = await cartDb.aggregate([
         {
             $match:{user:ObjectId(userId)}
         },
@@ -255,12 +381,17 @@ exports.orderPlacing = async(req,res)=>{
         {
             $group:{
                 _id:null,
-                total:{$sum: { $multiply: ['$quantity','$product.Price']}}
+                total:{$sum: { $multiply: ['$quantity','$product.Price']}},
+                totalCount:{$sum: '$quantity'}
             }
         }
     ])
+    console.log("OoooooferPrice",offerPrice);
+    const totalOffer = offerPrice.map(data => data.offerPrice).reduce((total, save)=>{
+        return total + save;
+    },0)
     const order = req.body
-    var total = totalPrize[0].total
+    const total = totalValue[0].total - totalOffer;
     let products = cart.products
     let deliveryDetails = {
         name:order.Name,

@@ -69,9 +69,11 @@
 
                                     <p class="product-quantity">Qnt:
 
-                                    <div class="input-group" style="width: 110px;">
-                                        <span class="input-group-btn">
-                                            <button type="button" class="btn btn-danger btn-number" data-type="minus"
+                                    <div class="input-group" style="width:auto; display:flex">
+                                        <!-- <span class="input-group-btn"> -->
+
+                                            
+                                            <!-- <button type="button" class="btn btn-danger btn-number" data-type="minus"
                                                 data-field="quant[2]"
                                                 onclick="changeQuantity('<%=cartItems[i]._id%>' , '<%=cartItems[i].product._id%>', '<%=user._id%>' , -1)">
                                                 <span class="glyphicon glyphicon-minus"></span>
@@ -81,14 +83,36 @@
                                             id="<%=cartItems[i].product._id%>" value="<%=cartItems[i].quantity%>"
                                             min="1" max="10" style="width: 42px;">
                                             <%=cartItems[i].quantity%>
-                                        </span>
-                                        <span class="input-group-btn">
+                                        </span> -->
+
+<!--                                         
+                                        <td style="display: flex;  height: 7rem; width: 7rem; justify-content: center;">
+                                                    <button
+                                                        onclick="changeQuantity('<%=cartItems[i]._id%>' , '<%=cartItems[i].product._id%>', '<%=user._id%>' , -1)"
+                                                        class="cart-item-count mr-3 quantityChange">-</button>
+                                                    <p style="padding: 2rem 1rem 0rem 1rem;">
+                                                        <span id="<%=cartItems[i].product._id%>">
+                                                            <%=cartItems[i].quantity%>
+                                                        </span>
+                                                    </p>
+                                                    <button
+                                                        onclick="changeQuantity('<%=cartItems[i]._id%>' , '<%=cartItems[i].product._id%>', '<%=user._id%>' , 1)"
+                                                        class="cart-item-count mr-3 quantityChange">+</button>
+                                                </td> -->
+
+
+                                                <button style="height:3rem ; width:3rem;" onclick="changeQuantity('<%=cartItems[i]._id%>' , '<%=cartItems[i].product._id%>', '<%=user._id%>' , -1)">-</button>
+                                                <p id="<%=cartItems[i].product._id%>" style="display: flex; padding-top:0.4rem; margin: 0px 1rem"><%=cartItems[i].quantity%></p>
+                                                <button style="height:3rem ; width:3rem; " onclick="changeQuantity('<%=cartItems[i]._id%>' , '<%=cartItems[i].product._id%>', '<%=user._id%>' , 1)">+</button>
+
+
+                                        <!-- <span class="input-group-btn">
                                             <button type="button" class="btn btn-success btn-number" data-type="plus"
                                                 data-field="quant[2]"
                                                 onclick="changeQuantity('<%=cartItems[i]._id%>' , '<%=cartItems[i].product._id%>', '<%=user._id%>' , 1)">
                                                 <span class="glyphicon glyphicon-plus"></span>
                                             </button>
-                                        </span>
+                                        </span> -->
                                     </div>
 
                                     <button class="product-remove"
@@ -108,40 +132,88 @@
 
 
             </div>
-
+            <% if (totalOffer) { %>
             <div class="cart-total">
 
                 <p>
 
-                    <span>Total Price</span>
+                    <span>Price</span>
 
                     <span>$ <span id="total">
                             <%=totalValue%>
                         </span> </span>
 
                 </p>
-
+                
                 <p>
-
+                    
                     <span>Number of Items</span>
-
+                    
                     <span id="totalNo">
                         <%=totalNo%>
                     </span>
-
+                    
                 </p>
-
+                
+                <p>
+                    
+                    <span>You Save</span>
+                    <span>$ <%=totalOffer%></span>
+                    
+                </p>
                 <p>
 
-                    <span>You Save</span>
+                    <span>Total Price</span>
 
-                    <span>$ 0</span>
+                    <span>$ <span id="total">
+                        <%=save%>
+                        </span> </span>
 
                 </p>
-
+                
                 <a href="/place-order">Proceed to Checkout</a>
 
             </div>
+            <% } else { %>
+                <div class="cart-total">
+
+                    <p>
+                        <span>Price</span>
+                        <span>$ <span id="total">
+                                <%=totalValue%>
+                            </span> </span>
+                    </p>
+                    
+                    <p>
+                        
+                        <span>Number of Items</span>
+                        
+                        <span id="totalNo">
+                            <%=totalNo%>
+                        </span>
+                        
+                    </p>
+                    
+                    <p>
+                        
+                        <span>You Save</span>
+                        <span>$ 0</span>
+                        
+                    </p>
+                    <p>
+    
+                        <span>Total Price</span>
+    
+                        <span>$ <span id="total">
+                                <%=totalValue%>
+                            </span> </span>
+    
+                    </p>
+                    
+                    <a href="/place-order">Proceed to Checkout</a>
+    
+                </div>
+            <% } %>
 
         </div>
 

@@ -105,42 +105,48 @@ userRoute.get('/buy-now',async (req, res)=>{
     const user = req.session.user;
     const product = req.query.id;
     const pro = await productDb.findById(product)
-    res.render('user/buyplace_order',{total:pro.Price,user,product})
+    const offer = await offerDb.findOne({proId:product})
+    if (offer) {
+        var total = pro.Price - ( ( pro.Price * offer.percentage ) / 100 )
+    }else{
+        var total = pro.Price
+    }
+    res.render('user/buyplace_order',{total,user,product})
 })
-userRoute.get('/buy-nowOff',async (req, res)=>{
-    const user = req.session.user;
-    const product = req.query.id;
-    // const pro = await productDb.findById(product)
-    const offers = await offerDb.aggregate([
-        {
-            $match:{
-                proId:ObjectId(product)
-            }
-        },
-        {
-            $lookup:{
-                from: 'productdbs',
-                localField:'proId',
-                foreignField:'_id',
-                as:'products'
-            }
-        },
-        {
-            $unwind:'$products'
-        },
-        {
-            $project:{
-                id:'$products._id',
-                price:'$products.Price',
-                products:'$products',
-                percentage:'$percentage',
-                offerPrice:{ $divide: [{$multiply: ['$products.Price','$percentage']},100 ]}
-            }
-        }
-    ])
-    console.log(offers[0].offerPrice);
-    res.render('user/buyplace_order',{total:offers[0].offerPrice,user,product})
-})
+// userRoute.get('/buy-nowOff',async (req, res)=>{
+//     const user = req.session.user;
+//     const product = req.query.id;
+//     // const pro = await productDb.findById(product)
+//     const offers = await offerDb.aggregate([
+//         {
+//             $match:{
+//                 proId:ObjectId(product)
+//             }
+//         },
+//         {
+//             $lookup:{
+//                 from: 'productdbs',
+//                 localField:'proId',
+//                 foreignField:'_id',
+//                 as:'products'
+//             }
+//         },
+//         {
+//             $unwind:'$products'
+//         },
+//         {
+//             $project:{
+//                 id:'$products._id',
+//                 price:'$products.Price',
+//                 products:'$products',
+//                 percentage:'$percentage',
+//                 offerPrice:{ $divide: [{$multiply: ['$products.Price','$percentage']},100 ]}
+//             }
+//         }
+//     ])
+//     console.log(offers[0].offerPrice);
+//     res.render('user/buyplace_order',{total:offers[0].offerPrice,user,product})
+// })
 
 userRoute.post('/buyplace-order/:price/:proId',orderController.buynow)
 

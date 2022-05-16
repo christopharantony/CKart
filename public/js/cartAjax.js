@@ -1,5 +1,5 @@
 function addToCart(proId) {
-    
+    console.log(proId);
     $.ajax({
         url: `/add-to-cart${proId}`,
         method: "get",
@@ -45,36 +45,36 @@ function addToFav(proId) {
 
 // --------------------------------------------      Offers        ----------------------------------
 
-function addToCartOff(offId) {
+// function addToCartOff(offId) {
     
-    $.ajax({
-        url: `/add-to-cartOff${offId}`,
-        method: "get",
-        success: (response) => { 
-            if (response.status){
-                let count = $('#cart-count').html()
-                count = parseInt(count)+1
-                $("#cart-count").html(count)
-            }
-            const Toast = Swal.mixin({
-                toast: true,
-                position: 'top-end',
-                showConfirmButton: false,
-                timer: 800,
-                timerProgressBar: true,
-                didOpen: (toast) => {
-                    toast.addEventListener('mouseenter', Swal.stopTimer)
-                    toast.addEventListener('mouseleave', Swal.resumeTimer)
-                }
-            })
-            Toast.fire({
-                icon: 'success',
-                title: 'Added to cart'
-            })
-        },
-    });
-}
+//     $.ajax({
+//         url: `/add-to-cartOff${offId}`,
+//         method: "get",
+//         success: (response) => { 
+//             if (response.status){
+//                 let count = $('#cart-count').html()
+//                 count = parseInt(count)+1
+//                 $("#cart-count").html(count)
+//             }
+//             const Toast = Swal.mixin({
+//                 toast: true,
+//                 position: 'top-end',
+//                 showConfirmButton: false,
+//                 timer: 800,
+//                 timerProgressBar: true,
+//                 didOpen: (toast) => {
+//                     toast.addEventListener('mouseenter', Swal.stopTimer)
+//                     toast.addEventListener('mouseleave', Swal.resumeTimer)
+//                 }
+//             })
+//             Toast.fire({
+//                 icon: 'success',
+//                 title: 'Added to cart'
+//             })
+//         },
+//     });
+// }
 
 function addCartButton(){
-    Swal.fire('Please,Login to Add to Cart')
+    Swal.fire('Please Login')
 }

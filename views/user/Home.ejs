@@ -79,18 +79,10 @@
                                  <h1>$<%=offers[i].offerPrice%>
                                  </h1>
                                  <% if (isUserLogin) { %>
-                                    <!-- <% if (fav?.includes(offers[i].products._id)) { %>
-                                       <button onclick="addToFav('<%=offers[i].products._id%>')"><i
-                                             class="fa-solid fa-heart" style="color: red;"
-                                             id="<%=offers[i].products._id%>"></i></button>
-                                    <% } else { %>
-                                          <button onclick="addToFav('<%=offers[i].products._id%>')"><i
-                                                class="fa-solid fa-heart" id="<%=offers[i].products._id%>"></i></button>
-                                    <% } %> -->
-                                             <button onclick="addToCartOff('<%=offers[i]._id%>')"
+                                             <button onclick="addToCart('<%=offers[i].products._id%>')"
                                                 class="btc_home" style="margin-left:2rem"> Add
                                                 to cart</button>
-                                             <a href="/buy-nowOff?id=<%= offers[i].products._id%> ">
+                                             <a href="/buy-now?id=<%= offers[i].products._id%> ">
                                                 <h3 class="atc_home" style="margin-left: 119px;">Buy Now</h3>
                                              </a>
                                  <% } else {%>
@@ -100,7 +92,7 @@
                                                    </button>
                                                    
                                                 <!-- </a> -->
-                                                <a href="/buy-now?id=<%= offers[i].products._id%> ">
+                                                <a onclick="addCartButton()">
                                                    <h3 class="atc_home">Buy Now</h3>
                                                 </a>
                                  <% } %>
@@ -148,7 +140,6 @@
                                  <h1>$<%=products[i].Price%>
                                  </h1>
                                  <% if (isUserLogin) { %>
-                                    <% console.log('fav',fav,'id',products[i]._id) %>
                                        <% if (fav?.includes(products[i]._id)) { %>
                                           <button onclick="addToFav('<%=products[i]._id%>')"><i
                                                 class="fa-solid fa-heart" style="color: red;"
@@ -167,7 +158,11 @@
                                                    <button class="btc_home" onclick="addCartButton()">
                                                       Add to cart
                                                    </button>
-                                                   <a href="/buy-now?id=<%= products[i]._id%> ">
+                                                   <!-- <button class="atc_home" onclick="addCartButton()">
+                                                      Buy Now
+                                                   </button> -->
+
+                                                   <a onclick="addCartButton()">
                                                       <h3 class="atc_home">Buy Now</h3>
                                                    </a>
                                                    <% } %>

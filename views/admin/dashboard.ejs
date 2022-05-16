@@ -106,7 +106,7 @@
         <div class="btn btn-light"
             style="background: #ebe0ff;padding: 3rem;width: 20%;border-radius: 5rem;text-align: center;">Total Revenue
             <br>
-            $ <%=ordercount %>
+            $ <%=revenue %>
         </div>
     </div>
     <div class="chartCard">
@@ -138,8 +138,10 @@
             }
             // setup 
             // console.log("Unique",uniqueDates,"count",counts);
-            var xValues = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
-            var yValues = '<%=counts%>';
+            // var xValues = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+            var xValues = ['COD', 'Online'];
+            var yValues = ['<%=codCount%>','<%=onlineCount%>'];
+            // var yValues = '<%=counts%>';
             var barColors = [
                 "#b91d47",
                 "#00aba9",

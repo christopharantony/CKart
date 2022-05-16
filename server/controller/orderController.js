@@ -232,7 +232,7 @@ exports.buynow = async (req, res)=>{
     const userId = req.body.userId
     const proId = req.body.proId
     const total = parseInt(req.params.price);
-
+    // console.log(userId,proId,total);
     let products = [{item:ObjectId(proId),quantity: 1}]
     const order = req.body
     // let status = req.body['payment-method']==='COD'?'placed':'pending'
@@ -295,7 +295,7 @@ exports.buynow = async (req, res)=>{
 exports.orderPlacing = async(req,res)=>{
     const userId = req.body.userId
     console.log(userId);
-    let cart = await cartDb.findOne({user:ObjectId(userId)})
+    let cart = await cartDb.findOne({user:ObjectId(userId)});
     let offerPrice = await cartDb.aggregate([
         {
             $match:{user:ObjectId(userId)}
@@ -351,7 +351,7 @@ exports.orderPlacing = async(req,res)=>{
             }
         },
 
-    ])
+    ]);
     let totalValue = await cartDb.aggregate([
         {
             $match:{user:ObjectId(userId)}
@@ -391,8 +391,10 @@ exports.orderPlacing = async(req,res)=>{
         return total + save;
     },0)
     const order = req.body
-    const total = totalValue[0].total - totalOffer;
-    let products = cart.products
+    const total = totalValue[0]?.total - totalOffer;
+    console.log(total);
+    console.log("Caaaaaaaart",cart);
+    let products = cart?.products
     let deliveryDetails = {
         name:order.Name,
         mobile:order.mobile,
@@ -404,7 +406,7 @@ exports.orderPlacing = async(req,res)=>{
         // return res.render('user/place_order',{error: error.details[0].message,user:userId,total})
         // res.json({error: error.details[0].message,user:userId,total:total})
     // }else{
-    let status = order['payment-method']==='COD'?'placed':'pending'
+    let status = 'pending';
     let orderObj = new orderDb({
         deliveryDetails:deliveryDetails,
         userId:ObjectId(userId),
@@ -413,8 +415,8 @@ exports.orderPlacing = async(req,res)=>{
         totalAmount:total,
         status:status,
         date: new Date()
-    })
-        orderObj.save()
+    });
+        orderObj.save();
         await productDb.updateOne({"_id": ObjectId(products[0].item)},
         {
             $inc: { Quantity : -products[0].quantity }
@@ -438,6 +440,7 @@ exports.orderPlacing = async(req,res)=>{
                     instance.orders.create(options, function(err, order) {
                         if (err) {
                             console.log(err);
+                            res.send(err.message);
                         }else {
                             console.log("New Order",order);
                             res.json(order);

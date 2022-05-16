@@ -59,13 +59,38 @@ exports.dash = async(req,res)=>{
             }
             catCounts.push(count)
         }
-        
-        res.status(200).render('admin/dashboard',{activeCount,blockedCount,catCounts,uniqueCategories,counts,uniqueDates:Days,ordercount:orders.length,usercount:USERS.length,productcount:products.length})
+        const sales = await orderDb.aggregate([
+            {
+                $match: {
+                    status :{ $ne: "Canceled" }
+                }
+            },
+            {
+                $project:{
+                    paymentMethod: 1,
+                    totalAmount: 1,
+                    status: 1
+                }
+            }
+        ])
+        let revenue = 0;
+        let codCount = 0;
+        let onlineCount = 0;
+        for (const sale of sales) {
+            revenue += sale.totalAmount
+        }
+        for (const sale of sales) {
+            sale.paymentMethod === 'COD'?codCount++:onlineCount++
+        }
+        // console.log(uniquePay);
+        console.log("revenue: " + revenue);  
+        console.log("Salessssssss",sales);
+        res.status(200).render('admin/dashboard',{codCount,onlineCount,revenue,activeCount,blockedCount,catCounts,uniqueCategories,counts,uniqueDates:Days,ordercount:orders.length,usercount:USERS.length,productcount:products.length})
     }else{
         req.session.isAdminLogin = false;
         res.render('admin/admin_login', { error: "" });
     }
 }
-exports.chart = async(req, res)=>{
+// exports.chart = async(req, res)=>{
 
-}
+// }

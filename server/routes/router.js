@@ -44,7 +44,7 @@ const session = require("express-session");
 
 route.get("/admin",dashController.dash)
 
-route.get('/getChart',dashController.chart)
+// route.get('/getChart',dashController.chart)
 
 // Admin Home
 

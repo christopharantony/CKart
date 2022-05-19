@@ -1,9 +1,11 @@
 const express = require("express");
 const route = express.Router();
-
+const productDb = require("../model/productModel")
 const Userdb = require("../model/model");
 const Admin = require("../model/adminModel");
 const brandDb = require("../model/brandModel");
+const offerDb = require("../model/offerModel")
+const couponDb = require("../model/couponModel")
 const categoryDb = require("../model/categoryModel");
 const controller = require("../controller/controller");
 const catController = require("../controller/catController");
@@ -12,9 +14,12 @@ const offerController = require("../controller/offerController")
 const orderController = require('../controller/orderController')
 const brandController = require("../controller/brandController");
 const bannerController = require("../controller/bannerController")
+const couponController = require("../controller/couponController")
 const productController = require("../controller/productController");
 
 const session = require("express-session");
+
+const objectId = require('mongoose').Types.ObjectId
 
 // Session Checking
 // const verifyLogin = (req,res,next)=>{
@@ -87,7 +92,7 @@ route.post("/adding", controller.create);
 
 route.get('/adduserError', (req, res) => {
     const error = req.session.error;
-    res.session.error = null;
+    req.session.error = null;
     res.render('admin/add_user',{ error })
 })
 
@@ -116,7 +121,7 @@ route.get('/addProErr', async (req, res) => {
     const error = req.session.error;
     const cate = await categoryDb.find();
     const brand = await brandDb.find();
-    res.session.error = null;
+    req.session.error = null;
     res.render('admin/add_products',{ brand, cate, error });
 })
 
@@ -127,11 +132,11 @@ route.put("/update/:id", productController.update);
 
 route.get("/updateProErr", async (req, res) => {
     const error = req.session.error;
-    const id = req.session.id;
-    const product = await productDb.findOne({_id:objectId(id)})
+    const id = req.session.proId;
+    const product = await productDb.findOne({_id:objectId(id)});
     const brand = await brandDb.find()
     const cate = await categoryDb.find()
-    req.session.id = null;
+    req.session.proId = null;
     req.session.error = null;
     res.render('admin/product_update',{error,product,cate,brand})
 
@@ -177,8 +182,9 @@ route.get("/update-brand", brandController.updatepage);
 route.put("/update-brand/:id", brandController.update);
 
 route.get('/editBrandErr', async (req, res)=>{
-    const id = req.session.id;
-    req.session.id = null;
+    const id = req.session.brandId;
+    req.session.brandId = null;
+    console.log(req.session.brandId);
     const brand = await brandDb.findOne({_id:id})
     res.render('admin/brand_update',{error:"Enter the Name of the brand",brand})
 })
@@ -207,8 +213,8 @@ route.get("/update-cate", catController.updatepage);
 route.put("/update-cate/:id", catController.update);
 
 route.get('/editCateErr', async (req, res)=>{
-    const id = req.session.id;
-    req.session.id = null;
+    const id = req.session.categoryId;
+    req.session.categoryId = null;
     const cate = await categoryDb.findOne({_id:id})
     res.render('admin/category_update',{error:"Enter the Name of the Category",cate})
 })
@@ -216,6 +222,9 @@ route.get('/editCateErr', async (req, res)=>{
 route.delete("/delete-cate/:id", catController.delete);
 // --------------------------------------------- Offers -----------------------------------------------
 route.get("/offer",offerController.showOffer)
+
+route.patch('/offer-status/:id', offerController.status)
+
 route.get("/offer-add",offerController.adding) //Adding page
 route.post("/offer-add",offerController.addOffer)
 
@@ -231,12 +240,44 @@ route.put("/offer-update/:id",offerController.update)
 
 route.get('/offerEditErr', async (req, res)=>{
     const error = req.session.error;
+    const id = req.session.offerId;
+    req.session.offerId = null;
     req.session.error = null;
+    const offer = await offerDb.findById(id)
     const pros = await productDb.find()
-    return res.render('admin/offer_add',{pros,error})
+    return res.render('admin/offer_update',{offer,pros,error})
 })
 
 route.delete("/offer-delete/:id",offerController.delete)
+
+// --------------------------------------------- Coupons ----------------------------------------------
+
+route.get('/coupon',couponController.showcoupons)
+
+route.patch('/coupon-status/:id',couponController.status)
+
+route.get('/coupon-add',couponController.adding)
+route.post('/coupon-add',couponController.addCoupon)
+
+route.get('/couponAddErr',async (req, res)=>{
+    const error = req.session.error;
+    req.session.error = null;
+    return res.render('admin/coupon_add',{error});
+})
+
+route.get("/coupon-update/:id",couponController.editCoupon)
+route.put("/coupon-update/:id",couponController.update)
+
+route.get('/couponEditErr',async (req, res)=>{
+    const error = req.session.error;
+    const id = req.session.couponId;
+    req.session.error = null;
+    req.session.couponId = null;
+    const coupon = await couponDb.findOne({_id:id});
+    return res.render('admin/coupon_update',{error,coupon});
+})
+
+route.delete("/coupon-delete/:id",couponController.delete)
 
 // --------------------------------------------- Orders -----------------------------------------------
 route.get('/admin-orders',orderController.find)

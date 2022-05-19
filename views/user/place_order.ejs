@@ -14,20 +14,20 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <!-- my custom css -->
-    <!-- <link rel="stylesheet" href="css/usercss.css"> -->
+    <link rel="stylesheet" href="css/usercss.css">
     <!-- Cart css -->
     <!-- <link rel="stylesheet" href="css/cart.css"> -->
     <!-- bootstrap css -->
-    <!-- <link rel="stylesheet" href="css/bootstrap.min.css"> -->
+    <link rel="stylesheet" href="css/bootstrap.min.css">
     <!-- style css -->
     <script src="js/orderValidate.js"></script>
     <link rel="stylesheet" href="css/style.css">
     <!-- Responsive-->
-    <!-- <link rel="stylesheet" href="css/responsive.css"> -->
+    <link rel="stylesheet" href="css/responsive.css">
     <!-- fevicon -->
-    <!-- <link rel="icon" href="images/fevicon.png" type="image/gif" /> -->
+    <link rel="icon" href="images/fevicon.png" type="image/gif" />
     <!-- Scrollbar Custom CSS -->
-    <!-- <link rel="stylesheet" href="css/jquery.mCustomScrollbar.min.css"> -->
+    <link rel="stylesheet" href="css/jquery.mCustomScrollbar.min.css">
     <!-- Tweaks for older IEs-->
     <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css"
@@ -38,23 +38,23 @@
     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 
     <!--[if lt IE 9]>
-        <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script><![endif]-->
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script><![endif]-->
 </head>
 <!-- body -->
 
 <body class="main-layout inner_posituong computer_page" style="margin: 0;">
     <!-- loader  -->
-    <div class="loader_bg">
-        <div class="loader"><img src="images/loading.gif" alt="#" /></div>
-    </div>
-    <!-- end loader -->
-    <!-- header -->
-    <nav class=" navbar-light bg-light"
-    style="background-color: #4843a3;height: 4em; color: white; padding-left: 5em;">
-    <a href="/" style="    float: left; margin-top: 1em; color: white;">Home</a>
-    <a class="navbar-brand" href="#" style="margin-left: 26rem; font-size: xx-large; line-height:5rem; font-weight: bold; color: white;">CKart</a>
+    <nav class=" navbar-light "
+    style="background-color: #4843a3;height: 4em; color: white; padding-left: 42em;">
+    <a href="/" style="float: left;margin-left: -38em;margin-top: 1em;color: white;">Home</a>
+    <a class="navbar-brand" href="#" style="font-size: xx-large;font-weight: bold;color: white;position: absolute;left: 35rem;padding-top: 1rem;align-items: center;">CKart</a>
     </nav>
+        <!-- loader  -->
+        <div class="loader_bg">
+            <div class="loader"><img src="images/loading.gif" alt="#" /></div>
+        </div>
+        <!-- end loader -->
     <header>
         <!-- header inner -->
         <div class="header">
@@ -99,7 +99,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="row" style="padding: 6rem;    padding-top: 2.5rem;">
+                            <div class="row">
                                 <div class="col-md-10 offset-md-1">
                                     <form id="request"  class="main_form" action="">
                                         <div class="row">
@@ -114,6 +114,7 @@
                                                     <input type="text" name="userId" id="" value="<%=user._id%>" hidden>
                                             </div>
                                             <div class="col-md-12">
+                                                <input type="text" name="total" id="tot" value="<%=total%>" hidden>
                                                 <input class="contactus" placeholder="Pincode" oninput="pinvalid()" id="fpin" type="type"
                                                     name="Pincode">
                                                     <p class="help-block" id="ppin"></p>
@@ -124,10 +125,10 @@
                                                     <p class="help-block" id="paddress"></p>
                                             </div>
                                             <div class="col-md-12">
-                                                <h1 style="color: black;font-weight: bold;">Total $<%=total%>
+                                                <h1 id="totalShow" style="color: black;font-weight: bold;">Total $<%=total%>
                                                         </h3>
                                             </div>
-                                            <div class="col-md-12">
+                                            <div class="col-md-5">
                                                 <label for="payment">Payment method </label><br>
                                                 <div class="radio inline">
                                                     <input type="radio" id="radio-2" name="payment-method" value="COD" checked>
@@ -138,6 +139,18 @@
                                                     <label for="radio-3">Online Payment</label>
                                                 </div>
                                             </div>
+                                            <!-- <form action="" id="applycoupon" class="main_form"> -->
+                                                <div class="col-md-4">
+                                                    <!-- <input type="text" name="total" id="totalPrice" value="<%=total%>" hidden> -->
+                                                    <input class="contactus" placeholder="Apply Coupon here" type="type" oninput="couponinput()" id="fcoupon" name="coupon" style="border-color:orange">
+                                                    <!-- <input class="contactus" placeholder="Apply Coupon here" type="type" id="fcoupon" name="coupon" style="border-color:orange"> -->
+                                                    <p class="help-block" id="pcoupon"></p>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <!-- <button class="apply_btn" type="submit">Apply</button> -->
+                                                    <button class="apply_btn" type="button" onclick="couponcheck(document.getElementById('tot').value,document.getElementById('fcoupon').value)">Apply</button>
+                                                </div>
+                                            <!-- </form> -->
                                             <div class="col-md-12">
                                                 <button class="send_btn" type="submit" onclick="namevalid();numvalid();pinvalid();addressvalid();" id="submit_btn">Checkout</button>
                                             </div>
@@ -174,7 +187,7 @@
                             var options = {
                             "key": "rzp_test_GHZ8qfO5RgHRDG", // Enter the Key ID generated from the Dashboard
                             "amount": order.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
-                            "currency": "INR",
+                            "currency": "USD",
                             "name": "CKart",
                             "description": "Order Transaction",
                             "image": "https://example.com/your_logo",

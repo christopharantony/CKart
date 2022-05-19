@@ -804,6 +804,7 @@ ul.btn li:last-child {
      padding: 70px 50px;
      border: #4843a3 solid 2px;
      margin: 0 50px;
+     width: 100%;
 }
 
 .main_form .contactus {
@@ -849,6 +850,28 @@ ul.btn li:last-child {
 
 .main_form .send_btn:hover {
      background-color: #000;
+     transition: ease-in all 0.5s;
+     color: #fff;
+}
+
+.main_form .apply_btn {
+     font-size: 18px;
+     transition: ease-in all 0.5s;
+     background-color: orange;
+     text-transform: uppercase;
+     color: #fff;
+     padding: 5px 0px;
+     max-width: 226px;
+     width: 75%;
+     display: block;
+     margin-top: 30px !important;
+     /* margin: 0 auto; */
+     border-radius: 40px;
+     font-weight: 500;
+}
+
+.main_form .apply_btn:hover {
+     background-color: #cc5500;
      transition: ease-in all 0.5s;
      color: #fff;
 }

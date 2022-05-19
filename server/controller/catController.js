@@ -27,7 +27,7 @@ exports.updatepage =async (req,res)=>{
 exports.update = async (req,res)=>{
     const id = req.params.id;
     if(!req.body.name){
-        req.session.id = id;
+        req.session.categoryId = id;
         res.redirect('/editCateErr')
     }else{
     const cat = await categoryDb.findOne({_id:id})

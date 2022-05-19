@@ -17,6 +17,11 @@ exports.landing = async(req, res) => {
         const banners = await bannerDb.find()
         const offers = await offerDb.aggregate([
             {
+                $match:{
+                    status: true
+                }
+            },
+            {
                 $lookup:{
                     from: 'productdbs',
                     localField:'proId',
@@ -33,7 +38,7 @@ exports.landing = async(req, res) => {
                     price:'$products.Price',
                     products:'$products',
                     percentage:'$percentage',
-                    offerPrice:{ $divide: [{$multiply: ['$products.Price','$percentage']},100 ]}
+                    offerPrice:{ $subtract: [ '$products.Price', { $divide: [{$multiply: ['$products.Price','$percentage']},100 ]} ] }
                 }
             }
         ])
@@ -59,6 +64,7 @@ exports.landing = async(req, res) => {
 // SignUp
 exports.Create = async (req, res) => {
         try {
+            console.log(req.body);
             const USER = await Userdb.findOne({ $or: [{email: req.body.email},{number: req.body.number}]})
             if (USER){
                 req.session.error = "Account already in use"
@@ -75,8 +81,10 @@ exports.Create = async (req, res) => {
             const user = new Userdb(userObj);
             const { error } = validate(userObj)
             if (error) {
-                req.session.error = error.details[0].message
-                return res.redirect('/signupError')
+                // console.log(error.details[0].message);
+                // res.send(error.error.details[0].message)
+                req.session.error = error?.details[0].message
+                return res.status(200).redirect('/signupError')
             }
                 user.save()
                     .then(() => {
@@ -87,8 +95,8 @@ exports.Create = async (req, res) => {
                         res.send("Error: " + err.message)
                     })
         } catch (error) {
-            console.log(error.message);
-            res.send("Error Message: " + error.message)
+            console.log(error);
+            res.status(400).send("Error Message: " + error.message)
         }
 }
 
@@ -275,7 +283,8 @@ exports.block = async (req,res)=>{
 
         const validate = (data) => {
             const schema = Joi.object({
-                name: Joi.string().min(3).max(10).required().label("Name"),
+                id: Joi.allow(),
+                name: Joi.string().min(3).max(30).required().label("Name"),
                 email: Joi.string().email().required().label("Email"),
                 password: new passwordComplexity({min:8,max:100,lowerCase:1,upperCase:1,numeric:1}).required().label("Password"),
                 number:Joi.string().length(10).pattern(/^[0-9]+$/).required().label("Number"),

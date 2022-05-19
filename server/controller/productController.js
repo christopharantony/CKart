@@ -135,10 +135,11 @@ exports.update = async(req,res)=>{
         };
         const { error } = validate(product)
         if (error) {
-            req.session.id = id;
+            req.session.proId = id;
             req.session.error = error.details[0].message;
             res.redirect('/updateProErr')
         }else{
+        // productDb.findByIdAndUpdate(id,product)
         productDb.updateOne({_id:id},{$set: product })
         .then(()=>{
             res.redirect('/admin-products')

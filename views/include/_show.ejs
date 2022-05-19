@@ -5,13 +5,11 @@
 <td><%= users[i].name %></td>
 <td><%= users[i].email %></td>
 <td><%= users[i].gender %></td>
-<% console.log(users[i].isBlocked,'----------------------show ejs 8') %>
 <% if(users[i].isBlocked){ %>
     <form action="/status/<%= users[i]._id %>?_method=PATCH" method="post">
     <td><button class="btn btn-outline-danger" type="submit">Block</button></td>
-</form>
+    </form>
 <% }else{ %>
-
     <form action="/status/<%= users[i]._id %>?_method=PATCH" method="post">
     <td><button class="btn btn-outline-success" type="submit">Active</button></td>
 </form>

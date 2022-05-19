@@ -11,6 +11,7 @@ const otpcontroller = require("../controller/otpController")
 const favController = require("../controller/favController")
 const cartcontroller = require('../controller/CartController');
 const orderController = require('../controller/orderController')
+const couponController = require('../controller/couponController')
 const productController = require('../controller/productController')
 
 
@@ -75,7 +76,7 @@ userRoute.post("/signup", controller.Create);
 
 userRoute.get('/signupError',(req, res) => {
     const error = req.session.error;
-    res.session.error = null;
+    req.session.error = null;
     res.render('user/user_signup',{ error });
 })
 
@@ -86,7 +87,7 @@ userRoute.post("/home",controller.Find);
 
 userRoute.get('/loginError', (req, res) => {
     const error = req.session.error;
-    // res.session.error = null;
+    req.session.error = null;
     res.render('user/user_login', { error });
 })
 
@@ -105,7 +106,7 @@ userRoute.get('/buy-now',async (req, res)=>{
     const user = req.session.user;
     const product = req.query.id;
     const pro = await productDb.findById(product)
-    const offer = await offerDb.findOne({proId:product})
+    const offer = await offerDb.findOne({proId:product,status:true})
     if (offer) {
         var total = pro.Price - ( ( pro.Price * offer.percentage ) / 100 )
     }else{
@@ -173,8 +174,14 @@ userRoute.post('/place-order',orderController.orderPlacing)
 userRoute.post('/verify-payment',orderController.paymentVerification)
 
 // ------------------ Order Placed ------------------------
-userRoute.get('/order-success',(req,res)=>{
-    res.render('user/order_success',{user:req.session.user})
+userRoute.get('/order-success',async(req,res)=>{
+    const address = req.session.address;
+    const proId = req.session.products;
+    // req.session.products = null;
+    // req.session.address = null;
+    // res.send(proId);
+    const products = await productDb.find( {_id: { $in: proId } } )
+    res.render('user/order_success',{user:req.session.user,address,cartItems:products})
 })
 
 // Add to cart
@@ -196,6 +203,9 @@ userRoute.get('/user-orders',orderController.Find)
 // Cancel the orders
 userRoute.get('/cancel/:id',orderController.cancel)
 
+// ------===========================------------Apply Coupons -----------======================-------------
+
+userRoute.post("/applycoupon/:coupon/:total",couponController.applyCoupon)
 
 
 userRoute.get("/logout_user", (req, res) => {

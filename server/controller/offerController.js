@@ -24,6 +24,21 @@ exports.showOffer = async(req,res)=>{
     }
 }
 
+exports.status = async(req, res) =>{
+    try {
+        const offer = await offerDb.findById(req.params.id)
+        if (offer.status){
+            await offerDb.findByIdAndUpdate(req.params.id,{status:false})
+        }else{
+            await offerDb.findByIdAndUpdate(req.params.id,{status:true})
+        }
+        res.redirect('/offer')
+    }catch (err) {
+        console.log(err);
+        res.send(err.message);
+    }
+}
+
 exports.adding = async(req, res) => {
     try{
         const pros = await productDb.find()
@@ -61,7 +76,6 @@ exports.editOffer = async(req, res)=>{
     try {
         const pros = await productDb.find()
         const offer = await offerDb.findOne({_id:req.params.id})
-        console.log(offer,pros);
         res.render('admin/offer_update',{pros,offer,error:""})
     } catch (error) {
         console.log(error);
@@ -80,6 +94,7 @@ exports.update = async (req, res) => {
         }
         const { error } = validate(offerObj);
         if (error) {
+            req.session.offerId = id;
             req.session.error = error.details[0].message
             res.redirect('/offerEditErr')
         }else{

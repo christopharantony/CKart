@@ -156,6 +156,11 @@ exports.myOrders = async(req,res)=>{
             }
         },
         {
+            $match:{
+                status:true
+            }
+        },
+        {
             $lookup:{
                 from: 'productdbs',
                 localField:'proId',
@@ -243,6 +248,8 @@ exports.buynow = async (req, res)=>{
         address:order.address,
         pincode:order.Pincode
     };
+    req.session.address = deliveryDetails;
+    req.session.products = [proId]
     // const { error } = validate(deliveryDetails)
     // if (error){
     //     // return res.render('user/place_order',{error: error.details[0].message,user:userId,total})
@@ -263,7 +270,7 @@ exports.buynow = async (req, res)=>{
         $inc: { Quantity : -1 }
     });
     if(req.body['payment-method']=='COD'){
-        res.json({codSuccess:true})
+        res.json({codSuccess:true,address:deliveryDetails})
     }else if(req.body['payment-method']=='ONLINE'){
         console.log(`total : ${total} Product : ${products[0].item}`)
         var options = {
@@ -327,6 +334,11 @@ exports.orderPlacing = async(req,res)=>{
                 status:'$offerCart.status',
                 proId:'$item',
                 quantity: 1
+            }
+        },
+        {
+            $match:{
+                status:true
             }
         },
         {
@@ -464,19 +476,18 @@ if(hmac==req.body.payment.razorpay_signature){
     {
         $set:{ status:'pending'}
     })
-    console.log('payment successfull');
     res.json({status:true})
 }else{
     console.log(err);
     res.json({status: false,errMsg:''})
 }
 }
-    const validate = (data) => {
-        const schema = Joi.object({
-            name: Joi.string().required().label("Name"),
-            mobile:Joi.string().length(10).pattern(/^[0-9]+$/).required().label("Mobile number"),
-            address: Joi.string().required().min(10).label("Address"),
-            pincode:Joi.string().length(6).pattern(/^[0-9]+$/).required().label("Pincode"),
-        })
-        return schema.validate(data)
-    }
+    // const validate = (data) => {
+    //     const schema = Joi.object({
+    //         name: Joi.string().required().label("Name"),
+    //         mobile:Joi.string().length(10).pattern(/^[0-9]+$/).required().label("Mobile number"),
+    //         address: Joi.string().required().min(10).label("Address"),
+    //         pincode:Joi.string().length(6).pattern(/^[0-9]+$/).required().label("Pincode"),
+    //     })
+    //     return schema.validate(data)
+    // }

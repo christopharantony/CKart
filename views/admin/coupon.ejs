@@ -3,44 +3,50 @@
 <section>
     <div class="container" style="color:white;">
         <div class="row mt-4">
-            <a href="/offer-add" class="btn btn-success ml-auto proadd">Add Offer</a>
+            <a href="/coupon-add" class="btn btn-success ml-auto proadd">Add Coupon</a>
         </div>
         <table class="table mt-4">
             <thead>
                 <tr>
                     <th scope="col">Sl.</th>
-                    <th scope="col">Product</th>
+                    <th scope="col">Coupon-Code</th>
+                    <th scope="col">Percentage</th>
+                    <th scope="col">Min Purchase</th>
                     <th scope="col">From</th>
                     <th scope="col">To</th>
-                    <th scope="col">Percentage</th>
                     <th scope="col">Status</th>
                     <th scope="col">Action</th>
                 </tr>
             </thead>
             
             <tbody>
-                <% for ( let i = 0; i < offer.length; i++){ %>
+                <% for ( let i = 0; i < coupon.length; i++){ %>
                 <tr>
                     <th scope="row"><%=i+1%></th>
-                    <td><%=offer[i].product[0].Name%></td>offer
-                    <td><%=offer[i].fromDate.toDateString()%></td>
-                    <td><%=offer[i].toDate.toDateString()%></td>
-                    <td><%=offer[i].percentage%></td>
-                    <% if (offer[i].status) { %>
-                        <form action="/offer-status/<%= offer[i]._id %>?_method=PATCH" method="post">
-                            <td><button class="btn btn-outline-success" type="submit">Enabled</button></td>
+                    <td><%=coupon[i].Code%></td>
+                    <td><%=coupon[i].percentage%> %</td>
+                    <td><%=coupon[i].min%></td>
+                    <td><%=coupon[i].fromDate.toDateString()%></td>
+                    <td><%=coupon[i].toDate.toDateString()%></td>
+                    <% if (coupon[i].status) { %>
+                        <td>
+                        <form action="/coupon-status/<%= coupon[i]._id %>?_method=PATCH" method="post">
+                            <button class="btn btn-outline-success" type="submit">Enabled</button>
                         </form>
+                        </td>
                     <% } else { %>
-                        <form action="/offer-status/<%= offer[i]._id %>?_method=PATCH" method="post">
-                            <td><button class="btn btn-outline-danger" type="submit">Disabled</button></td>
+                        <td>
+                        <form action="/coupon-status/<%= coupon[i]._id %>?_method=PATCH" method="post">
+                            <button class="btn btn-outline-danger" type="submit">Disabled</button>
                         </form>
+                        </td>
                     <% } %>
                             <td>
-                        <a href="/offer-update/<%= offer[i]._id %>" class="btn border-shadow update">
+                        <a href="/coupon-update/<%= coupon[i]._id %>" class="btn border-shadow update">
                             <i class="fa-solid fa-pencil"></i>
                         </a>
                         <div>
-                        <button onclick="deleteOffer('<%=offer[i]._id %>')" class="btn border-shadow update" >
+                        <button onclick="deleteCoupon('<%=coupon[i]._id %>')" class="btn border-shadow update" >
                             <i class="fa-solid fa-trash-can"></i>
                         </button>
                         </div>

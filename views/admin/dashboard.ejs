@@ -5,7 +5,12 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>CKart: Admin</title>
+        <!-- Swal -->
+        <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script src="sweetalert2.all.min.js"></script>
+        <link rel="stylesheet" href="sweetalert2.min.css">
     <!-- Ajax -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
@@ -52,7 +57,7 @@
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container-fluid">
             <!-- <div> -->
-            <a class="navbar-brand" href="#">Admin</a>
+            <a class="navbar-brand">Admin</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                 data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
                 aria-label="Toggle navigation">
@@ -77,6 +82,9 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="/offer">Offers</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="/coupon">Coupons</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="/admin-orders">Orders</a>
@@ -110,16 +118,23 @@
         </div>
     </div>
     <div class="chartCard">
-        <div class="chartBox" style="top:15rem;left:4rem">
+        <div class="chartBox" style="top:17rem;left:4rem">
             <canvas id="myChart"></canvas>
         </div>
-
-    </div>
-        <div class="chartCard">
-            <div class="chartBox" style="top:15rem;left:57rem">
+    <!-- </div>
+        <div class="chartCard"> -->
+            <div class="chartBox" style="top:17rem;left:30rem">
+                <canvas id="categoryChart"></canvas>
+            </div>
+            <div class="chartBox" style="top:17rem;left:57rem">
                 <canvas id="userChart"></canvas>
             </div>
         </div>
+        <!-- <div class="chartCard">
+            <div class="chartBox" style="top:20rem;left:30rem">
+                <canvas id="categoryChart"></canvas>
+            </div>
+        </div> -->
         <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/chart.js"></script>
         <script>
             function adminLogout() {
@@ -151,9 +166,16 @@
                 'rgba(255, 26, 104, 0.2)',
                 'violet'
             ];
+            var cate = '<%=uniqueCategories%>'
+            console.log(typeof(cate));
+            var x3Values = cate.split(",");
+            console.log(x3Values,typeof(x3Values));
             var x2Values = ['Active', 'Blocked'];
             var y2Values = ['<%=activeCount%>', '<%=blockedCount%>'];
-            var statusColors = ['green', 'red']
+            // var x3Values = '<%=uniqueCategories%>';
+            var y3Values = '<%=catCounts%>';
+            var statusColors = ['green', 'red'];
+            var catColors = [ "#00aba9","#2b5797","#e8c3b9","#1e7145" ]
             // const data = {
             //     labels: ['Mon', 'Tue', 'Wed' , 'Thu', 'Fri', 'Sat', 'Sun'],
             //     // labels: "<%=uniqueDates%>",
@@ -272,6 +294,57 @@
                     }
                 }
             });
+            
+            new Chart("categoryChart", {
+                type: "doughnut",
+                data: {
+                    labels: x3Values,
+                    datasets: [{
+                        backgroundColor: catColors,
+                        data: y3Values
+                    }]
+                },
+                options: {
+                    title: {
+                        display: true,
+                        text: "World Wide Wine Production 2018"
+                    }
+                }
+            });
+//             new Chart("categoryChart", {
+//   type: "bar",
+//   data: {
+//     labels: x3Values,
+//     datasets: [{
+//       backgroundColor: barColors,
+//       data: y3Values,
+//       barPercentage: 2
+//     }]
+//   },
+//   options: {
+//     legend: {display: false},
+//     title: {
+//       display: true,
+//       text: "World Wine Production 2018"
+//     }
+//   }
+// });
+// new Chart("categoryChart", {
+//   type: "doughnut",
+//   data: {
+//     labels: x3Values,
+//     datasets: [{
+//       backgroundColor: barColors,
+//       data: y3Values
+//     }]
+//   },
+//   options: {
+//     title: {
+//       display: true,
+//       text: "World Wide Wine Production 2018"
+//     }
+//   }
+// });
         // const config2 = {
         //     type: 'pie',
         //     data2

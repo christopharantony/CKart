@@ -1,3 +1,8 @@
+<style>
+    .table>tbody>tr>td{
+        line-height: 6
+    }
+</style>
 <% const orderData = orderDatas.sort((dateA, dateB) => dateB.date - dateA.date)%>
 <% for ( let i=0; i < orderData.length; i++){ %>
     <% if ( orderData[i].productData[0]?.Name ) { %>

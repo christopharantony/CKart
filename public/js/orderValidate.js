@@ -58,3 +58,32 @@ function addressvalid(){
         value5 = false;
     }
 }
+
+function couponinput(){
+    document.getElementById("pcoupon").style.display = "none";
+}
+
+function couponcheck(total,coupon) {
+    console.log(`Total : ${total} ::: coupon : ${coupon}`);
+    $.ajax({
+        url:`/applycoupon/${coupon}/${total}`,
+        method: "POST",
+        success: (response)=>{
+            console.log(response.error);
+            if (response.error) {
+                document.getElementById("pcoupon").style.display = "block";
+                document.getElementById("pcoupon").innerText = response.error;
+            } else if (response.couponPrice) {
+                // document.getElementById("tot").innerText = response.couponPrice;
+                $('#tot').val(response.couponPrice);
+                $('#totalPrice').val(response.couponPrice);
+                // document.getElementById("totalPrice").val = response.couponPrice;
+                document.getElementById("totalShow").innerText =`Total $ ${response.couponPrice}`;
+                console.log(document.getElementById("tot"));
+
+            }else{
+                document.getElementById("pcoupon").style.display = "none";
+            }
+        }
+    })
+}

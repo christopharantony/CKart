@@ -123,10 +123,10 @@
                                                     <p class="help-block" id="paddress"></p>
                                             </div>
                                             <div class="col-md-12">
-                                                <h1 style="color: black;font-weight: bold;">Total $<%=total%>
+                                                <h1 id="totalShow" style="color: black;font-weight: bold;">Total $<%=total%>
                                                         </h3>
                                             </div>
-                                            <div class="col-md-12">
+                                            <div class="col-md-5">
                                                 <label for="payment">Payment method </label><br>
                                                 <div class="radio inline">
                                                     <input type="radio" id="radio-2" name="payment-method" value="COD" checked>
@@ -137,6 +137,18 @@
                                                     <label for="radio-3">Online Payment</label>
                                                 </div>
                                             </div>
+                                            <!-- <form action="" id="applycoupon" class="main_form"> -->
+                                            <div class="col-md-4">
+                                                <!-- <input type="text" name="total" id="totalPrice" value="<%=total%>" hidden> -->
+                                                <input class="contactus" placeholder="Apply Coupon here" type="type" oninput="couponinput()" id="fcoupon" name="coupon" style="border-color:orange">
+                                                <!-- <input class="contactus" placeholder="Apply Coupon here" type="type" id="fcoupon" name="coupon" style="border-color:orange"> -->
+                                                <p class="help-block" id="pcoupon"></p>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <!-- <button class="apply_btn" type="submit">Apply</button> -->
+                                                <button class="apply_btn" onclick="couponcheck(document.getElementById('tot').value,document.getElementById('fcoupon').value)" type="button">Apply</button>
+                                            </div>
+                                            <!-- </form> -->
                                             <div class="col-md-12">
                                                 <button class="send_btn" type="submit" onclick="namevalid();numvalid();pinvalid();addressvalid();" id="submit_btn">Checkout</button>
                                             </div>
@@ -150,6 +162,12 @@
                     <!-- Razour pay Library -->
                     
                     <script>
+
+                        // $("#applycoupon").submit((e)=>{
+                        //     e.preventDefault()
+                        //     console.log('applycoupon clicked');
+                        // })
+
                         $("#buyrequest").submit((e)=>{
                             e.preventDefault()
                             if ( value1 && value2 && value3 && value4 && value5){
@@ -163,6 +181,7 @@
                                     success:(response)=>{
                                         console.log(response);
                                         if(response.codSuccess){
+                                            console.log(response.address);
                                             location.href='/order-success'
                                         }else{
                                             razorpayPayment(response)
@@ -176,7 +195,7 @@
                             var options = {
                             "key": "rzp_test_GHZ8qfO5RgHRDG", // Enter the Key ID generated from the Dashboard
                             "amount": order.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
-                            "currency": "INR",
+                            "currency": "USD",
                             "name": "CKart",
                             "description": "Order Transaction",
                             "image": "https://example.com/your_logo",
@@ -185,12 +204,12 @@
                                 verifyPayment(response,order)
                             },
                             "prefill": {
-                                "name": "Gaurav Kumar",
-                                "email": "gaurav.kumar@example.com",
-                                "contact": "9999999999"
+                                "name": "Christophar Antony",
+                                "email": "christopharantony@gmail.com",
+                                "contact": "7012049963"
                             },
                             "notes": {
-                                "address": "Razorpay Corporate Office"
+                                "address": "CKart Corporate Office"
                             },
                             "theme": {
                                 "color": "#3d389c"

@@ -26,7 +26,7 @@ exports.updatepage =async (req,res)=>{
 exports.update = async (req,res)=>{
     const id = req.params.id;
     if (!req.body.name){
-        req.session.id = id;
+        req.session.brandId = id;
         res.redirect('/editBrandErr')
     }else{
     const brand = await brandDb.findOne({_id:id}) 

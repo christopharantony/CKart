@@ -41,13 +41,14 @@ exports.dash = async(req,res)=>{
             }
             counts.push(count)
         }
-        const CATEGORY = await productDb.aggregate([
+        const categories = await productDb.aggregate([
             {
                 $project:{
                     Category:1,_id:0
                 }
             }
         ])
+        const CATEGORY = categories.map(cate =>{return cate.Category})
         const uniqueCategories = [...new Set(CATEGORY)];
         const catCounts = []
         for (const unique of uniqueCategories){
@@ -82,9 +83,7 @@ exports.dash = async(req,res)=>{
         for (const sale of sales) {
             sale.paymentMethod === 'COD'?codCount++:onlineCount++
         }
-        // console.log(uniquePay);
-        console.log("revenue: " + revenue);  
-        console.log("Salessssssss",sales);
+        console.log(uniqueCategories);
         res.status(200).render('admin/dashboard',{codCount,onlineCount,revenue,activeCount,blockedCount,catCounts,uniqueCategories,counts,uniqueDates:Days,ordercount:orders.length,usercount:USERS.length,productcount:products.length})
     }else{
         req.session.isAdminLogin = false;

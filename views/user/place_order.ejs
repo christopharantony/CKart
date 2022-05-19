@@ -48,7 +48,7 @@
     <nav class=" navbar-light "
     style="background-color: #4843a3;height: 4em; color: white; padding-left: 42em;">
     <a href="/" style="float: left;margin-left: -38em;margin-top: 1em;color: white;">Home</a>
-    <a class="navbar-brand" href="#" style="font-size: xx-large;font-weight: bold;color: white;position: absolute;left: 35rem;padding-top: 1rem;align-items: center;">CKart</a>
+    <a class="navbar-brand" href="/" style="font-size: xx-large;font-weight: bold;color: white;position: absolute;left: 35rem;padding-top: 1rem;align-items: center;">CKart</a>
     </nav>
         <!-- loader  -->
         <div class="loader_bg">
@@ -148,7 +148,8 @@
                                                 </div>
                                                 <div class="col-md-3">
                                                     <!-- <button class="apply_btn" type="submit">Apply</button> -->
-                                                    <button class="apply_btn" type="button" onclick="couponcheck(document.getElementById('tot').value,document.getElementById('fcoupon').value)">Apply</button>
+                                                    <button id="apply_btn" class="apply_btn" type="button" onclick="couponcheck(document.getElementById('tot').value,document.getElementById('fcoupon').value)">Apply</button>
+                                                    <button id="applied_btn" class="apply_btn" type="button" style="display:none">Applied</button>
                                                 </div>
                                             <!-- </form> -->
                                             <div class="col-md-12">
@@ -167,8 +168,9 @@
                         $("#request").submit((e)=>{
                             e.preventDefault()
                             if ( value1 && value2 && value3 && value4 && value5){
+                                price = parseInt(document.getElementById("tot").value)
                             $.ajax({
-                                url:'/place-order',
+                                url:`/place-order/${price}`,
                                 method:'post',
                                 data:$('#request').serialize(),
                                 success:(response)=>{

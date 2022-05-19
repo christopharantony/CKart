@@ -102,18 +102,7 @@ userRoute.get('/productDetail', productController.productDetails)
 //     } else next();
 // });
 // ---------------- Buy Now  -----------------
-userRoute.get('/buy-now',async (req, res)=>{
-    const user = req.session.user;
-    const product = req.query.id;
-    const pro = await productDb.findById(product)
-    const offer = await offerDb.findOne({proId:product,status:true})
-    if (offer) {
-        var total = pro.Price - ( ( pro.Price * offer.percentage ) / 100 )
-    }else{
-        var total = pro.Price
-    }
-    res.render('user/buyplace_order',{total,user,product})
-})
+userRoute.get('/buy-now',orderController.buynowPage)
 // userRoute.get('/buy-nowOff',async (req, res)=>{
 //     const user = req.session.user;
 //     const product = req.query.id;
@@ -161,7 +150,7 @@ userRoute.post("/remove-product-cart",cartcontroller.removeProcart)
 
 userRoute.get('/place-order',orderController.myOrders)
 
-userRoute.post('/place-order',orderController.orderPlacing)
+userRoute.post('/place-order/:price',orderController.orderPlacing)
 
 // userRoute.get('/place-order-error/:error/:user/:total',(req,res)=>{
 //     console.log(req.params);

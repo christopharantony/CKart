@@ -1,5 +1,6 @@
 var ObjectId = require('mongoose').Types.ObjectId;
 const productDb = require('../model/productModel')
+const offerDb = require('../model/offerModel')
 const orderDb = require('../model/orderModel')
 const cartDb = require('../model/cartModel')
 const userDb = require('../model/model')
@@ -233,6 +234,19 @@ exports.myOrders = async(req,res)=>{
 }
 
 // --------------------------------------------- Buy now  -----------------------------------------------
+exports.buynowPage = async (req, res)=>{
+    const user = req.session.user;
+    const product = req.query.id;
+    const pro = await productDb.findById(product)
+    const offer = await offerDb.findOne({proId:product,status:true})
+    if (offer) {
+        var total = pro.Price - ( ( pro.Price * offer.percentage ) / 100 )
+    }else{
+        var total = pro.Price
+    }
+    res.render('user/buyplace_order',{total,user,product})
+}
+
 exports.buynow = async (req, res)=>{
     const userId = req.body.userId;
     const proId = req.body.proId;
@@ -365,48 +379,48 @@ exports.orderPlacing = async(req,res)=>{
         },
 
     ]);
-    let totalValue = await cartDb.aggregate([
-        {
-            $match:{user:ObjectId(userId)}
-        },
-        {
-            $unwind:'$products'
-        },
-        {
-            $project:{
-                item:'$products.item',
-                quantity:'$products.quantity'
-            }
-        },
-        {
-            $lookup:{
-                from:'productdbs',
-                localField:'item',
-                foreignField:'_id',
-                as:'product'
-            }
-        },
-        {
-            $project:{
-                item: 1, quantity: 1 ,product: { $arrayElemAt: ['$product',0]}
-            }
-        },
-        {
-            $group:{
-                _id:null,
-                total:{$sum: { $multiply: ['$quantity','$product.Price']}},
-                totalCount:{$sum: '$quantity'}
-            }
-        }
-    ])
+    let totalValue = parseInt(req.params.price);
+    // let totalValue = await cartDb.aggregate([
+    //     {
+    //         $match:{user:ObjectId(userId)}
+    //     },
+    //     {
+    //         $unwind:'$products'
+    //     },
+    //     {
+    //         $project:{
+    //             item:'$products.item',
+    //             quantity:'$products.quantity'
+    //         }
+    //     },
+    //     {
+    //         $lookup:{
+    //             from:'productdbs',
+    //             localField:'item',
+    //             foreignField:'_id',
+    //             as:'product'
+    //         }
+    //     },
+    //     {
+    //         $project:{
+    //             item: 1, quantity: 1 ,product: { $arrayElemAt: ['$product',0]}
+    //         }
+    //     },
+    //     {
+    //         $group:{
+    //             _id:null,
+    //             total:{$sum: { $multiply: ['$quantity','$product.Price']}},
+    //             totalCount:{$sum: '$quantity'}
+    //         }
+    //     }
+    // ])
     console.log("OoooooferPrice",offerPrice);
     const totalOffer = offerPrice.map(data => data.offerPrice).reduce((total, save)=>{
         return total + save;
     },0)
     const order = req.body
-    const total = totalValue[0]?.total - totalOffer;
+    const total = totalValue - totalOffer;
     console.log(total);
-    console.log("Caaaaaaaart",cart);
     let products = cart?.products
     let deliveryDetails = {
         name:order.Name,
@@ -414,6 +428,27 @@ exports.orderPlacing = async(req,res)=>{
         address:order.address,
         pincode:order.Pincode
     }
+    req.session.address = deliveryDetails;
+    // const proIds = await cartDb.find({user:userId})
+    
+    const proIds = await cartDb.aggregate([
+        {
+            $match:{user:ObjectId(userId)}
+        },
+        {
+            $unwind:'$products'
+        },
+        {
+            $project:{_id:0,Id:'$products.item'}
+        }
+        ])
+        console.log("ProId is here",proIds);
+        const productIds = [];
+        for (const proId of proIds){
+            productIds.push(proId.Id)
+        }
+        console.log("Product",productIds);
+    req.session.products = productIds;
     // const { error } = validate(deliveryDetails) 
     // if (error){
         // return res.render('user/place_order',{error: error.details[0].message,user:userId,total})

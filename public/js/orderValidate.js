@@ -69,18 +69,22 @@ function couponcheck(total,coupon) {
         url:`/applycoupon/${coupon}/${total}`,
         method: "POST",
         success: (response)=>{
-            console.log(response.error);
             if (response.error) {
                 document.getElementById("pcoupon").style.display = "block";
                 document.getElementById("pcoupon").innerText = response.error;
             } else if (response.couponPrice) {
                 // document.getElementById("tot").innerText = response.couponPrice;
                 $('#tot').val(response.couponPrice);
-                $('#totalPrice').val(response.couponPrice);
+                $("#apply_btn").hide();
+                $("#applied_btn").show();
+                // console.log('haiiiiiiiiii');
+                // $('#apply_btn').attr('disabled');
+                // document.getElementById("apply_btn").innerHTML = "Applied";
+                // document.getElementById("apply_btn").disabled = true;
+                
+                // $('#totalPrice').val(response.couponPrice);
                 // document.getElementById("totalPrice").val = response.couponPrice;
                 document.getElementById("totalShow").innerText =`Total $ ${response.couponPrice}`;
-                console.log(document.getElementById("tot"));
-
             }else{
                 document.getElementById("pcoupon").style.display = "none";
             }

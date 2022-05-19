@@ -58,7 +58,7 @@
                         <% for ( let i=0; i < offers.length; i++){ %>
                            <div class="col-md-4 margin_bottom1">
                               <div class="product_box">
-                                 <a href="/productDetail?image=<%=offers[i].products.Image[0] %>">
+                                 <a href="/productDetail?image=<%=offers[i].products.Image %>">
                                     <% if (offers[i].products.Quantity==0) { %>
                                        <figure>
                                           <h1 class="outofstock">Out of Stock</h1><img
@@ -73,7 +73,6 @@
                                  <h1>
                                     <%=offers[i].products.Name%>
                                  </h1>
-
                                  <h1 style="text-decoration: line-through; opacity: 50%; font-size:1rem; color:red; padding:0">$<%=offers[i].price%>
                                  </h1>
                                  <h1>$<%=offers[i].offerPrice%>

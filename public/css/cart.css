@@ -128,7 +128,7 @@
 
 	padding: 10px 25px;
 
-	background-color: green;
+	background-color: #f72e2e;
 
 	color: white;
 
@@ -148,7 +148,7 @@
 
 	padding: 10px 25px;
 
-	background-color: green;
+	background-color: #f72e2e;
 
 	color: white;
 
@@ -162,11 +162,11 @@
 
 	background-color: white;
 
-	color: green;
+	color: #f72e2e;
 
 	font-weight: 600;
 
-	border: 1px solid green;
+	border: 1px solid #f72e2e;
 
 }
 
@@ -174,11 +174,11 @@
 
 	background-color: white;
 
-	color: green;
+	color: #f72e2e;
 
 	font-weight: 600;
 
-	border: 1px solid green;
+	border: 1px solid #f72e2e;
 
 }
 
@@ -236,7 +236,7 @@
 
 	line-height: 40px;
 
-	background-color: tomato;
+	background-color: orange;
 
 	color: white;
 
@@ -246,7 +246,7 @@
 
 .cart-total a:hover{
 
-	background-color: red;
+	background-color: #ff9500;
 
 	color: white;
 

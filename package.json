@@ -17,6 +17,8 @@
     "bcrypt": "^5.0.1",
     "chart.js": "^3.7.1",
     "cropperjs": "^1.5.12",
+    "datatables.net": "^1.12.1",
+    "datatables.net-dt": "^1.12.1",
     "dotenv": "^16.0.0",
     "ejs": "^3.0.2",
     "express": "^4.17.3",

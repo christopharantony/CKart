@@ -107,9 +107,14 @@ exports.applyCoupon = async(req, res)=>{
     const total = parseInt(req.params.total);
     const discount = await couponDb.findOne({Code:code,status:true})
     if (discount) {
-        console.log(discount.min);
+        console.log(discount.toDate);
+        const nowDate = new Date();
+        console.log(nowDate);
         console.log(total);
-        if (discount.min < total) {
+        if (nowDate.getTime() > discount.toDate.getTime()){
+            res.json({error:'Coupon is expired'})
+        }
+        else if (discount.min < total) {
             console.log(discount.percentage);
             const couponPrice = total - ((total*discount.percentage)/100);
             res.json({couponPrice: couponPrice})
@@ -117,7 +122,7 @@ exports.applyCoupon = async(req, res)=>{
             res.json({error:`Minimum $ ${discount.min} spend`})
         }
     }else{
-        res.json({error:'Invalid Code'})
+        res.json({error:'Coupon not found'})
     }
 }
 

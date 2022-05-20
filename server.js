@@ -8,7 +8,11 @@ const methodOverride = require('method-override');
 require('dotenv').config();
 const fileUpload = require('express-fileupload');
 const Swal = require('sweetalert2')
-
+// var $  = require( 'jquery' );
+// var dt = require( 'datatables.net' )();
+// window.$ = window.jquery = require('./node_modules/jquery');
+// window.dt = require('./node_modules/datatables.net')();
+// window.$('#table_id').DataTable();
 
 const app = express();
 

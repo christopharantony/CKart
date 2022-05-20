@@ -6,6 +6,11 @@ const objectId = require('mongoose').Types.ObjectId
 exports.showOffer = async(req,res)=>{
     try{
         const offer = await offerDb.aggregate([
+            // {
+            //     $match:{
+            //         $lte: ['$toDate',new Date()]
+            //     }
+            // },
             {
                 $lookup:{
                     from:'productdbs',

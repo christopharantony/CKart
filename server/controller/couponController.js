@@ -117,6 +117,7 @@ exports.applyCoupon = async(req, res)=>{
         else if (discount.min < total) {
             console.log(discount.percentage);
             const couponPrice = total - ((total*discount.percentage)/100);
+            await couponDb.updateOne({Code:code,status:true},{$set: {status:false} })
             res.json({couponPrice: couponPrice})
         }else{
             res.json({error:`Minimum $ ${discount.min} spend`})

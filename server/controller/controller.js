@@ -284,11 +284,11 @@ exports.block = async (req,res)=>{
         const validate = (data) => {
             const schema = Joi.object({
                 id: Joi.allow(),
-                name: Joi.string().min(3).max(30).required().label("Name"),
+                name: Joi.string().min(3).max(30).pattern(/^[a-zA-Z]+ [a-zA-Z]+$/).required().label("Name"),
                 email: Joi.string().email().required().label("Email"),
                 password: new passwordComplexity({min:8,max:100,lowerCase:1,upperCase:1,numeric:1}).required().label("Password"),
                 number:Joi.string().length(10).pattern(/^[0-9]+$/).required().label("Number"),
-                gender: Joi.allow()
+                gender: Joi.string().required().label("Gender")
             })
             return schema.validate(data)
         }

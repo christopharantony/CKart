@@ -1,5 +1,6 @@
 const Joi = require('joi');
 const couponDb = require('../model/couponModel')
+const couponUsedDb = require('../model/couponUsedModel')
 
 exports.showcoupons = async (req,res)=>{
     try {
@@ -102,7 +103,6 @@ exports.delete = (req, res) =>{
 }
 
 exports.applyCoupon = async(req, res)=>{
-    console.log('Bodyyyyyyyyyyyy',req.params)
     const code = req.params.coupon;
     const total = parseInt(req.params.total);
     const discount = await couponDb.findOne({Code:code,status:true})
@@ -111,13 +111,24 @@ exports.applyCoupon = async(req, res)=>{
         const nowDate = new Date();
         console.log(nowDate);
         console.log(total);
-        if (nowDate.getTime() > discount.toDate.getTime()){
+        const couponUsed = await couponUsedDb.findOne({user:req.session.user._id,coupon:code})
+        console.log(couponUsed);
+        if (couponUsed) {
+            res.json({error:'Already used'})
+        }
+        else if (nowDate.getTime() > discount.toDate.getTime()){
             res.json({error:'Coupon is expired'})
         }
         else if (discount.min < total) {
             console.log(discount.percentage);
             const couponPrice = total - ((total*discount.percentage)/100);
-            await couponDb.updateOne({Code:code,status:true},{$set: {status:false} })
+            // await couponDb.updateOne({Code:code,status:true},{$set: {status:false} })
+            const usedObj = {
+                user:req.session.user._id,
+                coupon:code
+            };
+            const couponUsed = new couponUsedDb(usedObj);
+            await couponUsed.save();
             res.json({couponPrice: couponPrice})
         }else{
             res.json({error:`Minimum $ ${discount.min} spend`})

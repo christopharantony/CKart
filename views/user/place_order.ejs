@@ -218,9 +218,12 @@
                                 data:{payment,order},
                                 method: "POST",
                                 success:(response)=>{
+                                    console.log('RESPONSE : ',response);
                                     if(response.status){
+                                        console.log('Payment Successfully : ',response);
                                         location.href='/order-success'
                                     }else{
+                                        console.log("Payment Failed&&&&&&&&&&&&&");
                                         alert('Payment failed');
                                     }
                                 }

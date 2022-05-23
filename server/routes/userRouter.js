@@ -4,8 +4,12 @@ const favDb = require('../model/favModel')
 const cartDb = require('../model/cartModel')
 const offerDb = require("../model/offerModel")
 const orderDb = require('../model/orderModel')
-const productDb = require("../model/productModel");
 const bannerDb = require("../model/bannerModel")
+const productDb = require("../model/productModel");
+const couponUsedDb = require("../model/couponUsedModel")
+const savedAddressDb = require("../model/savedAddressModel")
+
+const savedController = require("../controller/savedController")
 const controller = require("../controller/controller");
 const otpcontroller = require("../controller/otpController")
 const favController = require("../controller/favController")
@@ -103,40 +107,8 @@ userRoute.get('/productDetail', productController.productDetails)
 // });
 // ---------------- Buy Now  -----------------
 userRoute.get('/buy-now',orderController.buynowPage)
-// userRoute.get('/buy-nowOff',async (req, res)=>{
-//     const user = req.session.user;
-//     const product = req.query.id;
-//     // const pro = await productDb.findById(product)
-//     const offers = await offerDb.aggregate([
-//         {
-//             $match:{
-//                 proId:ObjectId(product)
-//             }
-//         },
-//         {
-//             $lookup:{
-//                 from: 'productdbs',
-//                 localField:'proId',
-//                 foreignField:'_id',
-//                 as:'products'
-//             }
-//         },
-//         {
-//             $unwind:'$products'
-//         },
-//         {
-//             $project:{
-//                 id:'$products._id',
-//                 price:'$products.Price',
-//                 products:'$products',
-//                 percentage:'$percentage',
-//                 offerPrice:{ $divide: [{$multiply: ['$products.Price','$percentage']},100 ]}
-//             }
-//         }
-//     ])
-//     console.log(offers[0].offerPrice);
-//     res.render('user/buyplace_order',{total:offers[0].offerPrice,user,product})
-// })
+
+userRoute.post('/save-address/:address',savedController.saveAddress)
 
 userRoute.post('/buyplace-order/:price/:proId',orderController.buynow)
 
@@ -166,9 +138,13 @@ userRoute.post('/verify-payment',orderController.paymentVerification)
 userRoute.get('/order-success',async(req,res)=>{
     const address = req.session.address;
     const proId = req.session.products;
+    console.log("req.session.orderDate",req.session.orderDate);
     // req.session.products = null;
     // req.session.address = null;
     // res.send(proId);
+    const order = await orderDb.findOne({date:req.session.orderDate})
+    console.log("order",order);
+await orderDb.updateOne({date:req.session.orderDate}, { $set: {status:'Ordered'} })
     const products = await productDb.find( {_id: { $in: proId } } )
     res.render('user/order_success',{user:req.session.user,address,cartItems:products})
 })

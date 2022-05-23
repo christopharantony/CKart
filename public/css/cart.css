@@ -118,6 +118,19 @@
 
 }
 
+.fav-table {
+    width: 100%;
+    margin-bottom: 20px;
+	border-collapse: collapse;
+}
+
+.fav-row>td{
+    padding: 8px;
+    line-height: 1.428571429;
+    vertical-align: middle;
+    border-top: 1px solid #ddd;
+}
+
 .product-remove{
 
 	position: absolute;
@@ -140,11 +153,13 @@
 
 .fav-product-remove{
 
-	position: absolute;
+	/* position: absolute; */
 
-	bottom: 70px;
+	/* bottom: 70px;
 
-	right: 40px;
+	right: 40px; */
+
+	margin: 7rem 0rem;
 
 	padding: 10px 25px;
 

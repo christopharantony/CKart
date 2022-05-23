@@ -22,6 +22,10 @@
     <!-- style css -->
     <script src="js/orderValidate.js"></script>
     <link rel="stylesheet" href="css/style.css">
+    <!-- Swal -->
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="sweetalert2.all.min.js"></script>
+    <link rel="stylesheet" href="sweetalert2.min.css">
     <!-- Responsive-->
     <link rel="stylesheet" href="css/responsive.css">
     <!-- fevicon -->
@@ -44,10 +48,10 @@
 <!-- body -->
 
 <body class="main-layout inner_posituong computer_page">
-    <nav class=" navbar-light "
-    style="background-color: #4843a3;height: 4em; color: white; padding-left: 42em;">
-    <a href="/" style="float: left;margin-left: -38em;margin-top: 1em;color: white;">Home</a>
-    <a class="navbar-brand" href="/" style="font-size: xx-large;font-weight: bold;color: white;position: absolute;left: 35rem;padding-top: 1rem;align-items: center;">CKart</a>
+    <nav class=" navbar-light " style="background-color: #4843a3;height: 4em; color: white; padding-left: 42em;">
+        <a href="/" style="float: left;margin-left: -38em;margin-top: 1em;color: white;">Home</a>
+        <a class="navbar-brand" href="/"
+            style="font-size: xx-large;font-weight: bold;color: white;position: absolute;left: 39rem;padding-top: 1rem;align-items: center;">CKart</a>
     </nav>
     <!-- loader  -->
     <div class="loader_bg">
@@ -92,108 +96,182 @@
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="titlepage">
-                                        <h2>Delivery Details</h2>
+                                        <h2 style="margin-left: 28rem;">Delivery Details</h2>
                                     </div>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-10 offset-md-1">
-                                    <form id="buyrequest"  class="main_form" action="">
+                                    <form id="buyrequest" class="main_form" action="">
                                         <div class="row">
                                             <div class="col-md-12 ">
-                                                <input class="contactus" placeholder="Name" type="type" oninput="namevalid()" id="fname" name="Name">
+                                                <input class="contactus" placeholder="Name" type="type"
+                                                    oninput="namevalid()" id="fname" name="Name">
                                                 <p class="help-block" id="pname"></p>
                                             </div>
                                             <div class="col-md-12">
-                                                <input class="contactus" placeholder="Phone Number" oninput="numvalid()"  id="fnum" type="text"
-                                                    name="mobile">
-                                                    <p class="help-block" id="pnum"></p>
-                                                    <input type="text" name="userId" id="" value="<%=user._id%>" hidden>
+                                                <input class="contactus" placeholder="Phone Number" oninput="numvalid()"
+                                                    id="fnum" type="text" name="mobile">
+                                                <p class="help-block" id="pnum"></p>
+                                                <input type="text" name="userId" id="" value="<%=user?._id%>" hidden>
                                             </div>
                                             <div class="col-md-12">
                                                 <input type="text" name="proId" id="proId" value="<%=product%>" hidden>
                                                 <input type="text" name="total" id="tot" value="<%=total%>" hidden>
-                                                <input class="contactus" placeholder="Pincode" oninput="pinvalid()" id="fpin" type="type"
-                                                    name="Pincode">
-                                                    <p class="help-block" id="ppin"></p>
+                                                <input class="contactus" placeholder="Pincode" oninput="pinvalid()"
+                                                    id="fpin" type="type" name="Pincode">
+                                                <p class="help-block" id="ppin"></p>
                                             </div>
                                             <div class="col-md-12">
-                                                <textarea class="textarea" placeholder="Address" id="faddress" oninput="addressvalid()" type="type" name="address"
+                                                <textarea class="textarea" placeholder="Address" id="faddress"
+                                                    oninput="addressvalid()" type="type" name="address"
                                                     Message="Name"></textarea>
-                                                    <p class="help-block" id="paddress"></p>
+                                                <p class="help-block" id="paddress"></p>
                                             </div>
-                                            <div class="col-md-12">
-                                                <h1 id="totalShow" style="color: black;font-weight: bold;">Total $<%=total%>
+                                            <div class="col-md-10">
+                                                <h1 id="totalShow" style="color: black;font-weight: bold;">Total $
+                                                    <%=total%>
                                                         </h3>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <button class="send_btn" type="button"
+                                                    style="font-size:11px; font-size: 11px;margin-top: 0px;position: absolute;right: 1rem;height: 2em;padding: 0.1rem 1rem 1rem 1rem;bottom: 1.1rem; border-radius: 0%;"
+                                                    onclick="saveAddress(document.getElementById('faddress').value)">save
+                                                    address
+                                                </button>
                                             </div>
                                             <div class="col-md-5">
                                                 <label for="payment">Payment method </label><br>
                                                 <div class="radio inline">
-                                                    <input type="radio" id="radio-2" name="payment-method" value="COD" checked>
+                                                    <input type="radio" id="radio-2" name="payment-method" value="COD"
+                                                        checked>
                                                     <label for="radio-2">Pay on Delivery</label>
                                                 </div>
                                                 <div class="radio inline">
-                                                    <input type="radio" id="radio-3" name="payment-method" value="ONLINE">
+                                                    <input type="radio" id="radio-3" name="payment-method"
+                                                        value="ONLINE">
                                                     <label for="radio-3">Online Payment</label>
                                                 </div>
                                             </div>
                                             <!-- <form action="" id="applycoupon" class="main_form"> -->
                                             <div class="col-md-4">
                                                 <!-- <input type="text" name="total" id="totalPrice" value="<%=total%>" hidden> -->
-                                                <input class="contactus" placeholder="Apply Coupon here" type="type" oninput="couponinput()" id="fcoupon" name="coupon" style="border-color:orange">
+                                                <input class="contactus" placeholder="Apply Coupon here" type="type"
+                                                    oninput="couponinput()" id="fcoupon" name="coupon"
+                                                    style="border-color:orange">
                                                 <!-- <input class="contactus" placeholder="Apply Coupon here" type="type" id="fcoupon" name="coupon" style="border-color:orange"> -->
                                                 <p class="help-block" id="pcoupon"></p>
                                             </div>
                                             <div class="col-md-3">
                                                 <!-- <button class="apply_btn" type="submit">Apply</button> -->
-                                                <button id="apply_btn" class="apply_btn" onclick="couponcheck(document.getElementById('tot').value,document.getElementById('fcoupon').value)" type="button">Apply</button>
-                                                <button id="applied_btn" class="apply_btn" type="button" style="display:none">Applied</button>
+                                                <button id="apply_btn" class="apply_btn"
+                                                    onclick="couponcheck(document.getElementById('tot').value,document.getElementById('fcoupon').value)"
+                                                    type="button">Apply</button>
+                                                <button id="applied_btn" class="apply_btn" type="button"
+                                                    style="display:none">Applied</button>
                                             </div>
                                             <!-- </form> -->
                                             <div class="col-md-12">
-                                                <button class="send_btn" type="submit" onclick="namevalid();numvalid();pinvalid();addressvalid();" id="submit_btn">Checkout</button>
+                                                <button class="send_btn" type="submit"
+                                                    onclick="namevalid();numvalid();pinvalid();addressvalid();"
+                                                    id="submit_btn">Checkout</button>
                                             </div>
+                                            <span>
+                                                <div class="col-md-12">
+                                                    <label for="address">Saved Address </label><br>
+                                                    <% for (let i = 0; i < address.length; i++) { %>
+                                                    <div class="radio inline">
+                                                        <input type="radio" id="<%=address[i].address %>" name="savedAddress"
+                                                            value="" onclick="fillAddress('<%=address[i].address%>')" >
+                                                        <label for="" style="font-size: 16px;"><%=address[i].address %></label>
+                                                    </div>
+                                                    <% } %>
+                                            </span>
+                                            </p>
+
                                         </div>
-                                    </form>
+                                        </span>
                                 </div>
+                                </form>
                             </div>
                         </div>
                     </div>
-                    <!-- end footer -->
-                    <!-- Razour pay Library -->
-                    
-                    <script>
+                </div>
+                <!-- end footer -->
+                <!-- Razour pay Library -->
 
-                        // $("#applycoupon").submit((e)=>{
-                        //     e.preventDefault()
-                        //     console.log('applycoupon clicked');
-                        // })
+                <script>
 
-                        $("#buyrequest").submit((e)=>{
-                            e.preventDefault()
-                            if ( value1 && value2 && value3 && value4 && value5){
+                    // $("#applycoupon").submit((e)=>{
+                    //     e.preventDefault()
+                    //     console.log('applycoupon clicked');
+                    // })
+
+                        function fillAddress(address){
+                            $('#faddress').val(address);
+                        }
+
+                    function saveAddress(address){
+                        console.log(`${address}`);
+                        if (address) {
+                            $.ajax({
+                                url: `/save-address/${address}`,
+                            method: 'POST',
+                            success: (response) => {
+                                if (response.error) {
+                                    document.getElementById("paddress").style.display = "block";
+                                    document.getElementById("paddress").innerText = `${response.error}`;
+                                }else{
+                                    const Toast = Swal.mixin({
+                                    toast: true,
+                                    position: 'top-end',
+                                    showConfirmButton: false,
+                                    timer: 800,
+                                    timerProgressBar: true,
+                                    didOpen: (toast) => {
+                                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                                }
+                                    })
+                                    Toast.fire({
+                                    icon: 'success',
+                                    title: 'Address saved'
+                                    })                                }
+                            }
+                        })
+                    }else{
+                        document.getElementById("paddress").style.display = "block";
+                        document.getElementById("paddress").innerText = `Enter the Address`;
+                    }
+                }
+
+
+
+                    $("#buyrequest").submit((e) => {
+                        e.preventDefault()
+                        if (value1 && value2 && value3 && value4 && value5) {
                             console.log(document.getElementById("tot").value)
                             price = parseInt(document.getElementById("tot").value)
                             product = document.getElementById("proId").value
-                                $.ajax({
-                                url:`/buyplace-order/${price}/${product}`,
-                                    method:'post',
-                                    data:$('#buyrequest').serialize(),
-                                    success:(response)=>{
-                                        console.log(response);
-                                        if(response.codSuccess){
-                                            console.log(response.address);
-                                            location.href='/order-success'
-                                        }else{
-                                            razorpayPayment(response)
-                                        }
+                            $.ajax({
+                                url: `/buyplace-order/${price}/${product}`,
+                                method: 'post',
+                                data: $('#buyrequest').serialize(),
+                                success: (response) => {
+                                    console.log('Response',response);
+                                    if (response.codSuccess) {
+                                        console.log(response.address);
+                                        location.href = '/order-success'
+                                    } else {
+                                        razorpayPayment(response)
                                     }
-                                })
-                            }
-                        })
+                                }
+                            })
+                        }
+                    })
 
-                        function razorpayPayment(order){
-                            var options = {
+                    function razorpayPayment(order) {
+                        var options = {
                             "key": "rzp_test_GHZ8qfO5RgHRDG", // Enter the Key ID generated from the Dashboard
                             "amount": order.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
                             "currency": "USD",
@@ -201,8 +279,8 @@
                             "description": "Order Transaction",
                             "image": "https://example.com/your_logo",
                             "order_id": order.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
-                            "handler": function (response){
-                                verifyPayment(response,order)
+                            "handler": function (response) {
+                                verifyPayment(response, order)
                             },
                             "prefill": {
                                 "name": "Christophar Antony",
@@ -215,36 +293,36 @@
                             "theme": {
                                 "color": "#3d389c"
                             }
-                            };
-                            var rzp1 = new Razorpay(options);
-                            rzp1.open();
-                        }
-                        function verifyPayment(payment,order) {
-                            $.ajax({
-                                url: "/verify-payment",
-                                data:{payment,order},
-                                method: "POST",
-                                success:(response)=>{
-                                    if(response.status){
-                                        location.href='/order-success'
-                                    }else{
-                                        alert('Payment failed');
-                                    }
+                        };
+                        var rzp1 = new Razorpay(options);
+                        rzp1.open();
+                    }
+                    function verifyPayment(payment, order) {
+                        $.ajax({
+                            url: "/verify-payment",
+                            data: { payment, order },
+                            method: "POST",
+                            success: (response) => {
+                                if (response.status) {
+                                    location.href = '/order-success'
+                                } else {
+                                    alert('Payment failed');
                                 }
-                            })
-                        }
-                    </script>
+                            }
+                        })
+                    }
+                </script>
 
-                    <!-- Javascript files-->
-                    <!-- <script src="js/jquery.min.js"></script> -->
-                    <script src="js/popper.min.js"></script>
-                    <script src="js/bootstrap.bundle.min.js"></script>
-                    <!-- <script src="js/jquery-3.0.0.min.js"></script> -->
-                    <!-- sidebar -->
-                    <!-- <script src="js/jquery.mCustomScrollbar.concat.min.js"></script> -->
-                    <script src="js/custom.js"></script>
-                    <!-- Ajax Add to cart -->
-                    <script src="js/cartAjax.js"></script>
+                <!-- Javascript files-->
+                <!-- <script src="js/jquery.min.js"></script> -->
+                <script src="js/popper.min.js"></script>
+                <script src="js/bootstrap.bundle.min.js"></script>
+                <!-- <script src="js/jquery-3.0.0.min.js"></script> -->
+                <!-- sidebar -->
+                <!-- <script src="js/jquery.mCustomScrollbar.concat.min.js"></script> -->
+                <script src="js/custom.js"></script>
+                <!-- Ajax Add to cart -->
+                <script src="js/cartAjax.js"></script>
 </body>
 
 </html>

@@ -41,69 +41,55 @@
 
         <h1> Wishlist</h1>
 
-        <div>
+        <div class="cart">
 
-            <div class="products" style="margin-left: 4rem;">
+            <div class="products" style="margin-left: 10rem;">
                 <% if (cartItems.length == 0) { %>
                     <h2>You have no Favorites</h2>
-            </div>
                 <% } else { %>
-                    
-                    <table class="fav-table">
-                        <thead class="thead">
-                            <tr class="fav-row">
-                            <th>Sl</th>
-                            <th style="padding-left: 13%;" >Image</th>
-                            <th>Name</th>
-                            <th>Price</th>
-                            <th style="padding-left: 25px;" >Action</th>
-                            <!-- <th>Action</th> -->
-                            </tr>
-                            
-                        </thead>
-                        <tbody class="tbody">
-                            <% for ( let i=0; i < cartItems.length; i++) { %>
-                            <tr class="fav-row">
-                            <td><%= i+1 %></td>
-                            <td style="padding-left: 8%;" >
-                                <a href="/productDetail?image=<%=cartItems[i].product[0].Image %>">
-                                    <img style="    width: 207px;
-                                    height: 191px;     padding: 2rem;" src="<%= cartItems[i].product[0].Image[0] %>">
-                                </a>
-                            </td>
-                            <td><%= cartItems[i].product[0].Name %></td>
-                            <td><%= cartItems[i].product[0].Price %></td>
-                            <td style="padding-left: 25px;" >
-                                <button class="fav-product-remove" 
+                <% for ( let i=0; i < cartItems.length; i++) { %>
+                    <div class="product" style="height:190px">
+                        <a href="/productDetail?image=<%=cartItems[i].product[0].Image %>">
+                        <img style="    width: 207px;
+                        height: 191px;     padding: 2rem;" src="<%= cartItems[i].product[0].Image[0] %>">
+                </a>
+                        <div class="favproduct-info">
+
+                            <h3 class="product-name">
+                                <%= cartItems[i].product[0].Name %>
+                            </h3>
+
+                            <h4 class="product-price">$ <%= cartItems[i].product[0].Price %>
+                            </h4>
+
+                            <button class="fav-product-remove" 
                                 onclick="removeProfav('<%=cartItems[i]._id%>' , '<%=cartItems[i].product[0]._id%>')">
+
                                 <i class="fa fa-trash" aria-hidden="true"></i>
+
                                 <span class="remove">Remove</span>
-                                </button>
-                            </td>
-                            </tr>
-                            <% } %>
-        
-                        </tbody>
-                    </table>
-                <% } %>
 
+                            </button>
 
+                        </div>
 
+                    </div>
 
-
-
-
+                    <% } %>
                     
 
-            
+            </div>
 
             
 
         </div>
 
     </div>
+<% } %>
 
-
+    <!-- complete: function(data) {
+        alert('hi');
+    } -->
 
 
 </body>

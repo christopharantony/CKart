@@ -108,7 +108,7 @@ userRoute.get('/productDetail', productController.productDetails)
 // ---------------- Buy Now  -----------------
 userRoute.get('/buy-now',orderController.buynowPage)
 
-userRoute.post('/save-address/:address',savedController.saveAddress)
+userRoute.post('/save-address',savedController.saveAddress)
 
 userRoute.post('/buyplace-order/:price/:proId',orderController.buynow)
 
@@ -124,14 +124,6 @@ userRoute.get('/place-order',orderController.myOrders)
 
 userRoute.post('/place-order/:price',orderController.orderPlacing)
 
-// userRoute.get('/place-order-error/:error/:user/:total',(req,res)=>{
-//     console.log(req.params);
-//     const error = req.params.error;
-//     const user = req.params.user;
-//     const total = req.params.total;
-//     res.render('user/place_order',{error,user:req.session.user,total})
-// })
-
 userRoute.post('/verify-payment',orderController.paymentVerification)
 
 // ------------------ Order Placed ------------------------
@@ -139,11 +131,7 @@ userRoute.get('/order-success',async(req,res)=>{
     const address = req.session.address;
     const proId = req.session.products;
     console.log("req.session.orderDate",req.session.orderDate);
-    // req.session.products = null;
-    // req.session.address = null;
-    // res.send(proId);
     const order = await orderDb.findOne({date:req.session.orderDate})
-    console.log("order",order);
 await orderDb.updateOne({date:req.session.orderDate}, { $set: {status:'Ordered'} })
     const products = await productDb.find( {_id: { $in: proId } } )
     res.render('user/order_success',{user:req.session.user,address,cartItems:products})

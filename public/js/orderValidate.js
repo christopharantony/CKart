@@ -11,11 +11,11 @@ function namevalid(){
         document.getElementById("pname").innerText = "Enter a valid Name";
         value1 = false;
     }
-    if ($("#fname").val().length < 4) {
+    if ($("#fname").val().length < 3) {
 
         value2 = false;
         document.getElementById("pname").style.display = "block";
-        document.getElementById("pname").innerText = "Minimum Length of this field is 4";
+        document.getElementById("pname").innerText = "Minimum Length of this field is 3";
 
     }
     else {

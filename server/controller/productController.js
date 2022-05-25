@@ -1,5 +1,6 @@
 const categoryDb = require('../model/categoryModel')
 const productDb = require('../model/productModel')
+const offerDb = require('../model/offerModel')
 const brandDb = require('../model/brandModel')
 const cartDb = require('../model/cartModel')
 const objectId = require('mongoose').Types.ObjectId
@@ -172,11 +173,48 @@ exports.delete = (req,res)=>{
 exports.productDetails = async (req,res)=>{
     image = req.query.image.split(',')
     const products = await productDb.findOne({Image:image})
+    const offerPrice = await offerDb.findOne({proId:products._id,status:true})
+    console.log('offerPrice', offerPrice);
     let cartCount = 0
             let cart = await cartDb.findOne({user:req.session.user?._id})
             console.log('cart',cart);
             if (cart) {
                 cartCount = cart.products.length
             }
-    res.render('user/product_details',{image:image, products,cartCount,isUserLogin:req.session.isUserLogin})
+    if (offerPrice){
+        const offers = await offerDb.aggregate([
+            {
+                $match:{
+                    status: true,
+                    proId:products._id
+                }
+            },
+            {
+                $lookup:{
+                    from: 'productdbs',
+                    localField:'proId',
+                    foreignField:'_id',
+                    as:'products'
+                }
+            },
+            {
+                $unwind:'$products'
+            },
+            {
+                $project:{
+                    id:'$products._id',
+                    price:'$products.Price',
+                    products:'$products',
+                    percentage:'$percentage',
+                    offerPrice:{ $subtract: [ '$products.Price', { $divide: [{$multiply: ['$products.Price','$percentage']},100 ]} ] }
+                }
+            }
+        ])
+        const offerPrice = offers[0].offerPrice;
+        console.log('offers', offers);
+        console.log('offerPrice', offerPrice);
+        res.render('user/offerProduct_details',{offerPrice,image:image, products,cartCount,isUserLogin:req.session.isUserLogin})
+    }else{
+        res.render('user/product_details',{image:image, products,cartCount,isUserLogin:req.session.isUserLogin})
+    }
 }

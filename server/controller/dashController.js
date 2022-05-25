@@ -74,12 +74,13 @@ exports.dash = async(req,res)=>{
                 }
             }
         ])
-        let revenue = 0;
+        let Revenue = 0;
         let codCount = 0;
         let onlineCount = 0;
         for (const sale of sales) {
-            revenue += sale.totalAmount
+            Revenue += sale.totalAmount
         }
+        const revenue = parseInt(Revenue);
         for (const sale of sales) {
             sale.paymentMethod === 'COD'?codCount++:onlineCount++
         }

@@ -46,7 +46,7 @@ exports.Find = async (req,res)=>{
         }
     ]) 
     let cartCount = 0
-            let cart = await cartDb.findOne({user:req.session.user._id})
+            let cart = await cartDb.findOne({user:req.session.user?._id})
             console.log('cart',cart);
             if (cart) {
                 cartCount = cart.products.length
@@ -124,7 +124,6 @@ exports.cancelOrder = async(req,res)=>{
 // --------------------------------------------- My Order -----------------------------------------------
 exports.myOrders = async(req,res)=>{
     const userId = req.session.user?._id;
-
     let offerPrice = await cartDb.aggregate([
         {
             $match:{user:ObjectId(userId)}
@@ -181,7 +180,6 @@ exports.myOrders = async(req,res)=>{
                 quantity: 1,
                 offerPrice:{ $divide: [{$multiply: ['$quantity','$products.Price','$percentage']},100 ]},
                 productPrice: {$multiply: ['$products.Price', '$quantity'] },
-                // saving:{ $subtract: [ '$products.Price', { $divide: [{$multiply: ['$products.Price','$quantity','$percentage']},100 ]} ] }
             }
         },
 
@@ -220,18 +218,12 @@ exports.myOrders = async(req,res)=>{
             }
         }
     ])
-    console.log(totalValue);
-    console.log("OoooooferPrice",offerPrice);
     const totalOffer = offerPrice.map(data => data.offerPrice).reduce((total, save)=>{
         return total + save;
     },0)
-    // const normalPrice = offerPrice.map(data => data.productPrice).reduce((normal, save)=>{
-    //     return normal + save;
-    // },0)
     const total = totalValue[0].total - totalOffer;
-    console.log(`Total : ${total} Normal Price : ${totalValue[0].total} totalOffer : ${totalOffer}`);
-    
-    res.render('user/place_order',{error:"",total,user:req.session.user})
+    const address = await savedAddressDb.find({user:req.session.user._id}).sort({date: -1}).limit(3)
+    res.render('user/place_order',{address,error:"",total,user:req.session.user})
 }
 
 // --------------------------------------------- Buy now  -----------------------------------------------
@@ -239,8 +231,7 @@ exports.buynowPage = async (req, res)=>{
     const user = req.session.user;
     const product = req.query.id;
     const pro = await productDb.findById(product)
-    const address = await savedAddressDb.find({user:user._id})
-    console.log(`address ${address}`);
+    const address = await savedAddressDb.find({user:user._id}).sort({date: -1}).limit(3)
     const offer = await offerDb.findOne({proId:product,status:true})
     if (offer) {
         var total = pro.Price - ( ( pro.Price * offer.percentage ) / 100 )
@@ -254,10 +245,8 @@ exports.buynow = async (req, res)=>{
     const userId = req.body.userId;
     const proId = req.body.proId;
     const total = parseInt(req.params.price);
-    // console.log(userId,proId,total);
     let products = [{item:ObjectId(proId),quantity: 1}]
     const order = req.body;
-    // let status = req.body['payment-method']==='COD'?'placed':'pending'
     let status = 'pending'
     let deliveryDetails = {
         name:order.Name,
@@ -267,12 +256,6 @@ exports.buynow = async (req, res)=>{
     };
     req.session.address = deliveryDetails;
     req.session.products = [proId]
-    // const { error } = validate(deliveryDetails)
-    // if (error){
-    //     // return res.render('user/place_order',{error: error.details[0].message,user:userId,total})
-    //     res.json({error: error.details[0].message,user:userId,total:total})
-    // }else{
-
     let orderObject = {
         deliveryDetails:deliveryDetails,
         userId:ObjectId(userId),
@@ -313,7 +296,6 @@ exports.buynow = async (req, res)=>{
             }
         })
     }
-    // }
 }
 
 

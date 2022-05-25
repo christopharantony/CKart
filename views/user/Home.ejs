@@ -77,7 +77,14 @@
                                  </h1>
                                  <h1>$<%=offers[i].offerPrice%>
                                  </h1>
-                                 <% if (isUserLogin) { %>
+                                 <% if (offers[i].products.Quantity==0) { %>
+                                    <button disabled
+                                       class="btc_home" style="margin-left:2rem;color:#383535"> Add
+                                       to cart</button>
+                                    <a >
+                                       <h3 class="atc_home" style="margin-left: 119px;color:#383535">Buy Now</h3>
+                                    </a>
+                                 <% } else if (isUserLogin) { %>
                                              <button onclick="addToCart('<%=offers[i].products._id%>')"
                                                 class="btc_home" style="margin-left:2rem"> Add
                                                 to cart</button>
@@ -124,9 +131,8 @@
                                  <a href="/productDetail?image=<%=products[i].Image %>">
                                     <% if (products[i].Quantity==0) { %>
                                        <figure>
-                                          <h1 class="outofstock">Out of Stock</h1><img
-                                             style="width: 150px;height: 150px;" src="<%= products[i].Image %>"
-                                             alt="image" />
+                                          <h1 class="outofstock">Out of Stock</h1>
+                                          <img style="width: 150px;height: 150px;" src="<%= products[i].Image[0] %>" alt="image" />
                                        </figure>
                                        <% } else { %>
                                           <figure><img style="width: 150px;height: 150px;"

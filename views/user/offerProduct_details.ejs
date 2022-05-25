@@ -1,0 +1,53 @@
+<%-include('../include/_userhead')%>
+<script>
+   function imageMain(img){
+      $('#changeImage').attr('src', img)
+      $('#magicChange').attr("href", img);
+   }
+</script>
+      <!-- end header inner -->
+      <!-- end header -->
+      <!-- laptop1 -->
+      <div class="laptop1">
+         <div class="container">
+            <div class="row"> <ul>
+                  <% for (const img of image) { %>
+                     <li> <button onclick="imageMain('<%= img %>')">  <img src="<%= img %>" style="width: 100px ;height: 100px; "> </button> </li>
+                  <% } %>
+                  </ul>
+               <div class="col-md-7 proimg" style="padding-left: 7rem;" >
+                  <div class="laptop1_img">
+                     <a href="<%= image[0] %>" class="MagicZoom" id="magicChange" data-options="zoomPosition: inner"><img src="<%= image[0] %>" id="changeImage" style="max-width: 300px max-height 300px;" /></a>`
+                  </div>
+               
+               </div>
+               <div class="prodetail">
+                  <div class="titlepage">
+                     <h2><%= products.Name %></h2>
+                     <h1 style="text-decoration: line-through; opacity: 50%; font-size:1rem; color:red; padding:0">$ <%= products.Price %></h1>
+                     <h1>$<%=offerPrice %></h1>
+                     <h1>Brand : <%= products.Brand %></h1>
+                     <h1>Type : <%= products.Category %></h1>
+                     <h3>Description</h3>
+                     <p><%= products.Description %></p>
+                     
+
+                     <!-- <a class="read_more" href="#">Read More</a> -->
+                  </div>
+               </div>
+               <% if (products.Quantity == 0) { %>
+               <div class="col-md-7 pt-5" style="margin-left: 11%;">
+                  <h2 style="color: red;">Out of Stock</h2>
+               </div>
+               <% } else { %>
+               <div class="col-md-7 pt-5" style="margin-left: 11%;">
+                  <button onclick="addToCart('<%=products._id%>')" class="btc_home" style="margin-left: 13.5rem;"> Add to cart</button>
+                  <a href="/buy-now?id=<%= products._id%> "><h3 class="atc_home" style="margin-left: 13.5rem;">Buy Now</h3></a>
+               </div>
+               <% } %>
+            </div>
+         </div>
+      </div>
+      <!-- end laptop1 -->
+      
+      <%-include('../include/_userfooter')%>

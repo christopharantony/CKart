@@ -64,33 +64,6 @@
         <div class="header">
             <div class="container-fluid">
                 <div class="row">
-                    <!-- <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col logo_section">
-                        <div class="full">
-                            <div class="center-desk">
-                                <div class="logo">
-                                    <a href="/"><img src="images/logo.png" alt="#" /></a>
-                                </div>
-                            </div>
-                        </div>
-                    </div> -->
-                    <!-- <div class="col-xl-9 col-lg-9 col-md-9 col-sm-9">
-                        <nav class="navigation navbar navbar-expand-md navbar-dark ">
-                            <button class="navbar-toggler" type="button" data-toggle="collapse"
-                                data-target="#navbarsExample04" aria-controls="navbarsExample04" aria-expanded="false"
-                                aria-label="Toggle navigation">
-                                <span class="navbar-toggler-icon"></span>
-                            </button>
-                            <div class="collapse navbar-collapse" id="navbarsExample04">
-                                <ul class="navbar-nav mr-auto">
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="/">Home</a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </nav>
-                    </div> -->
-                    <!-- ======================================================= -->
-
                     <div class="contact">
                         <div class="container">
                             <div class="row">
@@ -136,7 +109,7 @@
                                             <div class="col-md-2">
                                                 <button class="send_btn" type="button"
                                                     style="font-size:11px; font-size: 11px;margin-top: 0px;position: absolute;right: 1rem;height: 2em;padding: 0.1rem 1rem 1rem 1rem;bottom: 1.1rem; border-radius: 0%;"
-                                                    onclick="saveAddress(document.getElementById('faddress').value)">save
+                                                    onclick="namevalid();numvalid();pinvalid();addressvalid();saveAddress(document.getElementById('fname').value,document.getElementById('fnum').value,document.getElementById('fpin').value,document.getElementById('faddress').value)">save
                                                     address
                                                 </button>
                                             </div>
@@ -153,24 +126,19 @@
                                                     <label for="radio-3">Online Payment</label>
                                                 </div>
                                             </div>
-                                            <!-- <form action="" id="applycoupon" class="main_form"> -->
                                             <div class="col-md-4">
-                                                <!-- <input type="text" name="total" id="totalPrice" value="<%=total%>" hidden> -->
                                                 <input class="contactus" placeholder="Apply Coupon here" type="type"
                                                     oninput="couponinput()" id="fcoupon" name="coupon"
                                                     style="border-color:orange">
-                                                <!-- <input class="contactus" placeholder="Apply Coupon here" type="type" id="fcoupon" name="coupon" style="border-color:orange"> -->
                                                 <p class="help-block" id="pcoupon"></p>
                                             </div>
                                             <div class="col-md-3">
-                                                <!-- <button class="apply_btn" type="submit">Apply</button> -->
                                                 <button id="apply_btn" class="apply_btn"
                                                     onclick="couponcheck(document.getElementById('tot').value,document.getElementById('fcoupon').value)"
                                                     type="button">Apply</button>
                                                 <button id="applied_btn" class="apply_btn" type="button"
                                                     style="display:none">Applied</button>
                                             </div>
-                                            <!-- </form> -->
                                             <div class="col-md-12">
                                                 <button class="send_btn" type="submit"
                                                     onclick="namevalid();numvalid();pinvalid();addressvalid();"
@@ -181,18 +149,20 @@
                                                     <label for="address">Saved Address </label><br>
                                                     <% for (let i = 0; i < address.length; i++) { %>
                                                     <div class="radio inline">
-                                                        <input type="radio" id="<%=address[i].address %>" name="savedAddress"
-                                                            value="" onclick="fillAddress('<%=address[i].address%>')" >
-                                                        <label for="" style="font-size: 16px;"><%=address[i].address %></label>
+                                                        <input type="radio" id="<%=address[i]._id %>" name="savedAddress"
+                                                            value="" onclick="fillAddress('<%=address[i].name %>','<%=address[i].phone %>','<%=address[i].pincode %>','<%=address[i].address%>')">
+                                                        <label for="" style="font-size: 16px;"><%=address[i].name %></label> <br>
+                                                        <label for="" style="font-size: 16px;padding-left: 20px;"><%=address[i].phone %></label> <br>
+                                                        <label for="" style="font-size: 16px;padding-left: 20px;"><%=address[i].pincode %></label> <br>
+                                                        <label for="" style="font-size: 16px;padding-left: 20px;"><%=address[i].address %></label> <br>
                                                     </div>
                                                     <% } %>
+                                                    </span>
+                                                    </p>
+                                                </div>
                                             </span>
-                                            </p>
-
                                         </div>
-                                        </span>
-                                </div>
-                                </form>
+                                    </form>
                             </div>
                         </div>
                     </div>
@@ -207,16 +177,26 @@
                     //     console.log('applycoupon clicked');
                     // })
 
-                        function fillAddress(address){
+                        function fillAddress(name,phone,pin,address){
+                            console.log('Im fillAddress');
+                            $('#fname').val(name);
+                            $('#fnum').val(phone);
+                            $('#fpin').val(pin);
                             $('#faddress').val(address);
                         }
 
-                    function saveAddress(address){
+                    function saveAddress(name,mobile,pin,address){
+                        if (value1 && value2 && value3 && value4 && value5) {
                         console.log(`${address}`);
-                        if (address) {
                             $.ajax({
-                                url: `/save-address/${address}`,
+                                url: '/save-address',
                             method: 'POST',
+                            data:{
+                                name,
+                                mobile,
+                                pin,
+                                address
+                            },
                             success: (response) => {
                                 if (response.error) {
                                     document.getElementById("paddress").style.display = "block";
@@ -239,11 +219,8 @@
                                     })                                }
                             }
                         })
-                    }else{
-                        document.getElementById("paddress").style.display = "block";
-                        document.getElementById("paddress").innerText = `Enter the Address`;
-                    }
                 }
+            }
 
 
 

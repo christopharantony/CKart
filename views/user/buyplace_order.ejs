@@ -74,7 +74,7 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-md-10 offset-md-1">
+                                <div class="col-md-8">
                                     <form id="buyrequest" class="main_form" action="">
                                         <div class="row">
                                             <div class="col-md-12 ">
@@ -102,9 +102,9 @@
                                                 <p class="help-block" id="paddress"></p>
                                             </div>
                                             <div class="col-md-10">
-                                                <h1 id="totalShow" style="color: black;font-weight: bold;">Total $
+                                                <!-- <h1 id="totalShow" style="color: black;font-weight: bold;">Total $
                                                     <%=total%>
-                                                        </h3>
+                                                        </h3> -->
                                             </div>
                                             <div class="col-md-2">
                                                 <button class="send_btn" type="button"
@@ -114,7 +114,7 @@
                                                 </button>
                                             </div>
                                             <div class="col-md-5">
-                                                <label for="payment">Payment method </label><br>
+                                                <label for="payment" style="font-weight:700">Payment method </label><br>
                                                 <div class="radio inline">
                                                     <input type="radio" id="radio-2" name="payment-method" value="COD"
                                                         checked>
@@ -126,7 +126,7 @@
                                                     <label for="radio-3">Online Payment</label>
                                                 </div>
                                             </div>
-                                            <div class="col-md-4">
+                                            <!-- <div class="col-md-4">
                                                 <input class="contactus" placeholder="Apply Coupon here" type="type"
                                                     oninput="couponinput()" id="fcoupon" name="coupon"
                                                     style="border-color:orange">
@@ -138,15 +138,15 @@
                                                     type="button">Apply</button>
                                                 <button id="applied_btn" class="apply_btn" type="button"
                                                     style="display:none">Applied</button>
-                                            </div>
-                                            <div class="col-md-12">
+                                            </div> -->
+                                            <div class="col-md-7 mt-1">
                                                 <button class="send_btn" type="submit"
                                                     onclick="namevalid();numvalid();pinvalid();addressvalid();"
                                                     id="submit_btn">Checkout</button>
                                             </div>
                                             <span>
                                                 <div class="col-md-12">
-                                                    <label for="address">Saved Address </label><br>
+                                                    <label for="address" style="font-weight:700">Saved Address : </label><br>
                                                     <% for (let i = 0; i < address.length; i++) { %>
                                                     <div class="radio inline">
                                                         <input type="radio" id="<%=address[i]._id %>" name="savedAddress"
@@ -164,6 +164,34 @@
                                         </div>
                                     </form>
                             </div>
+                            <!-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  Coupon    <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<                     -->
+
+                            <div class="col-md-4">
+                            <div class="card-body" style="border: 2px solid #4843a3; margin-bottom:1rem;width:27rem">
+                                <form>
+                                    <div class="form-group"> <label>Have coupon?</label><br><br>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control coupon" name="coupon" id="fcoupon"
+                                            oninput="couponinput()" placeholder="Coupon code"> <span class="input-group-append">
+                                                <button type="button" id="apply_btn"
+                                                onclick="couponcheck(document.getElementById('tot').value,document.getElementById('fcoupon').value)"
+                                                class="btn btn-primary btn-apply coupon"
+                                                style=" height: 38px;">Apply</button> </span>
+                                            </div>
+                                            <p class="help-block" id="pcoupon"></p>
+                                    </div>
+
+                                </form>
+                                <p id="errorCoupon" style="color: red; display: none;"></p>
+                            </div>
+                            <div class="card-body" style="border: 2px solid #4843a3;width:27rem">
+                                <h3>Price : $ <%=total%></h3>
+                                <h3 id="discountPrice">Discount : $ 0</h3><hr>
+                                <h3 id="totalShow" style="font-weight:500">Total : $ <%=total%></h3>
+                            </div>
+                        </div>
+
+                        <!-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  Coupon    <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<                     -->
                         </div>
                     </div>
                 </div>

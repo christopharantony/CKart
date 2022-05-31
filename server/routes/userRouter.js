@@ -99,12 +99,12 @@ userRoute.get('/loginError', (req, res) => {
 userRoute.get('/productDetail', productController.productDetails)
 
 // Check User using Middleware
-// userRoute.use((req, res, next) => {
-//     if (!req.session.isUserLogin) {
-//         console.log("not User");
-//         res.status(200).redirect("/");
-//     } else next();
-// });
+userRoute.use((req, res, next) => {
+    if (!req.session.isUserLogin) {
+        console.log("not User");
+        res.status(200).redirect("/");
+    } else next();
+});
 // ---------------- Buy Now  -----------------
 userRoute.get('/buy-now',orderController.buynowPage)
 
@@ -153,6 +153,25 @@ userRoute.post("/remove-product-fav",favController.removeProfav)
 // Show the orders
 userRoute.get('/user-orders',orderController.Find)
 
+userRoute.get('/user-profile',async(req,res)=>{
+    const user = req.session.user
+    res.render('user/profile',{user,error:"",passworderror:""})
+})
+userRoute.post('/profile-edit',controller.profileEdit)
+
+userRoute.get('/profileError',(req, res) => {
+    const user = req.session.user
+    const error = req.session.error;
+    req.session.error = null;
+    res.render('user/profile',{ user,error,passworderror:"" });
+})
+
+userRoute.post('/password-change',controller.passwordChange)
+userRoute.get('/pswdChangeErr', (req, res)=>{
+    const user = req.session.user;
+    const passworderror = req.session.passwordError;
+    res.render('user/profile',{ user,error:"",passworderror });
+})
 // Cancel the orders
 userRoute.get('/cancel/:id',orderController.cancel)
 

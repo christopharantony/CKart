@@ -107,12 +107,8 @@ exports.applyCoupon = async(req, res)=>{
     const total = parseInt(req.params.total);
     const discount = await couponDb.findOne({Code:code,status:true})
     if (discount) {
-        console.log(discount.toDate);
         const nowDate = new Date();
-        console.log(nowDate);
-        console.log(total);
         const couponUsed = await couponUsedDb.findOne({user:req.session.user._id,coupon:code})
-        console.log(couponUsed);
         if (couponUsed) {
             res.json({error:'Already used'})
         }
@@ -121,7 +117,8 @@ exports.applyCoupon = async(req, res)=>{
         }
         else if (discount.min < total) {
             console.log(discount.percentage);
-            const couponPrice = total - ((total*discount.percentage)/100);
+            discountPrice = (total*discount.percentage)/100;
+            const couponPrice = total - discountPrice;
             // await couponDb.updateOne({Code:code,status:true},{$set: {status:false} })
             const usedObj = {
                 user:req.session.user._id,
@@ -129,7 +126,7 @@ exports.applyCoupon = async(req, res)=>{
             };
             const couponUsed = new couponUsedDb(usedObj);
             await couponUsed.save();
-            res.json({couponPrice: couponPrice})
+            res.json({couponPrice,discountPrice})
         }else{
             res.json({error:`Minimum $ ${discount.min} spend`})
         }

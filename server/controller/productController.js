@@ -171,10 +171,15 @@ exports.delete = (req,res)=>{
 // ==================================================================================================
 
 exports.productDetails = async (req,res)=>{
+    const username = req.session.user?.name;
+    if (username){
+        console.log('USER => [ ',username);
+    }else{
+        console.log('USER => [NOT FOUND]');
+    }
     image = req.query.image.split(',')
     const products = await productDb.findOne({Image:image})
     const offerPrice = await offerDb.findOne({proId:products._id,status:true})
-    console.log('offerPrice', offerPrice);
     let cartCount = 0
             let cart = await cartDb.findOne({user:req.session.user?._id})
             console.log('cart',cart);
@@ -211,10 +216,8 @@ exports.productDetails = async (req,res)=>{
             }
         ])
         const offerPrice = offers[0].offerPrice;
-        console.log('offers', offers);
-        console.log('offerPrice', offerPrice);
-        res.render('user/offerProduct_details',{offerPrice,image:image, products,cartCount,isUserLogin:req.session.isUserLogin})
+        res.render('user/offerProduct_details',{username,offerPrice,image:image, products,cartCount,isUserLogin:req.session.isUserLogin})
     }else{
-        res.render('user/product_details',{image:image, products,cartCount,isUserLogin:req.session.isUserLogin})
+        res.render('user/product_details',{username,image, products,cartCount,isUserLogin:req.session.isUserLogin})
     }
 }

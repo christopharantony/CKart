@@ -85,6 +85,7 @@ function couponcheck(total,coupon) {
                 // $('#totalPrice').val(response.couponPrice);
                 // document.getElementById("totalPrice").val = response.couponPrice;
                 document.getElementById("totalShow").innerText =`Total $ ${response.couponPrice}`;
+                document.getElementById("discountPrice").innerText =`Discount : $ ${response.discountPrice}`;
             }else{
                 document.getElementById("pcoupon").style.display = "none";
             }

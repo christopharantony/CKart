@@ -51,7 +51,6 @@ exports.Find = async (req,res)=>{
             if (cart) {
                 cartCount = cart.products.length
             }
-    console.log("Error finding in My orders",orderDetails[0])
     res.render('user/my_orders',{orderDatas:orderDetails,cartCount,isUserLogin:req.session.isUserLogin})
 }
 // --------------------------------------------- Orders in admin side -----------------------------------------------
@@ -78,9 +77,6 @@ exports.find = async (req,res)=>{
             }
         }
     ])
-    console.log(orderDetails);
-    console.log('productData',orderDetails[0].productData);
-    console.log('usertData',orderDetails[0].userData);
     res.render('admin/admin_orders',{orderData:orderDetails})
 }
 

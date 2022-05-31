@@ -48,10 +48,11 @@ exports.landing = async(req, res) => {
             if (cart) {
                 cartCount = cart.products.length
             }
-            const userId = req.session.user?._id
+            const userId = req.session.user?._id;
+            const username = req.session.user?.name;
             const wishlist = await favDb.findOne({user:ObjectId(userId)})
             fav = wishlist?.products
-                res.status(200).render("user/Home", { offers,banners,products,isUserLogin:req.session.isUserLogin,fav,cartCount});
+                res.status(200).render("user/Home", { offers,banners,products,isUserLogin:req.session.isUserLogin,username,fav,cartCount});
             } else {
                 req.session.isUserLogin = false;
                 res.status(200).render("user/Home", { offers,banners,products,isUserLogin:req.session.isUserLogin});
@@ -281,12 +282,81 @@ exports.block = async (req,res)=>{
     }
 }
 
+exports.profileEdit = async (req, res) => {
+    try {
+        const userObj = {
+            name: req.body.name,
+            email: req.body.email,
+            gender: req.body.gender,
+            number: req.body.number
+        }
+        const userId = req.session.user._id;
+        const { error } = editValidate(userObj);
+        if (error) {
+            console.log("If error",error);
+            req.session.error = error.details[0].message
+            return res.redirect('/profileError')
+        }
+            console.log("Else");
+        const user = await Userdb.updateOne( {_id:ObjectId(userId)}, { $set: userObj } )
+        const userDb = await Userdb.findById(userId);
+        req.session.user = userDb;
+            console.log(user);
+            req.session.error = ""
+            res.redirect('/')
+        
+    }catch(err) {
+        console.log(err);
+        res.send("Error During creating user: " + err.message)
+    }
+}
+
+exports.passwordChange = async (req, res)=>{
+    try {
+        const userDb = await Userdb.findById(req.session.user._id);
+        bcrypt.compare(req.body.oldpswd,userDb.password).then((status)=>{
+            if(status){
+                if(req.body.newpswd === req.body.confirmpswd){
+                    bcrypt.hash(req.body.newpswd,10).then((newpassword)=>{
+                        Userdb.updateOne({_id:req.session.user._id},{password:newpassword}).then(()=>{
+                            Userdb.findById(req.session.user._id).then((user)=>{
+                                req.session.user = user;
+                                res.redirect('/')
+                            })
+                        })
+
+                    })
+                }else{
+                    req.session.passwordError = "Password doesn't match";
+                    res.redirect('/pswdChangeErr')
+                }
+            }else{
+                req.session.passwordError = "Your Old password is wrong";
+                res.redirect('/pswdChangeErr')
+            }
+        })
+
+    }catch(err) {
+        console.log(err);
+        res.send("Error During creating user: " + err.message)
+    }
+}
         const validate = (data) => {
             const schema = Joi.object({
                 id: Joi.allow(),
                 name: Joi.string().min(3).max(30).pattern(/^[a-zA-Z]+ [a-zA-Z]+$/).required().label("Name"),
                 email: Joi.string().email().required().label("Email"),
                 password: new passwordComplexity({min:8,max:100,lowerCase:1,upperCase:1,numeric:1}).required().label("Password"),
+                number:Joi.string().length(10).pattern(/^[0-9]+$/).required().label("Number"),
+                gender: Joi.string().required().label("Gender")
+            })
+            return schema.validate(data)
+        }
+        const editValidate = (data) => {
+            const schema = Joi.object({
+                id: Joi.allow(),
+                name: Joi.string().min(3).max(30).pattern(/^[a-zA-Z]+ [a-zA-Z]+$/).required().label("Name"),
+                email: Joi.string().email().required().label("Email"),
                 number:Joi.string().length(10).pattern(/^[0-9]+$/).required().label("Number"),
                 gender: Joi.string().required().label("Gender")
             })

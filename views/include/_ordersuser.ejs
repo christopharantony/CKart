@@ -11,16 +11,13 @@
                 <%= i+1 %>
             </td>
             <td>
+                <!-- <%= orderData[i].productData[0]?.Image %> -->
+                <a href="/productDetail?image=<%=orderData[i].productData[0]?.Image %>">
+                    <img style="width: 100px;height: 100px;" src="<%= orderData[i].productData[0]?.Image[0] %>" alt="images" >
+                </a>
+            </td>
+            <td>
                 <%= orderData[i].productData[0]?.Name %>
-            </td>
-            <td>
-                <%= orderData[i].products?.quantity %>
-            </td>
-            <td>
-                <%= orderData[i].deliveryDetails?.mobile %>
-            </td>
-            <td>
-                <%= orderData[i].deliveryDetails?.address %>
             </td>
             <td>
                 <%= orderData[i].date?.toDateString() %>
@@ -34,7 +31,7 @@
             <td>
                 <%= orderData[i]?.status %>
             </td>
-            <% if(orderData[i]?.status=="Canceled" ) { %>
+            <% if(orderData[i]?.status=="Canceled" || orderData[i].status == 'Failed' || orderData[i].status == 'Deliverd' ) { %>
                 <td><button class="btn btn-outline-danger" disabled>Cancel</button></td>
                 <% }else{ %>
                     <td>

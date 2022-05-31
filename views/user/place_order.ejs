@@ -22,6 +22,10 @@
     <!-- style css -->
     <script src="js/orderValidate.js"></script>
     <link rel="stylesheet" href="css/style.css">
+        <!-- Swal -->
+        <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script src="sweetalert2.all.min.js"></script>
+        <link rel="stylesheet" href="sweetalert2.min.css">
     <!-- Responsive-->
     <link rel="stylesheet" href="css/responsive.css">
     <!-- fevicon -->
@@ -74,12 +78,12 @@
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="titlepage">
-                                        <h2>Delivery Details</h2>
+                                        <h2 style="margin-left: 28rem;">Delivery Details</h2>
                                     </div>
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-md-10 offset-md-1">
+                                <div class="col-md-8">
                                     <form id="request"  class="main_form" action="">
                                         <div class="row">
                                             <div class="col-md-12 ">
@@ -104,8 +108,8 @@
                                                     <p class="help-block" id="paddress"></p>
                                             </div>
                                             <div class="col-md-10">
-                                                <h1 id="totalShow" style="color: black;font-weight: bold;">Total $<%=total%>
-                                                        </h3>
+                                                <!-- <h1 id="totalShow" style="color: black;font-weight: bold;">Total $<%=total%>
+                                                        </h3> -->
                                             </div>
                                             <div class="col-md-2">
                                                 <button class="send_btn" type="button"
@@ -125,21 +129,21 @@
                                                     <label for="radio-3">Online Payment</label>
                                                 </div>
                                             </div>
-                                                <div class="col-md-4">
+                                                <!-- <div class="col-md-4">
                                                     <input class="contactus" placeholder="Apply Coupon here" type="type" oninput="couponinput()" id="fcoupon" name="coupon" style="border-color:orange">
                                                     <p class="help-block" id="pcoupon"></p>
                                                 </div>
                                                 <div class="col-md-3">
                                                     <button id="apply_btn" class="apply_btn" type="button" onclick="couponcheck(document.getElementById('tot').value,document.getElementById('fcoupon').value)">Apply</button>
                                                     <button id="applied_btn" class="apply_btn" type="button" style="display:none">Applied</button>
-                                                </div>
-                                            <div class="col-md-12">
+                                                </div> -->
+                                            <div class="col-md-7 mt-1">
                                                 <button class="send_btn" type="submit" onclick="namevalid();numvalid();pinvalid();addressvalid();" 
                                                 id="submit_btn">Checkout</button>
                                             </div>
                                             <span>
                                                 <div class="col-md-12">
-                                                    <label for="address">Saved Address </label><br>
+                                                    <label for="address" style="font-weight:700" >Saved Address : </label><br>
                                                     <% for (let i = 0; i < address.length; i++) { %>
                                                     <div class="radio inline">
                                                         <input type="radio" id="<%=address[i]._id %>" name="savedAddress"
@@ -157,6 +161,34 @@
                                         </div>
                                     </form>
                                 </div>
+                                <!-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  Coupon    <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<                     -->
+
+                            <div class="col-md-4">
+                                <div class="card-body" style="border: 2px solid #4843a3; margin-bottom:1rem;width:27rem">
+                                    <form>
+                                        <div class="form-group"> <label>Have coupon?</label><br><br>
+                                            <div class="input-group">
+                                                <input type="text" class="form-control coupon" name="coupon" id="fcoupon"
+                                                oninput="couponinput()" placeholder="Coupon code"> <span class="input-group-append">
+                                                    <button type="button" id="apply_btn"
+                                                    onclick="couponcheck(document.getElementById('tot').value,document.getElementById('fcoupon').value)"
+                                                    class="btn btn-primary btn-apply coupon"
+                                                    style=" height: 38px;">Apply</button> </span>
+                                                </div>
+                                                <p class="help-block" id="pcoupon"></p>
+                                        </div>
+    
+                                    </form>
+                                    <p id="errorCoupon" style="color: red; display: none;"></p>
+                                </div>
+                                <div class="card-body" style="border: 2px solid #4843a3;width:27rem">
+                                    <h3>Price : $ <%=total%></h3>
+                                    <h3 id="discountPrice">Discount : $ 0</h3><hr>
+                                    <h3 id="totalShow" style="font-weight:500">Total : $ <%=total%></h3>
+                                </div>
+                            </div>
+    
+                             <!-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  Coupon    <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<       -->
                             </div>
                         </div>
                     </div>

@@ -35,6 +35,12 @@
    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css"
       media="screen">
+      <!-- font awesome -->
+      <!-- <link rel="stylesheet" href="css/font-awesome.min.css"> -->
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
+        integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+      <script src="https://kit.fontawesome.com/b6d1371885.js" crossorigin="anonymous"></script>
    <!-- Zooming -->
    <link type="text/css" rel="stylesheet" href="css/magiczoomplus.css" />
    <script type="text/javascript" src="js/magiczoomplus.js"></script>
@@ -84,9 +90,7 @@
                      </button>
                      <div class="collapse navbar-collapse" id="navbarsExample04">
                         <ul class="navbar-nav mr-auto">
-                           <li class="nav-item">
-                              <a class="nav-link" href="/">Home</a>
-                           </li>
+
 
                            <!-- <li class="nav-item">
                                  <a class="nav-link" href="about.html">About</a>
@@ -105,21 +109,29 @@
                               </li> -->
 
                            <% if (isUserLogin) { %>
-                              <li class="nav-item">
+                              <!-- <li class="nav-item">
                                  <a class="nav-link" href="/user-orders">My Orders</a>
                               </li>
                               <li class="nav-item">
                                  <a class="nav-link" href="/user-fav">My Wishlist</a>
-                              </li>
+                              </li> -->
+                              <li class="nav-item dropdown">
+                                 <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                       <%= username %> <i class="fa fa-user" ></i> 
+                                    </a>
+                                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                       <a class="dropdown-item" href="/user-orders">My Orders</a>
+                                       <a class="dropdown-item" href="/user-fav">My Wishlist</a>
+                                       <a class="dropdown-item" href="/user-profile">My Profile</a>
+                                       <!-- <div class="dropdown-divider"></div> -->
+                                    </div>
+                                 </li>
                               <li class="nav-item ">
                                  <a class="nav-link" href="/cart"><i class="fa fa-shopping-cart"
                                        aria-hidden="true"></i><sup><span class="badge" id="cart-count">
                                           <%= cartCount %>
                                        </span></sup></a>
                               </li>
-                              <!-- <li class="nav-item ">
-                                    <a class="nav-link" href="/logout_user"><i class="fa fa-user" ></i></a>
-                                 </li> -->
                               <li class="nav-item ">
                                  <a class="nav-link" href="/logout_user"><i class="fa fa-power-off"></i></a>
                               </li>

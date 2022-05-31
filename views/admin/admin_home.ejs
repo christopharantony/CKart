@@ -10,12 +10,12 @@
             <a href="/add" class="border-shadow" style="text-decoration: none;">
                 <span class="new">New User <i class="fa-solid fa-user-plus"></i> </span>
             </a>
-            <form action="search" method="get">
+            <!-- <form action="search" method="get">
                 <input name="searchName" type="search" value="" placeholder="Search" style="height: 33px;">
                 <button class="btn btn-outline-success" type="submit">
                     <i class="fa-solid fa-magnifying-glass"></i>
                 </button>
-            </form>
+            </form> -->
             
             
             
@@ -25,7 +25,7 @@
             
         </div>
         
-            <table class="table">
+            <table class="table" id="myTable">
                 <thead class="thead">
                     <tr>
                     <th>ID</th>
@@ -47,6 +47,24 @@
 </main>
 
 <!--/Main-->
+<script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.2.2/js/dataTables.buttons.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.2.2/js/buttons.html5.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.2.2/js/buttons.print.min.js"></script>
+
+<script type="text/javascript" charset="utf-8">
+    $(document).ready(function () {
+        $('#myTable').DataTable({
+            dom: 'Bfrtip',
+            buttons: [
+                'copy', 'csv', 'excel', 'pdf', 'print'
+            ]
+        });
+    });
+    </script>
 
 
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"

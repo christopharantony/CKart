@@ -99,12 +99,12 @@ userRoute.get('/loginError', (req, res) => {
 userRoute.get('/productDetail', productController.productDetails)
 
 // Check User using Middleware
-userRoute.use((req, res, next) => {
-    if (!req.session.isUserLogin) {
-        console.log("not User");
-        res.status(200).redirect("/");
-    } else next();
-});
+// userRoute.use((req, res, next) => {
+//     if (!req.session.isUserLogin) {
+//         console.log("not User");
+//         res.status(200).redirect("/");
+//     } else next();
+// });
 // ---------------- Buy Now  -----------------
 userRoute.get('/buy-now',orderController.buynowPage)
 

@@ -1,0 +1,63 @@
+<%-include('../include/_adminhead')%>
+
+<section>
+    <div class="container" style="color:white;">
+        <table class="table mt-4">
+            <thead>
+                <tr>
+                    <th scope="col">Sl.</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Coupon-Code</th>
+                    <th scope="col">Discounted Price</th>
+                    <th scope="col">Date</th>
+                </tr>
+            </thead>
+            
+            <tbody>
+                <% for ( let i = 0; i < coupon.length; i++){ %>
+                <tr>
+                    <th scope="row"><%=i+1%></th>
+                    <td><%=coupon[i].Code%></td>
+                    <td><%=coupon[i].percentage%> %</td>
+                    <td><%=coupon[i].min%></td>
+                    <td><%=coupon[i].fromDate.toDateString()%></td>
+                    <td><%=coupon[i].toDate.toDateString()%></td>
+                    <% if (coupon[i].status) { %>
+                        <td>
+                        <form action="/admin/coupon-status/<%= coupon[i]._id %>?_method=PATCH" method="post">
+                            <button class="btn btn-outline-success" type="submit">Enabled</button>
+                        </form>
+                        </td>
+                    <% } else { %>
+                        <td>
+                        <form action="/admin/coupon-status/<%= coupon[i]._id %>?_method=PATCH" method="post">
+                            <button class="btn btn-outline-danger" type="submit">Disabled</button>
+                        </form>
+                        </td>
+                    <% } %>
+                            <td>
+                        <a href="/admin/coupon-update/<%= coupon[i]._id %>" class="btn border-shadow update">
+                            <i class="fa-solid fa-pencil"></i>
+                        </a>
+                        <div>
+                        <button onclick="deleteCoupon('<%=coupon[i]._id %>')" class="btn border-shadow update" >
+                            <i class="fa-solid fa-trash-can"></i>
+                        </button>
+                        </div>
+                    </td>
+                </tr>
+                <% } %>
+            </tbody>
+        </table>
+    </div>
+</section>
+
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"
+integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p"
+crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"
+integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF"
+crossorigin="anonymous"></script>
+</body>
+
+</html>

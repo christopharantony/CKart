@@ -90,6 +90,9 @@
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="/admin/admin-orders">Orders</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="/admin/coupon-history">Coupon History</a>
+                    </li>
                 </ul>
                 <button class="btn btn-outline-info" aria-current="page" onclick="adminLogout()">Log Out</button>
             </div>
@@ -122,6 +125,7 @@
                 Revenue
         </div>
     </div>
+    <!--------------------------------------------Charts--------------------------------------------->
     <div class="chartCard">
         <h2 style="position:absolute;top: 15rem;left: 4rem;font-size: 24px;">Payments</h2>
         <div class="chartBox" style="top:17rem;left:3rem">
@@ -131,21 +135,13 @@
         <div class="chartBox" style="top:17rem;left:23rem;width:35rem">
             <canvas id="myChart" style="width:100%;"></canvas>
         </div>
-        <!-- </div>
-            <div class="chartCard"> -->
-                <!-- <div class="chartBox" style="top:17rem;left:30rem">
-                    <canvas id="categoryChart"></canvas>
-                </div> -->
-                <h2 style="position:absolute;top: 15rem;left: 60rem;font-size: 24px;">User Status</h2>
+
+        <h2 style="position:absolute;top: 15rem;left: 60rem;font-size: 24px;">User Status</h2>
         <div class="chartBox" style="top:17rem;left:59rem">
             <canvas id="userChart"></canvas>
         </div>
     </div>
-    <!-- <div class="chartCard">
-            <div class="chartBox" style="top:20rem;left:30rem">
-                <canvas id="categoryChart"></canvas>
-            </div>
-        </div> -->
+
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
         function adminLogout() {
@@ -162,9 +158,7 @@
                 }
             })
         }
-        // setup 
-        // console.log("Unique",uniqueDates,"count",counts);
-        // var xValues = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+
         var xValuesCate = ['Game', 'Editing', 'Office'];
         var yValuesCate = '<%=catCounts%>';
         const xCategories = yValuesCate.split(',');
@@ -175,7 +169,6 @@
         var barColorsCate = ["red", "green", "blue", "orange", "brown"];
         var xValues = ['COD', 'Online'];
         var yValues = ['<%=codCount%>', '<%=onlineCount%>'];
-        // var yValues = '<%=counts%>';
         var barColors = [
             "#b91d47",
             "#00aba9",
@@ -191,94 +184,9 @@
         console.log(x3Values, typeof (x3Values));
         var x2Values = ['Active', 'Blocked'];
         var y2Values = ['<%=activeCount%>', '<%=blockedCount%>'];
-        // var x3Values = '<%=uniqueCategories%>';
         var y3Values = '<%=catCounts%>';
         var statusColors = ['green', 'red'];
         var catColors = ["#00aba9", "#2b5797", "#e8c3b9", "#1e7145"]
-        // const data = {
-        //     labels: ['Mon', 'Tue', 'Wed' , 'Thu', 'Fri', 'Sat', 'Sun'],
-        //     // labels: "<%=uniqueDates%>",
-        //     datasets: [{
-        //         label: 'Weekly Sales',
-        //         // data: [18, 12, 6, 9, 12, 3, 9],
-        //         data: "<%=counts%>",
-        //         backgroundColor: [
-        //             'rgba(255, 26, 104, 0.2)',
-        //             'rgba(54, 162, 235, 0.2)',
-        //             'rgba(255, 206, 86, 0.2)',
-        //             'rgba(75, 192, 192, 0.2)',
-        //             'rgba(153, 102, 255, 0.2)',
-        //             'rgba(255, 159, 64, 0.2)',
-        //             'rgba(0, 0, 0, 0.2)'
-        //         ],
-        //         borderColor: [
-        //             'rgba(255, 26, 104, 1)',
-        //             'rgba(54, 162, 235, 1)',
-        //             'rgba(255, 206, 86, 1)',
-        //             'rgba(75, 192, 192, 1)',
-        //             'rgba(153, 102, 255, 1)',
-        //             'rgba(255, 159, 64, 1)',
-        //             'rgba(0, 0, 0, 1)'
-        //         ],
-        //         borderWidth: 1
-        //     }]
-        // };
-
-        // const data2 = {
-        //     labels: ['Active', 'Blocked'],
-        //     // labels: "<%=uniqueDates%>",
-        //     datasets: [{
-        //         label: 'Users Status ',
-        //         // data: [18, 12, 6, 9, 12, 3, 9],
-        //         // data: ['<%=activeCount%>','<%=blockedCount%>'],
-        //         data: [56,7],
-        //         backgroundColor: [
-        //             'rgba(255, 26, 104, 0.2)',
-        //             'rgba(54, 162, 235, 0.2)',
-        //             // 'rgba(255, 206, 86, 0.2)',
-        //             // 'rgba(75, 192, 192, 0.2)',
-        //             // 'rgba(153, 102, 255, 0.2)',
-        //             // 'rgba(255, 159, 64, 0.2)',
-        //             // 'rgba(0, 0, 0, 0.2)'
-        //         ],
-        //         borderColor: [
-        //             'rgba(255, 26, 104, 1)',
-        //             'rgba(54, 162, 235, 1)',
-        //             // 'rgba(255, 206, 86, 1)',
-        //             // 'rgba(75, 192, 192, 1)',
-        //             // 'rgba(153, 102, 255, 1)',
-        //             // 'rgba(255, 159, 64, 1)',
-        //             // 'rgba(0, 0, 0, 1)'
-        //         ],
-        //         borderWidth: 1
-        //     }]
-        // };
-
-        // const data2 = {
-        //     labels: ['Active','Blocked'],
-        //     datasets:[{
-        //         label:'User Status',
-        //         data:['<%=activeCount%>','<%=blockedCount%>'],
-        //         backgroundColor:[
-        //             'rgba(153, 102, 255, 1)',
-        //             'rgba(255, 159, 64, 1)'
-        //         ],
-        //         borderColor:[
-        //             'rgba(75, 192, 192, 1)',
-        //             'rgba(153, 102, 255, 1)'
-        //         ],
-        //         borderWidth:1
-        //     }]
-        // };
-
-        // config 
-        // const config = {
-        //     type: 'pie',
-        //     data,
-        //     options: {
-
-        //     }
-        // };
 
         new Chart("Chart", {
             type: "pie",
@@ -295,6 +203,7 @@
                 }
             }
         });
+
         new Chart("myChart", {
             type: "bar",
             data: {
@@ -321,6 +230,7 @@
                 }
             }
         });
+
         new Chart("userChart", {
             type: "pie",
             data: {
@@ -354,54 +264,7 @@
                 }
             }
         });
-//             new Chart("categoryChart", {
-//   type: "bar",
-//   data: {
-//     labels: x3Values,
-//     datasets: [{
-//       backgroundColor: barColors,
-//       data: y3Values,
-//       barPercentage: 2
-//     }]
-//   },
-//   options: {
-//     legend: {display: false},
-//     title: {
-//       display: true,
-//       text: "World Wine Production 2018"
-//     }
-//   }
-// });
-// new Chart("categoryChart", {
-//   type: "doughnut",
-//   data: {
-//     labels: x3Values,
-//     datasets: [{
-//       backgroundColor: barColors,
-//       data: y3Values
-//     }]
-//   },
-//   options: {
-//     title: {
-//       display: true,
-//       text: "World Wide Wine Production 2018"
-//     }
-//   }
-// });
-        // const config2 = {
-        //     type: 'pie',
-        //     data2
-        // }
 
-        // render init block
-        // const myChart = new Chart(
-        //     document.getElementById('myChart'),
-        //     config
-        // );
-        // const userChart = new Chart(
-        //     document.getElementById('userChart'),
-        //     config2
-        // )
     </script>
 
 </body>

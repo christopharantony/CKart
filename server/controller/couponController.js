@@ -12,6 +12,43 @@ exports.showcoupons = async (req,res)=>{
     }
 }
 
+exports.showHistory = async(req, res)=>{
+    try {
+        // const couponUsed = await couponUsedDb.find();
+        const couponUsed = await couponUsedDb.aggregate([
+            {
+                $lookup:{
+                    from:'userdbs',
+                    localField:'user',
+                    foreignField:'_id',
+                    as:'user'
+                }
+            },
+            {
+                $lookup:{
+                    from:'coupondbs',
+                    localField:'coupon',
+                    foreignField:'Code',
+                    as:'coupon'
+                }
+            },
+            {
+                $project:{
+                    user:{$arrayElemAt:['$user',0]},
+                    coupon:{$arrayElemAt:['$coupon',0]},
+                    date:{$dateToString:{date:'$date',format:'%d-%m-%Y'}},
+                    discount:1
+                }
+            }
+        ])
+        console.log('couponUsed',couponUsed);
+        res.render('admin/coupon_history',{couponUsed})
+    } catch (error) {
+        console.log(error);
+        res.send("Error in show coupon: ",error.message);
+    }
+}
+
 exports.status = async (req, res)=>{
     try {
         const coupon = await couponDb.findById(req.params.id);
@@ -119,10 +156,11 @@ exports.applyCoupon = async(req, res)=>{
             console.log(discount.percentage);
             discountPrice = (total*discount.percentage)/100;
             const couponPrice = total - discountPrice;
-            // await couponDb.updateOne({Code:code,status:true},{$set: {status:false} })
             const usedObj = {
                 user:req.session.user._id,
-                coupon:code
+                coupon:code,
+                date:new Date(),
+                discount:discountPrice,
             };
             const couponUsed = new couponUsedDb(usedObj);
             await couponUsed.save();

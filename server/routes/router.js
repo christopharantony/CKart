@@ -247,6 +247,10 @@ route.put('/cancel-admin/:id',orderController.cancelOrder)
 // Update the status
 route.post('/statusUpdate',orderController.statusUpdate)
 
+// --------------------------------------------- Coupon History -----------------------------------------------
+
+route.get('/coupon-history',couponController.showHistory)
+
 // --------------------------------------------- LogOut -----------------------------------------------
 // Admin Logout
 route.get("/logout_admin", (req, res) => {

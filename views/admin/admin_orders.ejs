@@ -2,42 +2,26 @@
 
     <!--Main-->
 
-<main id="main">
-    <div id="container-orders">
-        <div class="box-nav d-flex justify-between">
-            <!-- <form action="search" method="get">
-                <input name="searchName" type="search" value="" placeholder="Search" style="height: 33px;">
-                <button class="btn btn-outline-success" type="submit">
-                    <i class="fa-solid fa-magnifying-glass"></i>
-                </button>
-            </form> -->
-            
-            
-            
-            <!-- <a href="/logout_admin" class="border-shadow">
-                <span class="new"><i class="fa-solid fa-arrow-right"></i> Log out </span>
-            </a> -->
-            
-        </div>
-        
+    <main id="main">
+        <div id="container-orders">
+            <div class="box-nav d-flex justify-between">
+            </div>
+
             <table class="table" id="myTable" style="padding-top: 2.5rem;">
                 <thead class="thead">
                     <tr>
-                    <th>Sl.</th>
-                    <th>Name</th>
-                    <th>Product</th>
-                    <th>Qty</th>
-                    <th>Mob No.</th>
-                    <th>Address</th>
-                    <th>Date</th>
-                    <th>Total</th>
-                    <th>Payment</th>
-                    <th>Status</th>
-                    <th>Action</th>
-                    
-                    <!-- <th>Action</th> -->
+                        <th>Sl.</th>
+                        <th>Name</th>
+                        <th>Product</th>
+                        <th>Qty</th>
+                        <th>Mob No.</th>
+                        <th>Address</th>
+                        <th>Date</th>
+                        <th>Total</th>
+                        <th>Payment</th>
+                        <th>Status</th>
+                        <th>Action</th>
                     </tr>
-                    
                 </thead>
                 <tbody class="tbody">
 
@@ -45,29 +29,29 @@
 
                 </tbody>
             </table>
-    </div>
-</main>
+        </div>
+    </main>
 
-<!--/Main-->
+    <!--/Main-->
 
-<script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
-<script src="https://cdn.datatables.net/buttons/2.2.2/js/dataTables.buttons.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
-<script src="https://cdn.datatables.net/buttons/2.2.2/js/buttons.html5.min.js"></script>
-<script src="https://cdn.datatables.net/buttons/2.2.2/js/buttons.print.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.2.2/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.2.2/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.2.2/js/buttons.print.min.js"></script>
 
-<script type="text/javascript" charset="utf-8">
-    $(document).ready(function () {
-        $('#myTable').DataTable({
-            dom: 'Bfrtip',
-            buttons: [
-                'copy', 'csv', 'excel', 'pdf', 'print'
-            ]
+    <script type="text/javascript" charset="utf-8">
+        $(document).ready(function () {
+            $('#myTable').DataTable({
+                dom: 'Bfrtip',
+                buttons: [
+                    'copy', 'csv', 'excel', 'pdf', 'print'
+                ]
+            });
         });
-    });
-</script>
+    </script>
 
 
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"
@@ -76,6 +60,6 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"
         integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF"
         crossorigin="anonymous"></script>
-</body>
+    </body>
 
-</html>
+    </html>

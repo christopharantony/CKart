@@ -8,6 +8,14 @@ const usedSchema =new mongoose.Schema({
     coupon:{
         type:String,
         required:true
+    },
+    date:{
+        type:Date,
+        required:true
+        },
+    discount:{
+        type:Number,
+        required:true
     }
 });
 

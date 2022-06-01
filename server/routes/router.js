@@ -47,7 +47,7 @@ const objectId = require('mongoose').Types.ObjectId
 //         });
 // });
 
-route.get("/admin",dashController.dash)
+route.get("/",dashController.dash)
 
 // route.get('/getChart',dashController.chart)
 
@@ -67,7 +67,7 @@ route.post("/admin-home", controller.find);
 route.use((req, res, next) => {
     if (!req.session.isAdminLogin) {
         console.log("not admin");
-        res.status(200).redirect("/admin");
+        res.redirect("/admin");
     } else next();
 });
 // Method Override

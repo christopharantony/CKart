@@ -16,7 +16,7 @@ exports.showBanner = async (req,res) => {
 exports.addBanner = async (req, res) => {
     try {
             if (!req.files){
-                res.redirect('/bannerAddErr')
+                res.redirect('/admin/bannerAddErr')
             }else{
             let image = req.files?.Image
             var uploadPath = './public/productsImg/' + Date.now()+'.jpeg'
@@ -35,7 +35,7 @@ exports.addBanner = async (req, res) => {
             }
             const banner = new bannerDb(bannerObj);
             await banner.save()
-            res.redirect('/banner')
+            res.redirect('/admin/banner')
         }
     } catch (error) {
         res.send(error.message)
@@ -63,12 +63,12 @@ exports.update = async (req, res)=>{
     }
     bannerDb.updateOne({_id: id},{$set: banner})
     .then(()=>{
-        res.redirect('/banner')
+        res.redirect('/admin/banner')
     })
 }
 
 exports.deleteBanner = async (req,res)=>{
     const id = req.params.id;
     await bannerDb.findByIdAndDelete(id)
-    res.redirect('/banner')
+    res.redirect('/admin/banner')
 }

@@ -5,7 +5,7 @@
     <section>
         <div class="container">
             <div class="row mt-4">
-                <a href="/add-category" class="btn btn-success ml-auto proadd">Add Category</a>
+                <a href="/admin/add-category" class="btn btn-success ml-auto proadd">Add Category</a>
             </div>
             <table class="table mt-4">
                 <thead>
@@ -22,7 +22,7 @@
                         <th scope="row"><%=i+1%></th>
                         <td><%=cate[i].name%></td>
                         <td>
-                            <a href="/update-cate?id=<%= cate[i]._id %>" class="btn border-shadow update">
+                            <a href="/admin/update-cate?id=<%= cate[i]._id %>" class="btn border-shadow update">
                                 <i class="fa-solid fa-pencil"></i>
                             </a>
                             <div>

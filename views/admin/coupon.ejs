@@ -3,7 +3,7 @@
 <section>
     <div class="container" style="color:white;">
         <div class="row mt-4">
-            <a href="/coupon-add" class="btn btn-success ml-auto proadd">Add Coupon</a>
+            <a href="/admin/coupon-add" class="btn btn-success ml-auto proadd">Add Coupon</a>
         </div>
         <table class="table mt-4">
             <thead>
@@ -30,19 +30,19 @@
                     <td><%=coupon[i].toDate.toDateString()%></td>
                     <% if (coupon[i].status) { %>
                         <td>
-                        <form action="/coupon-status/<%= coupon[i]._id %>?_method=PATCH" method="post">
+                        <form action="/admin/coupon-status/<%= coupon[i]._id %>?_method=PATCH" method="post">
                             <button class="btn btn-outline-success" type="submit">Enabled</button>
                         </form>
                         </td>
                     <% } else { %>
                         <td>
-                        <form action="/coupon-status/<%= coupon[i]._id %>?_method=PATCH" method="post">
+                        <form action="/admin/coupon-status/<%= coupon[i]._id %>?_method=PATCH" method="post">
                             <button class="btn btn-outline-danger" type="submit">Disabled</button>
                         </form>
                         </td>
                     <% } %>
                             <td>
-                        <a href="/coupon-update/<%= coupon[i]._id %>" class="btn border-shadow update">
+                        <a href="/admin/coupon-update/<%= coupon[i]._id %>" class="btn border-shadow update">
                             <i class="fa-solid fa-pencil"></i>
                         </a>
                         <div>

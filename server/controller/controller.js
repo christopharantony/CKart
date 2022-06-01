@@ -120,47 +120,7 @@ exports.Find = async (req, res) => {
                 if(status){
                     req.session.isUserLogin = true;
                     res.redirect('/')
-        //     let cartCount = 0
-        //     // let cart = await cartDb.findOne({user:userDb._id})
-        //     cartDb.findOne({user:userDb._id})
-        //     .then((cart)=>{
-        //         // const banners = await bannerDb.find()
-        //         bannerDb.find()
-        //         .then((banners)=>{
-        //             if (cart) {
-        //                 cartCount = cart.products.length
-        //         }
-        //         // const offers = await offerDb.aggregate([
-        //         offerDb.aggregate([
-        //             {
-        //                 $lookup:{
-        //                     from: 'productdbs',
-        //                     localField:'proId',
-        //                     foreignField:'_id',
-        //                 as:'products'
-        //             }
-        //         },
-        //         {
-        //             $unwind:'$products'
-        //         },
-        //         {
-        //             $project:{
-        //                 id:'$products._id',
-        //                 price:'$products.Price',
-        //                 products:'$products',
-        //                 percentage:'$percentage',
-        //                 offerPrice:{ $divide: [{$multiply: ['$products.Price','$percentage']},100 ]}
-        //             }
-        //         }
-        //     ]).then(async(offers)=>{
-        //         const products = await productDb.find()
-        //         const wishlist = await favDb.findOne({user:ObjectId(userId)})
-        //         fav = wishlist?.products
-        //         req.session.isUserLogin = true;
-        //         res.status(200).render('user/Home', { offers,banners,products,cartCount,fav,isUserLogin:req.session.isUserLogin })
-        //     })
-        // })
-        // })
+
         }else{
             req.session.error = "Invalid Password";
             res.redirect('/loginError')
@@ -182,7 +142,7 @@ exports.create = async (req, res) => {
         const USER = await Userdb.findOne({ $or: [{email: req.body.email},{number: req.body.number}]})
         if (USER){
             req.session.error = "Account already in use"
-            res.redirect('/adduserError')
+            res.redirect('/admin/adduserError')
         }
         req.body.password = await bcrypt.hash(req.body.password,10)
         const userObj = {
@@ -196,12 +156,12 @@ exports.create = async (req, res) => {
         const { error } = validate(userObj);
         if (error) {
             req.session.error = error.details[0].message
-            return res.redirect('/adduserError')
+            return res.redirect('/admin/adduserError')
         }else{
         user.save(user)
         .then(() => {
             req.session.error = ""
-            res.redirect('/adduserError')
+            res.redirect('/admin/adduserError')
             })
             .catch(err => {
                 console.log(err);
@@ -269,12 +229,12 @@ exports.block = async (req,res)=>{
         if (user.isBlocked){
             await Userdb.updateOne({_id:req.params.id},{isBlocked:false})
             .then(()=>{
-                res.status(200).redirect('/users');
+                res.status(200).redirect('/admin/users');
             })
         }else{
             await Userdb.updateOne({_id:req.params.id},{isBlocked:true})
             .then(()=>{
-                res.status(200).redirect('/users');
+                res.status(200).redirect('/admin/users');
             })
         }
     } catch (error) {

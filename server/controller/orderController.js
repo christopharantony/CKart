@@ -114,7 +114,7 @@ exports.cancelOrder = async(req,res)=>{
     {
         $inc: { Quantity : 1 }
     })
-    res.redirect('/admin-orders')
+    res.redirect('/admin/admin-orders')
 }
 
 // --------------------------------------------- My Order -----------------------------------------------

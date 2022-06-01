@@ -41,7 +41,7 @@
     <script>
         function deliveryStatus(value,orderId){
             $.ajax({
-                url:'/statusUpdate',
+                url:'/admin/statusUpdate',
                 method:'post',
                 data:{
                     status:value,
@@ -65,7 +65,7 @@
             }).then((result) => {
                 if (result.isConfirmed) {
                     type="put",
-                    location.href = `/cancel-admin/${id}?_method=PUT`
+                    location.href = `/admin/cancel-admin/${id}?_method=PUT`
                     Swal.fire(
                         'Order Canceled!',
                         'Your order has been canceled.',

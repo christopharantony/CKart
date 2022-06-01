@@ -9,7 +9,7 @@
                 <div class="col-md-6">
                     <h2 class="text-center">Edit Category</h2>
                     <p style="color:red" class="wrong"> <%=error%> </p>
-                    <form action="/update-cate/<%=cate._id%>?_method=PUT" method="post" enctype="multipart/form-data">
+                    <form action="/admin/update-cate/<%=cate._id%>?_method=PUT" method="post" enctype="multipart/form-data">
                         <input type="hidden" name="id" value="<%= cate._id%>">
                         <label for="">Name</label>
                         <input type="text" name="name" value="<%=cate.name%>" class="form-control">

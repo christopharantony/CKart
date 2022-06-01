@@ -3,7 +3,7 @@
 <section>
     <div class="container" style="color:white;">
         <div class="row mt-4">
-            <a href="/offer-add" class="btn btn-success ml-auto proadd">Add Offer</a>
+            <a href="/admin/offer-add" class="btn btn-success ml-auto proadd">Add Offer</a>
         </div>
         <table class="table mt-4">
             <thead>
@@ -27,16 +27,16 @@
                     <td><%=offer[i].toDate.toDateString()%></td>
                     <td><%=offer[i].percentage%></td>
                     <% if (offer[i].status) { %>
-                        <form action="/offer-status/<%= offer[i]._id %>?_method=PATCH" method="post">
+                        <form action="/admin/offer-status/<%= offer[i]._id %>?_method=PATCH" method="post">
                             <td><button class="btn btn-outline-success" type="submit">Enabled</button></td>
                         </form>
                     <% } else { %>
-                        <form action="/offer-status/<%= offer[i]._id %>?_method=PATCH" method="post">
+                        <form action="/admin/offer-status/<%= offer[i]._id %>?_method=PATCH" method="post">
                             <td><button class="btn btn-outline-danger" type="submit">Disabled</button></td>
                         </form>
                     <% } %>
                             <td>
-                        <a href="/offer-update/<%= offer[i]._id %>" class="btn border-shadow update">
+                        <a href="/admin/offer-update/<%= offer[i]._id %>" class="btn border-shadow update">
                             <i class="fa-solid fa-pencil"></i>
                         </a>
                         <div>

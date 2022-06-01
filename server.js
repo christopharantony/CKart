@@ -68,12 +68,15 @@ app.use("/css", express.static(path.join(__dirname, "/public/css")));
 app.use("/js", express.static(path.join(__dirname, "/public/js")));
 app.use(
   "/productsImg",
+  express.static(path.join(__dirname, "/public/productsImg")))
+app.use(
+  "/admin/productsImg",
   express.static(path.join(__dirname, "/public/productsImg"))
 );
-app.use(
-  "/datatables",
-  express.static(path.join(__dirname, "/public/DataTables"))
-);
+// app.use(        Folder
+//   "/datatables",
+//   express.static(path.join(__dirname, "/public/DataTables"))
+// );
 
 app.use(function (req, res, next) {
   if (!req.user) {
@@ -92,9 +95,8 @@ app.use(
   })
 );
 
-// app.use('/',require('./server/routes/router'));
+app.use("/admin", require("./server/routes/router"));
 app.use("/", require("./server/routes/userRouter"));
-app.use("/", require("./server/routes/router"));
 
 app.listen(port, () => {
   console.log(`Server is running at http://localhost:${port}`);

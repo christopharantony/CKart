@@ -37,7 +37,7 @@ exports.status = async(req, res) =>{
         }else{
             await offerDb.findByIdAndUpdate(req.params.id,{status:true})
         }
-        res.redirect('/offer')
+        res.redirect('/admin/offer')
     }catch (err) {
         console.log(err);
         res.send(err.message);
@@ -66,10 +66,10 @@ exports.addOffer = async(req, res) => {
         const { error } = validate(offerObj);
         if (error) {
             req.session.error = error.details[0].message
-            res.redirect('/offerAddErr')
+            res.redirect('/admin/offerAddErr')
         }else{
             await offer.save()
-            res.redirect('/offer')
+            res.redirect('/admin/offer')
         }
     }catch(e){
         console.log(e);
@@ -101,10 +101,10 @@ exports.update = async (req, res) => {
         if (error) {
             req.session.offerId = id;
             req.session.error = error.details[0].message
-            res.redirect('/offerEditErr')
+            res.redirect('/admin/offerEditErr')
         }else{
             await offerDb.updateOne({_id:id},{$set: offerObj});
-            res.redirect('/offer')
+            res.redirect('/admin/offer')
         }
     }catch (error) {
         console.log(error);
@@ -115,7 +115,7 @@ exports.update = async (req, res) => {
 exports.delete = (req, res)=>{
     const id = req.params.id
     offerDb.findByIdAndDelete(id).then(()=>{
-        res.redirect('/offer')
+        res.redirect('/admin/offer')
     })
 }
 

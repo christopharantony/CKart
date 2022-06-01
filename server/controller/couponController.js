@@ -20,7 +20,7 @@ exports.status = async (req, res)=>{
         }else{
             await couponDb.findByIdAndUpdate(req.params.id,{status:true})
         }
-        res.redirect('/coupon')
+        res.redirect('/admin/coupon')
     } catch (error) {
         console.log(error);
         res.send(error.message);
@@ -49,10 +49,10 @@ exports.addCoupon = async (req,res)=>{
         const { error } = validate(couponObj);
         if (error) {
             req.session.error = error.details[0].message
-            res.redirect('/couponAddErr')
+            res.redirect('/admin/couponAddErr')
         }else{
             await coupon.save()
-            res.redirect('/coupon')
+            res.redirect('/admin/coupon')
         }
     }catch (error) {
         console.log(error);
@@ -84,10 +84,10 @@ exports.update = async(req, res) =>{
         if (error) {
             req.session.couponId = id;
             req.session.error = error.details[0].message;
-            res.redirect('/couponEditErr')
+            res.redirect('/admin/couponEditErr')
         }else{
             await couponDb.updateOne({_id:id},{$set: couponObj})
-            res.redirect('/coupon')
+            res.redirect('/admin/coupon')
         }
     }catch (error) {
         console.log(error);
@@ -98,7 +98,7 @@ exports.update = async(req, res) =>{
 exports.delete = (req, res) =>{
     const id = req.params.id;
     couponDb.findByIdAndDelete(id).then(()=>{
-        res.redirect('/coupon')
+        res.redirect('/admin/coupon')
     })
 }
 

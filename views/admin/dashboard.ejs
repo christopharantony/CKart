@@ -58,7 +58,7 @@
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container-fluid">
             <!-- <div> -->
-            <a class="navbar-brand">Admin</a>
+            <a href="/admin" class="navbar-brand">Admin</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                 data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
                 aria-label="Toggle navigation">
@@ -67,28 +67,28 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="/users">Users</a>
+                        <a class="nav-link active" aria-current="page" href="/admin/users">Users</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" href="/admin-products">Products</a>
+                        <a class="nav-link active" href="/admin/admin-products">Products</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="/banner">Banner</a>
+                        <a class="nav-link active" aria-current="page" href="/admin/banner">Banner</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="/brand">Brands</a>
+                        <a class="nav-link active" aria-current="page" href="/admin/brand">Brands</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="/category">Category</a>
+                        <a class="nav-link active" aria-current="page" href="/admin/category">Category</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="/offer">Offers</a>
+                        <a class="nav-link active" aria-current="page" href="/admin/offer">Offers</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="/coupon">Coupons</a>
+                        <a class="nav-link active" aria-current="page" href="/admin/coupon">Coupons</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="/admin-orders">Orders</a>
+                        <a class="nav-link active" aria-current="page" href="/admin/admin-orders">Orders</a>
                     </li>
                 </ul>
                 <button class="btn btn-outline-info" aria-current="page" onclick="adminLogout()">Log Out</button>
@@ -158,7 +158,7 @@
                 confirmButtonText: 'Logout'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    location.href = "/logout_admin";
+                    location.href = "/admin/logout_admin";
                 }
             })
         }

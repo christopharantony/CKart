@@ -5,13 +5,13 @@ const orderDb = require('../model/orderModel');
 exports.create =async (req,res)=>{
     try{
         if (!req.body.name){
-            res.redirect('/CategoryErr')
+            res.redirect('/admin/CategoryErr')
         }else{
             const category = new categoryDb({
                 name:req.body.name,
             })
             await category.save()
-            res.redirect('/category')
+            res.redirect('/admin/category')
         }
         }catch (error) {
             res.status(400).send(error)
@@ -28,12 +28,12 @@ exports.update = async (req,res)=>{
     const id = req.params.id;
     if(!req.body.name){
         req.session.categoryId = id;
-        res.redirect('/editCateErr')
+        res.redirect('/admin/editCateErr')
     }else{
     const cat = await categoryDb.findOne({_id:id})
     await categoryDb.findByIdAndUpdate(id,req.body,{useFindAndModify:false})
     await productDb.updateMany({"Category":cat.name},{$set : {"Category":req.body.name}})
-        res.redirect('/category')
+        res.redirect('/admin/category')
     }
 }
 
@@ -43,5 +43,5 @@ exports.delete = async (req,res)=>{
     await categoryDb.findByIdAndDelete(id)
     const products = await productDb.find({"Category":cat.name})
     await productDb.deleteMany({"Category":cat.name})
-    res.redirect('/category')
+    res.redirect('/admin/category')
 }

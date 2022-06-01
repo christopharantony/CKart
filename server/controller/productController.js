@@ -39,11 +39,11 @@ exports.create = async(req,res)=>{
     const { error } = validate(proObj)
     if (error) {
         req.session.error = error.details[0].message
-        res.redirect('/addProErr')
+        res.redirect('/admin/addProErr')
     }
         product.save(product)
     .then(()=>{
-        res.redirect('/admin-products')
+        res.redirect('/admin/admin-products')
     })
     .catch(err=>{
         console.log(err.message);
@@ -115,11 +115,11 @@ exports.update = async(req,res)=>{
         if (error) {
             req.session.id = id;
             req.session.error = error.details[0].message;
-            res.redirect('/updateProErr')
+            res.redirect('/admin/updateProErr')
         }else{
         productDb.updateOne({_id:id},{$set: product })
         .then(()=>{
-            res.redirect('/admin-products')
+            res.redirect('/admin/admin-products')
         })
         .catch(err=>{
             res.send(err.message)
@@ -138,12 +138,12 @@ exports.update = async(req,res)=>{
         if (error) {
             req.session.proId = id;
             req.session.error = error.details[0].message;
-            res.redirect('/updateProErr')
+            res.redirect('/admin/updateProErr')
         }else{
         // productDb.findByIdAndUpdate(id,product)
         productDb.updateOne({_id:id},{$set: product })
         .then(()=>{
-            res.redirect('/admin-products')
+            res.redirect('/admin/admin-products')
         })
         .catch(err=>{
             res.send(err.message)
@@ -162,7 +162,7 @@ exports.delete = (req,res)=>{
     const id = req.params.id;
     productDb.findByIdAndDelete(id)
     .then(()=>{
-        res.redirect('/admin-products')
+        res.redirect('/admin/admin-products')
     })
 }
 
@@ -172,11 +172,6 @@ exports.delete = (req,res)=>{
 
 exports.productDetails = async (req,res)=>{
     const username = req.session.user?.name;
-    if (username){
-        console.log('USER => [ ',username);
-    }else{
-        console.log('USER => [NOT FOUND]');
-    }
     image = req.query.image.split(',')
     const products = await productDb.findOne({Image:image})
     const offerPrice = await offerDb.findOne({proId:products._id,status:true})

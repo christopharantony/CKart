@@ -8,8 +8,8 @@
     <title>CKart : Admin</title>
     <!-- Swal -->
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="sweetalert2.all.min.js"></script>
-    <link rel="stylesheet" href="sweetalert2.min.css">
+    <script src="/sweetalert2.all.min.js"></script>
+    <link rel="stylesheet" href="/sweetalert2.min.css">
     <!-- Ajax -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
@@ -30,7 +30,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.0/css/all.min.css"
         integrity="sha512-10/jx2EXwxxWqCLX/hHth/vu2KY3jCF70dCQB8TSgNjbCVAC/8vai53GfMDrO2Emgwccf2pJqxct9ehpzG+MTw=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="css/stylecustom.css">
+    <link rel="stylesheet" href="/css/stylecustom.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 
@@ -50,28 +50,28 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="/users">Users</a>
+                        <a class="nav-link active" aria-current="page" href="/admin/users">Users</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" href="/admin-products">Products</a>
+                        <a class="nav-link active" href="/admin/admin-products">Products</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="/banner">Banner</a>
+                        <a class="nav-link active" aria-current="page" href="/admin/banner">Banner</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="/brand">Brands</a>
+                        <a class="nav-link active" aria-current="page" href="/admin/brand">Brands</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="/category">Category</a>
+                        <a class="nav-link active" aria-current="page" href="/admin/category">Category</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="/offer">Offers</a>
+                        <a class="nav-link active" aria-current="page" href="/admin/offer">Offers</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="/coupon">Coupons</a>
+                        <a class="nav-link active" aria-current="page" href="/admin/coupon">Coupons</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="/admin-orders">Orders</a>
+                        <a class="nav-link active" aria-current="page" href="/admin/admin-orders">Orders</a>
                     </li>
                     <!-- <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
@@ -119,7 +119,7 @@
                 confirmButtonText: 'Logout'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    location.href = "/logout_admin";
+                    location.href = "/admin/logout_admin";
                 }
             })
         }
@@ -135,7 +135,7 @@
             }).then((result) => {
                 if (result.isConfirmed) {
                     type = "delete",
-                        location.href = `/delete/${id}?_method=DELETE`
+                        location.href = `/admin/delete/${id}?_method=DELETE`
                     Swal.fire(
                         'Deleted!',
                         'Your file has been deleted.',
@@ -155,7 +155,7 @@
             }).then((result) => {
                 if (result.isConfirmed) {
                     type = "delete",
-                        location.href = `/delete-brand/${id}?_method=DELETE`
+                        location.href = `/admin/delete-brand/${id}?_method=DELETE`
                     Swal.fire(
                         'Deleted!',
                         'Your file has been deleted.',
@@ -175,7 +175,7 @@
             }).then((result) => {
                 if (result.isConfirmed) {
                     type = "delete",
-                        location.href = `/delete-cate/${id}?_method=DELETE`
+                        location.href = `/admin/delete-cate/${id}?_method=DELETE`
                     Swal.fire(
                         'Deleted!',
                         'Your file has been deleted.',
@@ -195,7 +195,7 @@
             }).then((result) => {
                 if (result.isConfirmed) {
                     type = "delete",
-                        location.href = `/banner-delete/${id}?_method=DELETE`
+                        location.href = `/admin/banner-delete/${id}?_method=DELETE`
                     Swal.fire(
                         'Deleted!',
                         'Your file has been deleted.',
@@ -215,7 +215,7 @@
             }).then((result) => {
                 if (result.isConfirmed) {
                     type = "delete",
-                        location.href = `/offer-delete/${id}?_method=DELETE`
+                        location.href = `/admin/offer-delete/${id}?_method=DELETE`
                     Swal.fire(
                         'Deleted!',
                         'Your file has been deleted.',
@@ -235,7 +235,7 @@
             }).then((result) => {
                 if (result.isConfirmed) {
                     type = "delete",
-                        location.href = `/coupon-delete/${id}?_method=DELETE`
+                        location.href = `/admin/coupon-delete/${id}?_method=DELETE`
                     Swal.fire(
                         'Deleted!',
                         'Your file has been deleted.',

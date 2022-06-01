@@ -2,7 +2,7 @@
 <section>
     <div class="container">
         <div class="row mt-4">
-            <a href="/banner-add" class="btn btn-success ml-auto proadd">Add Banner</a>
+            <a href="/admin/banner-add" class="btn btn-success ml-auto proadd">Add Banner</a>
         </div>
         <table class="table mt-4">
             <thead>
@@ -23,7 +23,7 @@
                     <td><%=banner[i].label%></td>
                     <td><%=banner[i].description%></td>
                     <td>
-                        <a href="/banner-update?id=<%= banner[i]._id %>" class="btn border-shadow update">
+                        <a href="/admin/banner-update?id=<%= banner[i]._id %>" class="btn border-shadow update">
                             <i class="fa-solid fa-pencil"></i>
                         </a>
                         <div>

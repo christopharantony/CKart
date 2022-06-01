@@ -6,7 +6,7 @@
                 <div class="col-md-6">
                     <h2 class="text-center">Edit Coupon</h2>
                     <p class="wrong" style="color: red"> <%=error%> </p>
-                    <form action="/coupon-update/<%=coupon._id%>?_method=PUT" method="post">
+                    <form action="/admin/coupon-update/<%=coupon._id%>?_method=PUT" method="post">
                         <label for="">Coupon-Code</label>
                         <input type="text" name="Code" value="<%=coupon.Code%>" placeholder="COUPON CODE" class="form-control">
                         <label for="">Percentage</label>

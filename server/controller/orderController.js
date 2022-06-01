@@ -420,7 +420,7 @@ exports.orderPlacing = async(req,res)=>{
         date: new Date()
     }
     let orderObj = new orderDb(orderObject);
-    await orderObj.save();
+    await orderObj.save(); 
     req.session.orderDate = orderObject.date;
         await productDb.updateOne({"_id": ObjectId(products[0].item)},
         {

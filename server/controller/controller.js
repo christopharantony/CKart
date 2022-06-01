@@ -274,6 +274,7 @@ exports.profileEdit = async (req, res) => {
 exports.passwordChange = async (req, res)=>{
     try {
         const userDb = await Userdb.findById(req.session.user._id);
+        if (req.body.oldpswd){
         bcrypt.compare(req.body.oldpswd,userDb.password).then((status)=>{
             if(status){
                 if(req.body.newpswd === req.body.confirmpswd){
@@ -295,6 +296,10 @@ exports.passwordChange = async (req, res)=>{
                 res.redirect('/pswdChangeErr')
             }
         })
+    }else{
+        req.session.passwordError = "Please enter your old password";
+        res.redirect('/pswdChangeErr')
+    }
 
     }catch(err) {
         console.log(err);

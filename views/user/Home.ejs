@@ -1,6 +1,6 @@
 <%-include('../include/_userhead')%>
 
-   <!---------------------- /Banner--------------------------------------------------- -->
+   <!---------------------- Banner--------------------------------------------------- -->
    <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel" data-interval="3000">
       <ol class="carousel-indicators">
          <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
@@ -39,8 +39,6 @@
                   <span class="sr-only">Next</span>
                </a>
       </div>
-
-      <!---------------------- /Banner--------------------------------------------------- -->
       <!----------------------  Offer --------------------------------------------------- -->
       <div class="products" style="margin-top:25px;">
          <div class="container p-0">
@@ -54,7 +52,7 @@
             <div class="row">
                <div class="col-md-12">
                   <div class="our_products">
-                     <div class="row" style="padding-top: 3rem;" >
+                     <div class="row" style="padding-top: 3rem;">
                         <% for ( let i=0; i < offers.length; i++){ %>
                            <div class="col-md-4 margin_bottom1">
                               <div class="product_box">
@@ -65,53 +63,51 @@
                                              style="width: 150px;height: 150px;"
                                              src="<%= offers[i].products.Image[0] %>" alt="image" />
                                        </figure>
-                                    <% } else { %>
+                                       <% } else { %>
                                           <figure><img style="width: 150px;height: 150px;"
                                                 src="<%= offers[i].products.Image[0] %>" alt="image" /></figure>
-                                    <% } %>
+                                          <% } %>
                                  </a>
                                  <h1>
                                     <%=offers[i].products.Name%>
                                  </h1>
-                                 <h1 style="text-decoration: line-through; opacity: 50%; font-size:1rem; color:red; padding:0">$<%=offers[i].price%>
+                                 <h1
+                                    style="text-decoration: line-through; opacity: 50%; font-size:1rem; color:red; padding:0">
+                                    $<%=offers[i].price%>
                                  </h1>
                                  <h1>$<%=offers[i].offerPrice%>
                                  </h1>
                                  <% if (offers[i].products.Quantity==0) { %>
-                                    <button disabled
-                                       class="btc_home" style="margin-left:2rem;color:#383535"> Add
+                                    <button disabled class="btc_home" style="margin-left:2rem;color:#383535"> Add
                                        to cart</button>
-                                    <a >
+                                    <a>
                                        <h3 class="atc_home" style="margin-left: 119px;color:#383535">Buy Now</h3>
                                     </a>
-                                 <% } else if (isUserLogin) { %>
-                                             <button onclick="addToCart('<%=offers[i].products._id%>')"
-                                                class="btc_home" style="margin-left:2rem"> Add
-                                                to cart</button>
-                                             <a href="/buy-now?id=<%= offers[i].products._id%> ">
-                                                <h3 class="atc_home" style="margin-left: 124px;">Buy Now</h3>
-                                             </a>
-                                 <% } else {%>
-                                                <!-- <a href="/login"> -->
-                                                   <button class="btc_home" onclick="addCartButton()">
-                                                      Add to cart
-                                                   </button>
-                                                   
-                                                <!-- </a> -->
-                                                <a onclick="addCartButton()">
-                                                   <h3 class="atc_home">Buy Now</h3>
-                                                </a>
-                                 <% } %>
+                                    <% } else if (isUserLogin) { %>
+                                       <button onclick="addToCart('<%=offers[i].products._id%>')" class="btc_home"
+                                          style="margin-left:2rem"> Add
+                                          to cart</button>
+                                       <a href="/buy-now?id=<%= offers[i].products._id%> ">
+                                          <h3 class="atc_home" style="margin-left: 124px;">Buy Now</h3>
+                                       </a>
+                                       <% } else {%>
+                                          <button class="btc_home" onclick="addCartButton()">
+                                             Add to cart
+                                          </button>
+                                          <a onclick="addCartButton()">
+                                             <h3 class="atc_home">Buy Now</h3>
+                                          </a>
+                                          <% } %>
                               </div>
                            </div>
-                        <% } %>
+                           <% } %>
                      </div>
                   </div>
                </div>
             </div>
          </div>
       </div>
-      <!-- products -->
+      <!---------------------- products ----------------------------------------------------->
       <div class="products">
          <div class="container">
             <div class="row">
@@ -132,7 +128,8 @@
                                     <% if (products[i].Quantity==0) { %>
                                        <figure>
                                           <h1 class="outofstock">Out of Stock</h1>
-                                          <img style="width: 150px;height: 150px;" src="<%= products[i].Image[0] %>" alt="image" />
+                                          <img style="width: 150px;height: 150px;" src="<%= products[i].Image[0] %>"
+                                             alt="image" />
                                        </figure>
                                        <% } else { %>
                                           <figure><img style="width: 150px;height: 150px;"
@@ -145,32 +142,27 @@
                                  <h1>$<%=products[i].Price%>
                                  </h1>
                                  <% if (isUserLogin) { %>
-                                       <% if (fav?.includes(products[i]._id)) { %>
+                                    <% if (fav?.includes(products[i]._id)) { %>
+                                       <button onclick="addToFav('<%=products[i]._id%>')"><i class="fa-solid fa-heart"
+                                             style="color: red;" id="<%=products[i]._id%>"></i></button>
+                                       <% } else {%>
                                           <button onclick="addToFav('<%=products[i]._id%>')"><i
-                                                class="fa-solid fa-heart" style="color: red;"
-                                                id="<%=products[i]._id%>"></i></button>
-                                          <% } else {%>
-                                             <button onclick="addToFav('<%=products[i]._id%>')"><i
-                                                   class="fa-solid fa-heart" id="<%=products[i]._id%>"></i></button>
-                                             <% } %>
-                                                <button onclick="addToCart('<%=products[i]._id%>')" class="btc_home">
-                                                   Add
-                                                   to cart</button>
-                                                <a href="/buy-now?id=<%= products[i]._id%> ">
-                                                   <h3 class="atc_home" style="margin-left: 119px;">Buy Now</h3>
+                                                class="fa-solid fa-heart" id="<%=products[i]._id%>"></i></button>
+                                          <% } %>
+                                             <button onclick="addToCart('<%=products[i]._id%>')" class="btc_home">
+                                                Add
+                                                to cart</button>
+                                             <a href="/buy-now?id=<%= products[i]._id%> ">
+                                                <h3 class="atc_home" style="margin-left: 119px;">Buy Now</h3>
+                                             </a>
+                                             <% } else {%>
+                                                <button class="btc_home" onclick="addCartButton()">
+                                                   Add to cart
+                                                </button>
+                                                <a onclick="addCartButton()">
+                                                   <h3 class="atc_home">Buy Now</h3>
                                                 </a>
-                                                <% } else {%>
-                                                   <button class="btc_home" onclick="addCartButton()">
-                                                      Add to cart
-                                                   </button>
-                                                   <!-- <button class="atc_home" onclick="addCartButton()">
-                                                      Buy Now
-                                                   </button> -->
-
-                                                   <a onclick="addCartButton()">
-                                                      <h3 class="atc_home">Buy Now</h3>
-                                                   </a>
-                                                   <% } %>
+                                                <% } %>
                               </div>
                            </div>
                            <% } %>
@@ -180,25 +172,7 @@
             </div>
          </div>
       </div>
-      <!-- end products -->
-      <!-- <div class="laptop">
-         <div class="container">
-            <div class="row">
-               <div class="col-md-6">
-                  <div class="titlepage">
-                     <p>Every Computer and laptop</p>
-                     <h2>Up to 40% off !</h2>
-                     <a class="read_more" href="#">Shop Now</a>
-                  </div>
-               </div>
-               <div class="col-md-6">
-                  <div class="laptop_box">
-                     <figure><img src="images/pc.png" alt="#" /></figure>
-                  </div>
-               </div>
-            </div>
-         </div>
-      </div> -->
+
    </div>
 
    <%-include('../include/_userfooter')%>

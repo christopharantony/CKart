@@ -32,7 +32,7 @@
         <a class="navbar-brand" href="/" style="font-size: x-large; font-weight: bold; color: white;">CKart</a>
     </nav>
 
-    <div class="col-md-12 row" >
+    <div class="col-md-12 row">
 
         <div style="background-color: white; width: 25%; height: 20rem; margin: 3rem 0rem 0rem 5rem;" class="col-md-3">
             <div style="display: flex; padding: 2rem; align-items: center;">
@@ -63,7 +63,9 @@
             style="background-color: white;  width: 40rem;  height: 100%; padding: 2rem; margin: auto;  margin-top: 5rem;border: 1px solid;margin-right: 5rem;">
 
             <form action="/profile-edit" method="post">
-                <p style="color: red;"> <%= error %> </p>
+                <p style="color: red;">
+                    <%= error %>
+                </p>
                 <h3 style="font-size: large; font-weight: 500;">Personal Information</h3>
                 <input type="text" value="<%= user.name %>" style="height: 50px; font-size: 14px; border: 1px solid #d7d2d2; width: 27rem; padding-left: 20px;  outline: none;
                 border-radius: 2px;" name="name">&nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp
@@ -76,11 +78,12 @@
                     <input type="radio" style="margin-top: 4px; " name="gender" value="Male" checked>&nbsp Male &nbsp
                     <input type="radio" name="gender" value="Female"> &nbsp Female &nbsp <br>
                     <% } else { %>
-                        <input type="radio" id="rad" style="margin-top: 4px; " name="gender" value="Male">&nbsp Male &nbsp
+                        <input type="radio" id="rad" style="margin-top: 4px; " name="gender" value="Male">&nbsp Male
+                        &nbsp
                         <input type="radio" id="rad" value="Female" name="gender" checked> &nbsp Female &nbsp <br>
                         <% } %>
-                            <h3 style="    font-size: large;font-weight: 500;" >Email address</h3>
-                            <input type="email" 
+                            <h3 style="    font-size: large;font-weight: 500;">Email address</h3>
+                            <input type="email"
                                 style="height: 50px; font-size: 14px; border: 1px solid #d7d2d2; width: 27rem;    padding-left: 20px;  outline: none; border-radius: 2px;"
                                 placeholder="<%= user.email %>" name="email" value="<%= user.email %>">
 
@@ -91,35 +94,38 @@
 
                             <button type="submit"
                                 style=" background-color: #4f27f9; color: white; margin-left: .5rem; width: 7rem; height: 3rem; border-radius: 7px; border: 1px solid;">Save</button>
-                                
-                            </form>
-                            
+
+            </form>
+
         </div>
         <div class="col-md-4"
             style="background-color: white;  width: 37rem;  height: 100%; padding: 2rem; margin: auto;  margin-top: 5rem; border: 1px solid;padding-bottom: 4rem;">
             <form action="/password-change" method="post">
-                <p style="color: red;"> <%= passworderror %> </p>
+                <p style="color: red;">
+                    <%= passworderror %>
+                </p>
                 <h3 style="font-size: large; font-weight: 500;">Old Password</h3>
                 <input type="password" value="" style="height: 50px; font-size: 14px; border: 1px solid #d7d2d2; width: 27rem; padding-left: 20px;  outline: none;
                 border-radius: 2px;" name="oldpswd">&nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp
                 <br>
-                <h3 style="    font-size: large;font-weight: 500;" >New Password</h3>
-                <input type="password" 
+                <h3 style="    font-size: large;font-weight: 500;">New Password</h3>
+                <input type="password"
                     style="height: 50px; font-size: 14px; border: 1px solid #d7d2d2; width: 27rem;    padding-left: 20px;  outline: none; border-radius: 2px;"
                     placeholder="" name="newpswd" value="">
-                <h3 style="    font-size: large;font-weight: 500;" >Confirm Password</h3>
-                <input type="password" 
+                <h3 style="    font-size: large;font-weight: 500;">Confirm Password</h3>
+                <input type="password"
                     style="height: 50px; font-size: 14px; border: 1px solid #d7d2d2; width: 27rem;    padding-left: 20px;  outline: none; border-radius: 2px;"
                     placeholder="" name="confirmpswd" value="">
                 <br><br>
                 <button type="submit"
-                    style=" background-color: #4f27f9; color: white; width: 27rem; height: 3rem; border-radius: 7px; border: 1px solid;">Change Password</button>
-                    
-                </form>
-        </div>
-        
+                    style=" background-color: #4f27f9; color: white; width: 27rem; height: 3rem; border-radius: 7px; border: 1px solid;">Change
+                    Password</button>
 
-            <br><br><br>
+            </form>
+        </div>
+
+
+        <br><br><br>
         <div class="col-md-12"
             style="background-color: white;    height: 100%; padding: 2rem 9rem; margin: auto;  margin-top: 3rem;">
 
@@ -145,7 +151,7 @@
 
 </body>
 <script>
-    function changePassword(){
+    function changePassword() {
         document.getElementById("changePassword").style.display = 'block';
     }
 </script>

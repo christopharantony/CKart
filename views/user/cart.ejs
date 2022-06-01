@@ -14,15 +14,12 @@
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="sweetalert2.all.min.js"></script>
     <link rel="stylesheet" href="sweetalert2.min.css">
-    <!-- Button -->
     <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-    <!-- <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script> -->
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
 </head>
 
 <body>
 
-    <!-- As a link -->
     <nav class=" navbar-light bg-light"
         style="background-color: #4843a3;height: 4em; color: white; padding-left: 42em;">
         <a href="/" style="    float: left;
@@ -31,11 +28,6 @@
         color: white;">Home</a>
         <a class="navbar-brand" href="/" style="font-size: x-large; font-weight: bold; color: white;">CKart</a>
     </nav>
-
-    <!-- As a heading -->
-    <!-- <nav class="navbar navbar-light bg-light">
-    <span class="navbar-brand mb-0 h1">Navbar</span>
-  </nav> -->
 
     <div class="container">
 
@@ -70,49 +62,14 @@
                                     <p class="product-quantity">Qnt:
 
                                     <div class="input-group" style="width:auto; display:flex">
-                                        <!-- <span class="input-group-btn"> -->
-
-                                            
-                                            <!-- <button type="button" class="btn btn-danger btn-number" data-type="minus"
-                                                data-field="quant[2]"
-                                                onclick="changeQuantity('<%=cartItems[i]._id%>' , '<%=cartItems[i].product._id%>', '<%=user._id%>' , -1)">
-                                                <span class="glyphicon glyphicon-minus"></span>
-                                            </button>
-                                        </span>
-                                        <span type="text" name="quant[2]" class="form-control input-number"
-                                            id="<%=cartItems[i].product._id%>" value="<%=cartItems[i].quantity%>"
-                                            min="1" max="10" style="width: 42px;">
+                                        <button style="height:3rem ; width:3rem;"
+                                            onclick="changeQuantity('<%=cartItems[i]._id%>' , '<%=cartItems[i].product._id%>', '<%=user._id%>' , -1)">-</button>
+                                        <p id="<%=cartItems[i].product._id%>"
+                                            style="display: flex; padding-top:0.4rem; margin: 0px 1rem">
                                             <%=cartItems[i].quantity%>
-                                        </span> -->
-
-<!--                                         
-                                        <td style="display: flex;  height: 7rem; width: 7rem; justify-content: center;">
-                                                    <button
-                                                        onclick="changeQuantity('<%=cartItems[i]._id%>' , '<%=cartItems[i].product._id%>', '<%=user._id%>' , -1)"
-                                                        class="cart-item-count mr-3 quantityChange">-</button>
-                                                    <p style="padding: 2rem 1rem 0rem 1rem;">
-                                                        <span id="<%=cartItems[i].product._id%>">
-                                                            <%=cartItems[i].quantity%>
-                                                        </span>
-                                                    </p>
-                                                    <button
-                                                        onclick="changeQuantity('<%=cartItems[i]._id%>' , '<%=cartItems[i].product._id%>', '<%=user._id%>' , 1)"
-                                                        class="cart-item-count mr-3 quantityChange">+</button>
-                                                </td> -->
-
-
-                                                <button style="height:3rem ; width:3rem;" onclick="changeQuantity('<%=cartItems[i]._id%>' , '<%=cartItems[i].product._id%>', '<%=user._id%>' , -1)">-</button>
-                                                <p id="<%=cartItems[i].product._id%>" style="display: flex; padding-top:0.4rem; margin: 0px 1rem"><%=cartItems[i].quantity%></p>
-                                                <button style="height:3rem ; width:3rem; " onclick="changeQuantity('<%=cartItems[i]._id%>' , '<%=cartItems[i].product._id%>', '<%=user._id%>' , 1)">+</button>
-
-
-                                        <!-- <span class="input-group-btn">
-                                            <button type="button" class="btn btn-success btn-number" data-type="plus"
-                                                data-field="quant[2]"
-                                                onclick="changeQuantity('<%=cartItems[i]._id%>' , '<%=cartItems[i].product._id%>', '<%=user._id%>' , 1)">
-                                                <span class="glyphicon glyphicon-plus"></span>
-                                            </button>
-                                        </span> -->
+                                        </p>
+                                        <button style="height:3rem ; width:3rem; "
+                                            onclick="changeQuantity('<%=cartItems[i]._id%>' , '<%=cartItems[i].product._id%>', '<%=user._id%>' , 1)">+</button>
                                     </div>
 
                                     <button class="product-remove"
@@ -133,97 +90,92 @@
 
             </div>
             <% if (totalOffer) { %>
-            <div class="cart-total">
-
-                <p>
-
-                    <span>Price</span>
-
-                    <span>$ <span id="total">
-                            <%=totalValue%>
-                        </span> </span>
-
-                </p>
-                
-                <p>
-                    
-                    <span>Number of Items</span>
-                    
-                    <span id="totalNo">
-                        <%=totalNo%>
-                    </span>
-                    
-                </p>
-                
-                <p>
-                    
-                    <span>You Save</span>
-                    <span>$ <%=totalOffer%></span>
-                    
-                </p>
-                <p>
-
-                    <span>Total Price</span>
-
-                    <span>$ <span id="total">
-                        <%=save%>
-                        </span> </span>
-
-                </p>
-                
-                <a href="/place-order">Proceed to Checkout</a>
-
-            </div>
-            <% } else { %>
                 <div class="cart-total">
 
                     <p>
+
                         <span>Price</span>
+
                         <span>$ <span id="total">
                                 <%=totalValue%>
                             </span> </span>
+
                     </p>
-                    
+
                     <p>
-                        
+
                         <span>Number of Items</span>
-                        
+
                         <span id="totalNo">
                             <%=totalNo%>
                         </span>
-                        
+
                     </p>
-                    
+
                     <p>
-                        
+
                         <span>You Save</span>
-                        <span>$ 0</span>
-                        
+                        <span>$ <%=totalOffer%></span>
+
                     </p>
                     <p>
-    
+
                         <span>Total Price</span>
-    
+
                         <span>$ <span id="total">
-                                <%=totalValue%>
+                                <%=save%>
                             </span> </span>
-    
+
                     </p>
-                    
+
                     <a href="/place-order">Proceed to Checkout</a>
-    
+
                 </div>
-            <% } %>
+                <% } else { %>
+                    <div class="cart-total">
+
+                        <p>
+                            <span>Price</span>
+                            <span>$ <span id="total">
+                                    <%=totalValue%>
+                                </span> </span>
+                        </p>
+
+                        <p>
+
+                            <span>Number of Items</span>
+
+                            <span id="totalNo">
+                                <%=totalNo%>
+                            </span>
+
+                        </p>
+
+                        <p>
+
+                            <span>You Save</span>
+                            <span>$ 0</span>
+
+                        </p>
+                        <p>
+
+                            <span>Total Price</span>
+
+                            <span>$ <span id="total">
+                                    <%=totalValue%>
+                                </span> </span>
+
+                        </p>
+
+                        <a href="/place-order">Proceed to Checkout</a>
+
+                    </div>
+                    <% } %>
 
         </div>
 
     </div>
     <% } %>
-
-        <!-- complete: function(data) {
-        alert('hi');
-    } -->
-
 
 </body>
 <script>
@@ -242,7 +194,6 @@
             },
             dataType: 'json',
             success: (response) => {
-
                 if (response.removeProduct) {
                     const Toast = Swal.mixin({
                         toast: true,
@@ -262,25 +213,18 @@
                         icon: 'success',
                         title: 'Removed from cart'
                     })
-
-
                 } else {
                     document.getElementById(proId).innerHTML = quantity + count
                     document.getElementById("total").innerHTML = response.total
                     location.reload()
                 }
-                // let quant = $('#pro-quant').html()
-                // quant = parseInt(quant)+count
-                // $("#pro-quant").html(quant)
-                // console.log(response)
-                // alert(response)
             },
             error: (err) => {
                 alert(err)
             }
-
         })
     }
+
     function removeProcart(cartId, proId) {
         Swal.fire({
             title: 'Are you want to Remove?',
@@ -306,22 +250,7 @@
             }
         })
     }
-    // function removeProcart(cartId, proId) {
 
-    //     $.ajax({
-    //         type: 'POST',
-    //         url: '/remove-product-cart',
-    //         data: {
-    //             cart: cartId,
-    //             product: proId
-    //         },
-    //         dataType: 'json',
-    //         success: (response) => {
-    //             alert("Product removed from cart")
-    //             location.reload()
-    //         }
-    //     })
-    // }
 </script>
 
 </html>

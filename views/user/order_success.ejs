@@ -15,8 +15,7 @@
     <meta name="author" content="">
     <!-- my custom css -->
     <link rel="stylesheet" href="css/usercss.css">
-    <!-- Cart css -->
-    <!-- <link rel="stylesheet" href="css/cart.css"> -->
+
     <!-- bootstrap css -->
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <!-- style css -->
@@ -35,98 +34,59 @@
     <!-- Ajax -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
-        <!-- swal -->
-        <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-        <script src="sweetalert2.all.min.js"></script>
-        <link rel="stylesheet" href="sweetalert2.min.css">
-
-    <!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script><![endif]-->
+    <!-- swal -->
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="sweetalert2.all.min.js"></script>
+    <link rel="stylesheet" href="sweetalert2.min.css">
+    <!-- end swal -->
 </head>
-<!-- body -->
 
 <body class="main-layout inner_posituong computer_page">
-    <nav class=" navbar-light"
-    style="background-color: #4843a3;height: 4em; color: white; padding-left: 5em;">
-    <a href="/" style="    float: left; margin-top: 1em; color: white;">Home</a>
-    <a class="navbar-brand" href="/" style="margin-left: 26rem; font-size: xx-large; line-height:5rem; font-weight: bold; color: white;">CKart</a>
+    <nav class=" navbar-light" style="background-color: #4843a3;height: 4em; color: white; padding-left: 5em;">
+        <a href="/" style="    float: left; margin-top: 1em; color: white;">Home</a>
+        <a class="navbar-brand" href="/"
+            style="margin-left: 26rem; font-size: xx-large; line-height:5rem; font-weight: bold; color: white;">CKart</a>
     </nav>
     <!-- loader  -->
     <div class="loader_bg">
         <div class="loader"><img src="images/loading.gif" alt="#" /></div>
     </div>
     <!-- end loader -->
-    <!-- header -->
-    <!-- <header> -->
-        <!-- header inner -->
-        <!-- <div class="header"> -->
-            <!-- <div class="container-fluid"> -->
-                <!-- <div class="row"> -->
-                    <!-- <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col logo_section">
-                        <div class="full">
-                            <div class="center-desk">
-                                <div class="logo">
-                                    <a href="/"><img src="images/logo.png" alt="#" /></a>
-                                </div>
-                            </div>
-                        </div>
-                    </div> -->
-                    <!-- <div class="col-xl-9 col-lg-9 col-md-9 col-sm-9">
-                        <nav class="navigation navbar navbar-expand-md navbar-dark ">
-                            <button class="navbar-toggler" type="button" data-toggle="collapse"
-                                data-target="#navbarsExample04" aria-controls="navbarsExample04" aria-expanded="false"
-                                aria-label="Toggle navigation">
-                                <span class="navbar-toggler-icon"></span>
-                            </button>
-                            <div class="collapse navbar-collapse" id="navbarsExample04">
-                                <ul class="navbar-nav mr-auto">
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="/">Home</a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </nav>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </header> -->
-
-    <!-- ======================================================= -->
-
     <section style="margin-top:20px">
         <div class="container">
-        <div class="row" style="margin-left:2em" >
+            <div class="row" style="margin-left:2em">
                 <div class="col-md-9">
                     <h1 class="">Order Placed Successfully</h1>
                     <a href="/" class="btn btn-success" style="margin-top:14px;">Continue Shopping</a>
                 </div>
                 <div class="col-md-3 text-center">
-                    <h3 class="text-center" style="font-weight: 600;" >Track your Orders</h3>
+                    <h3 class="text-center" style="font-weight: 600;">Track your Orders</h3>
                     <p>Easily track your orders!</p>
                     <a href="/user-orders" class="btn btn-primary">Go to My Orders</a>
                 </div>
             </div>
         </div>
         <div class="container">
-        <div class="row" style="margin-left:2em; margin-top: 3em;" >
+            <div class="row" style="margin-left:2em; margin-top: 3em;">
                 <div class="col-md-9">
                     <h2 class="">Delivery Address</h2>
-                    <p><%=address?.name%></p>
-                    <p><%=address?.address%></p>
-                    <p><%=address?.pincode%></p>
-                    <p><%=address?.mobile%></p>
+                    <p>
+                        <%=address?.name%>
+                    </p>
+                    <p>
+                        <%=address?.address%>
+                    </p>
+                    <p>
+                        <%=address?.pincode%>
+                    </p>
+                    <p>
+                        <%=address?.mobile%>
+                    </p>
                 </div>
-                <!-- <div class="col-md-3 text-center">
-                    <h3 class="text-center" style="font-weight: 600;" >Track your Orders</h3>
-                    <p>Easily track your orders!</p>
-                    <a href="/user-orders" class="btn btn-primary">Go to My Orders</a>
-                </div> -->
             </div>
         </div>
         <div class="container">
-        <div class="row" style="margin-left:2em; margin-top: 3em;" >
+            <div class="row" style="margin-left:2em; margin-top: 3em;">
                 <div class="col-md-12">
                     <% for ( let i=0; i < cartItems.length; i++) { %>
                         <div class="product" style="height:190px">
@@ -136,58 +96,28 @@
                             </a>
                             <div class="col-md-8">
                                 <div class="favproduct-info vertical-center">
-                                    
+
                                     <h3 class="product-name">
                                         <%= cartItems[i].Name %>
                                     </h3>
-                                        
-                                        <h4 class="product-price">$ <%= cartItems[i].Price %>
-                                        </h4>
-                                    </div>
+
+                                    <h4 class="product-price">$ <%= cartItems[i].Price %>
+                                    </h4>
+                                </div>
                             </div>
-                            <div class="col-md-2" >
-    
+                            <div class="col-md-2">
                                 <a href="/user-orders" class="fav-product-remove vertical-center">
-    
                                     <i class="fa fa-close" style="color:red"></i>
-    
                                     <span style="color:red">Cancel</span>
-    
                                 </a>
-    
                             </div>
                         </div>
-    
-                        </div>
-    
-                        <% } %>
                 </div>
+                <% } %>
             </div>
         </div>
+        </div>
     </section>
-    <!-- <script>
-        function orderCancel(id){
-            Swal.fire({
-                title: 'Are you want to Cancel ?',
-                icon: 'error',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Order Cancel'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    type="put",
-                    // method="post",
-                    location.href = `/cancel/${id}?_method=PUT`
-                    Swal.fire(
-                        'Order Canceled!',
-                        'Your order has been canceled.',
-                        'success'
-                    )
-                }
-            })
-        }
-    </script> -->
     <script src="js/jquery.min.js"></script>
     <script src="js/popper.min.js"></script>
     <script src="js/bootstrap.bundle.min.js"></script>

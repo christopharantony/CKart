@@ -1,10 +1,7 @@
 <%-include('../include/_header')%>
-
     <!--Main-->
-
     <main id="main">
         <div id="container">
-
             <div class="form-title text-center">
                 <h2 class="new_userH">Login with OTP</h2>
             </div>
@@ -17,9 +14,7 @@
                         </a>
                         <div id="Timer">59</div>
                         <% if (error) { %>
-
                             <p class="wrong">Invalid OTP</p>
-
                             <% } %>
                                 <a href="/login" class="border-shadow">
                                     <span class="new">Login with Mail ID </span>
@@ -29,7 +24,6 @@
                         <input type="hidden" name="number" value="<%=number%>">
                         <input type="number" name="otp" value="" placeholder="OTP">
                     </div>
-
                     <div class="form-group">
                         <button type="submit" class="save_btn">Submit</button>
                     </div>
@@ -45,39 +39,28 @@
             </form>
         </div>
     </main>
-
     <!--/Main-->
-
     <script>
-
-        function showdiv(){
-            document.getElementById("hideresend").style.visibility ="visible";
+        function showdiv() {
+            document.getElementById("hideresend").style.visibility = "visible";
         }
-        setTimeout("showdiv()", 60*1000);
-
+        setTimeout("showdiv()", 60 * 1000);
         document.getElementsByTagName("button")[1].disabled = true
-
         const myTimeout = setTimeout(myGreeting, 59 * 1000);
-
         function myGreeting() {
             document.getElementsByTagName("button")[1].disabled = false
         }
-
         var timeLeft = 59;
         var elem = document.getElementById('Timer');
-
         var timerId = setInterval(countdown, 1000);
-
         function countdown() {
             if (timeLeft == 0) {
                 clearTimeout(timerId);
                 elem.innerHTML = ''
-                
             } else {
-                elem.innerHTML =' Resend : ' + timeLeft + ' sec';
+                elem.innerHTML = ' Resend : ' + timeLeft + ' sec';
                 timeLeft--;
             }
         }
     </script>
-
     <%-include('../include/_footer')%>

@@ -9,22 +9,23 @@ const Joi = require('joi');
 
 // --------------------------------------------- New Product -----------------------------------------------
 exports.create = async(req,res)=>{
-        let images = [req.files?.Image1,req.files?.Image2,req.files?.Image3]
+            let images = []
+            if(req.files?.Image1){images.push(req.files?.Image1)}
+            if(req.files?.Image2){images.push(req.files?.Image2)}
+            if(req.files?.Image3){images.push(req.files?.Image3)}
         const imgPath = []
-        if(images){
-            for (const image of images){
-            var uploadPath = './public/productsImg/' + Date.now()+'.jpeg'
-            var img ='productsImg/' + Date.now()+'.jpeg'
-            imgPath.push(img)
-            console.log('img',img);
-            image?.mv(uploadPath,(err)=>{
-            console.log(uploadPath);
-            if(err){
-                console.log(err);
-                return res.status(500).send(err);
-            }
-            })
-            }
+        if(images.length){
+            for (let i = 0; i < images.length; i++) {
+                var uploadPath = './public/productsImg/' + Date.now()+i+'.jpeg'
+                var img ='productsImg/' + Date.now()+i+'.jpeg'
+                imgPath.push(img)
+                images[i]?.mv(uploadPath,(err)=>{
+                if(err){
+                    console.log(err);
+                    return res.status(500).send(err);
+                }
+                })
+                }
         }
         const proObj = {
             Name:req.body.Name,
@@ -174,7 +175,7 @@ exports.productDetails = async (req,res)=>{
     const username = req.session.user?.name;
     image = req.query.image.split(',')
     const products = await productDb.findOne({Image:image})
-    const offerPrice = await offerDb.findOne({proId:products._id,status:true})
+    const offerPrice = await offerDb.findOne({proId:products?._id,status:true})
     let cartCount = 0
             let cart = await cartDb.findOne({user:req.session.user?._id})
             console.log('cart',cart);

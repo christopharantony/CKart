@@ -1,25 +1,18 @@
-
 <%-include('../include/_header')%>
-
-<!--Main-->
-
-<main id="main">
-    <div id="container">
-        
-        <div class="form-title text-center">
-            <h2 class="new_userH">Sign Up</h2>
-            
-                <p class="wrong"> <%=error%> </p>
-                
+    <!--Main-->
+    <main id="main">
+        <div id="container">
+            <div class="form-title text-center">
+                <h2 class="new_userH">Sign Up</h2>
+                <p class="wrong">
+                    <%=error%>
+                </p>
+            </div>
+            <!-- Form -->
+            <form action="/signup" method="post" id="sign_up">
+                <%-include('.. /include/_form')%>
+            </form>
         </div>
-        <!-- Form -->
-        <form action="/signup" method="post" id="sign_up">
-        <%-include('../include/_form')%>
-        </form>
-        
-    </div>
-</main>
-
-<!--/Main-->
-
-<%-include('../include/_footer')%>
+    </main>
+    <!--/Main-->
+    <%-include('../include/_footer')%>

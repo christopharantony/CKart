@@ -16,13 +16,11 @@
     <link rel="stylesheet" href="sweetalert2.min.css">
     <!-- Button -->
     <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-    <!-- <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script> -->
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
 </head>
 
 <body>
 
-    <!-- As a link -->
     <nav class=" navbar-light bg-light"
         style="background-color: #4843a3;height: 4em; color: white; padding-left: 42em;">
         <a href="/" style="    float: left;
@@ -32,11 +30,6 @@
         <a class="navbar-brand" href="/" style="font-size: x-large; font-weight: bold; color: white;">CKart</a>
     </nav>
 
-    <!-- As a heading -->
-    <!-- <nav class="navbar navbar-light bg-light">
-    <span class="navbar-brand mb-0 h1">Navbar</span>
-  </nav> -->
-
     <div class="container">
 
         <h1> Wishlist</h1>
@@ -44,67 +37,54 @@
         <div>
 
             <div class="products" style="margin-left: 4rem;">
-                <% if (cartItems.length == 0) { %>
+                <% if (cartItems.length==0) { %>
                     <h2>You have no Favorites</h2>
             </div>
-                <% } else { %>
-                    
-                    <table class="fav-table">
-                        <thead class="thead">
-                            <tr class="fav-row">
+            <% } else { %>
+
+                <table class="fav-table">
+                    <thead class="thead">
+                        <tr class="fav-row">
                             <th>Sl</th>
-                            <th style="padding-left: 13%;" >Image</th>
+                            <th style="padding-left: 13%;">Image</th>
                             <th>Name</th>
                             <th>Price</th>
-                            <th style="padding-left: 25px;" >Action</th>
-                            <!-- <th>Action</th> -->
-                            </tr>
-                            
-                        </thead>
-                        <tbody class="tbody">
-                            <% for ( let i=0; i < cartItems.length; i++) { %>
+                            <th style="padding-left: 25px;">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody class="tbody">
+                        <% for ( let i=0; i < cartItems.length; i++) { %>
                             <tr class="fav-row">
-                            <td><%= i+1 %></td>
-                            <td style="padding-left: 8%;" >
-                                <a href="/productDetail?image=<%=cartItems[i].product[0].Image %>">
-                                    <img style="    width: 207px;
+                                <td>
+                                    <%= i+1 %>
+                                </td>
+                                <td style="padding-left: 8%;">
+                                    <a href="/productDetail?image=<%=cartItems[i].product[0].Image %>">
+                                        <img style="    width: 207px;
                                     height: 191px;     padding: 2rem;" src="<%= cartItems[i].product[0].Image[0] %>">
-                                </a>
-                            </td>
-                            <td><%= cartItems[i].product[0].Name %></td>
-                            <td><%= cartItems[i].product[0].Price %></td>
-                            <td style="padding-left: 25px;" >
-                                <button class="fav-product-remove" 
-                                onclick="removeProfav('<%=cartItems[i]._id%>' , '<%=cartItems[i].product[0]._id%>')">
-                                <i class="fa fa-trash" aria-hidden="true"></i>
-                                <span class="remove">Remove</span>
-                                </button>
-                            </td>
+                                    </a>
+                                </td>
+                                <td>
+                                    <%= cartItems[i].product[0].Name %>
+                                </td>
+                                <td>
+                                    <%= cartItems[i].product[0].Price %>
+                                </td>
+                                <td style="padding-left: 25px;">
+                                    <button class="fav-product-remove"
+                                        onclick="removeProfav('<%=cartItems[i]._id%>' , '<%=cartItems[i].product[0]._id%>')">
+                                        <i class="fa fa-trash" aria-hidden="true"></i>
+                                        <span class="remove">Remove</span>
+                                    </button>
+                                </td>
                             </tr>
                             <% } %>
-        
-                        </tbody>
-                    </table>
+                    </tbody>
+                </table>
                 <% } %>
-
-
-
-
-
-
-
-                    
-
-            
-
-            
-
         </div>
 
     </div>
-
-
-
 
 </body>
 <script>
@@ -133,22 +113,6 @@
             }
         })
     }
-    // function removeProcart(cartId, proId) {
-
-    //     $.ajax({
-    //         type: 'POST',
-    //         url: '/remove-product-cart',
-    //         data: {
-    //             cart: cartId,
-    //             product: proId
-    //         },
-    //         dataType: 'json',
-    //         success: (response) => {
-    //             alert("Product removed from cart")
-    //             location.reload()
-    //         }
-    //     })
-    // }
 </script>
 
 </html>

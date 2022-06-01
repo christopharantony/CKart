@@ -1,11 +1,11 @@
 const express = require("express");
 const route = express.Router();
-const productDb = require("../model/productModel")
 const Userdb = require("../model/model");
 const Admin = require("../model/adminModel");
 const brandDb = require("../model/brandModel");
 const offerDb = require("../model/offerModel")
 const couponDb = require("../model/couponModel")
+const productDb = require("../model/productModel")
 const categoryDb = require("../model/categoryModel");
 const controller = require("../controller/controller");
 const catController = require("../controller/catController");
@@ -16,57 +16,16 @@ const brandController = require("../controller/brandController");
 const bannerController = require("../controller/bannerController")
 const couponController = require("../controller/couponController")
 const productController = require("../controller/productController");
-
-const session = require("express-session");
-
 const objectId = require('mongoose').Types.ObjectId
-
-// Session Checking
-// const verifyLogin = (req,res,next)=>{
-//     if(req.session.isAdminLogin){
-//         next()
-//     }else{
-//         req.redirect('/admin')
-//     }
-// }
-
-// Admin Login
-// route.get("/admin", (req, res) => {
-//     Userdb.find()
-//         .then((data) => {
-//             if (req.session.isAdminLogin) {
-//                 // res.status(200).render("admin/admin_home", { users: data });
-//                 res.status(200).render('admin/dashboard')
-//             } else {
-//                 req.session.isAdminLogin = false;
-//                 res.status(200).render("admin/admin_login", { error: "" });
-//             }
-//         })
-//         .catch((err) => {
-//             console.error(err.message);
-//         });
-// });
+const session = require("express-session");
 
 route.get("/",dashController.dash)
 
-// route.get('/getChart',dashController.chart)
-
 // Admin Home
-
 route.post("/admin-home", controller.find);
-
-// route.use('/admin-home',(req,res,next)=>{
-//     if (!req.session.isAdminLogin) {
-//         res.status(200).redirect("/admin")
-//     } else {
-//         next();
-
-//     }
-// })
 
 route.use((req, res, next) => {
     if (!req.session.isAdminLogin) {
-        console.log("not admin");
         res.redirect("/admin");
     } else next();
 });

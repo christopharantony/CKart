@@ -9,12 +9,13 @@ const productDb = require("../model/productModel");
 const couponUsedDb = require("../model/couponUsedModel")
 const savedAddressDb = require("../model/savedAddressModel")
 
-const savedController = require("../controller/savedController")
 const controller = require("../controller/controller");
 const otpcontroller = require("../controller/otpController")
 const favController = require("../controller/favController")
 const cartcontroller = require('../controller/CartController');
+const savedController = require("../controller/savedController")
 const orderController = require('../controller/orderController')
+const walletController = require("../controller/walletController")
 const couponController = require('../controller/couponController')
 const productController = require('../controller/productController')
 
@@ -172,6 +173,9 @@ userRoute.get('/pswdChangeErr', (req, res)=>{
     const passworderror = req.session.passwordError;
     res.render('user/profile',{ user,error:"",passworderror });
 })
+
+userRoute.get('/user-wallet',walletController.getBalance)
+
 // Cancel the orders
 userRoute.get('/cancel/:id',orderController.cancel)
 
@@ -185,5 +189,7 @@ userRoute.get("/logout_user", (req, res) => {
     req.session.isUserLogin = false;
     res.redirect('/')
 });
+
+
 
 module.exports = userRoute;

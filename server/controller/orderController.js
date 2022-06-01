@@ -1,6 +1,7 @@
 var ObjectId = require('mongoose').Types.ObjectId;
 const savedAddressDb = require('../model/savedAddressModel')
 const productDb = require('../model/productModel')
+const walletDb = require('../model/walletModel')
 const offerDb = require('../model/offerModel')
 const orderDb = require('../model/orderModel')
 const cartDb = require('../model/cartModel')
@@ -53,7 +54,7 @@ exports.Find = async (req,res)=>{
             }
     res.render('user/my_orders',{orderDatas:orderDetails,cartCount,isUserLogin:req.session.isUserLogin})
 }
-// --------------------------------------------- Orders in admin side -----------------------------------------------
+// ------------------------------------------ Orders in admin side ----------------------------------------
 exports.find = async (req,res)=>{
     const orderDetails = await orderDb.aggregate([
         
@@ -95,7 +96,21 @@ exports.statusUpdate = async(req, res) => {
 
 exports.cancel = async(req,res)=>{
         const id = req.params.id;
+        const user = req.session.user;
         const order = await orderDb.findOne({_id:ObjectId(id)})
+        const balance = order.totalAmount;
+        const wallet = await walletDb.findOne({user:user._id});
+        if (wallet){
+            wallet.user = user._id,
+            wallet.balance += parseInt(balance);
+            await wallet.save();
+        }else{
+            const wallet = new walletDb({
+                user:user._id,
+                balance:parseInt(balance)
+            })            
+            await wallet.save();
+        }
         const proId = order.products[0].item
         await productDb.updateOne({"_id": ObjectId(proId)},
         {
@@ -293,10 +308,6 @@ exports.buynow = async (req, res)=>{
         })
     }
 }
-
-
-
-
 
 // --------------------------------------------- Order Placing -----------------------------------------------
 exports.orderPlacing = async(req,res)=>{

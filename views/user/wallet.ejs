@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+    <title> CKart</title>
+
+    <link rel="stylesheet" type="text/css" href="css/cart.css">
+
+    <link rel="stylesheet" type="text/css"
+        href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- Swal -->
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="sweetalert2.all.min.js"></script>
+    <link rel="stylesheet" href="sweetalert2.min.css">
+    <!-- Button -->
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+</head>
+
+<body>
+
+    <nav class=" navbar-light bg-light"
+        style="background-color: #4843a3;height: 4em; color: white; padding-left: 42em;">
+        <a href="/" style="    float: left;
+        margin-left: -38em;
+        margin-top: 1em;
+        color: white;">Home</a>
+        <a class="navbar-brand" href="/" style="font-size: x-large; font-weight: bold; color: white;">CKart</a>
+    </nav>
+
+    <div class="container" style="margin-top:2rem;text-align:center;color:#4843a3">
+        <h2 style="font-weight: bold;"> CKart Wallet </h2>
+    </div>
+    <div>
+        <% if(!balance) { %>
+        <div class="container" style="margin-top:2rem;text-align:center;color:#4843a3">
+            <h2 style="font-weight: bold;"> You have no Wallet Balance </h2>
+        </div>
+        <% } else { %>
+        <div class="container" style="margin-top:2rem;text-align:center;color:#4843a3">
+            <h2 style="font-weight: bold;"> Wallet Balance: $ <%=balance%> </h2>
+        </div>
+        <% } %>
+    </div>
+</body>
+
+</html>

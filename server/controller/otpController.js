@@ -86,9 +86,7 @@ exports.otp = async(req, res) => {
                 const wishlist = await favDb.findOne({user:ObjectId(userId)})
                 fav = wishlist?.products
                 req.session.isUserLogin = true;
-                // res.status(200).render('user/Home', { offers,banners,products,cartCount,fav,isUserLogin:req.session.isUserLogin })
                 res.redirect('/')
-                
             }else{
                 res.render('user/user_login-otp',{error:true,number:req.body.number});
             }

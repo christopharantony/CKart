@@ -1,16 +1,10 @@
 const Joi = require('joi');
 const offerDb = require('../model/offerModel')
 const productDb = require('../model/productModel')
-const objectId = require('mongoose').Types.ObjectId
 
 exports.showOffer = async(req,res)=>{
     try{
         const offer = await offerDb.aggregate([
-            // {
-            //     $match:{
-            //         $lte: ['$toDate',new Date()]
-            //     }
-            // },
             {
                 $lookup:{
                     from:'productdbs',

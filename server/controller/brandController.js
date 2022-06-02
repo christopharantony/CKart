@@ -1,7 +1,6 @@
 var brandDb = require('../model/brandModel');
 const productDb = require('../model/productModel')
 
-
 exports.create =async (req,res)=>{
     try{
         if (!req.body.name){

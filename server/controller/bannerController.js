@@ -1,4 +1,3 @@
-const Joi = require('joi')
 const bannerDb = require('../model/bannerModel')
 const objectId = require('mongoose').Types.ObjectId
 
@@ -41,7 +40,6 @@ exports.addBanner = async (req, res) => {
         res.send(error.message)
     }
 }
-
 
 exports.updatePage = async (req, res)=>{
     const banner = await bannerDb.findOne({_id:objectId(req.query.id)})

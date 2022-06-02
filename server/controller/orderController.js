@@ -7,8 +7,6 @@ const orderDb = require('../model/orderModel')
 const cartDb = require('../model/cartModel')
 const userDb = require('../model/model')
 const crypto = require('crypto');
-const Joi = require('joi');
-
 
 const Razorpay = require('razorpay');
 const { string } = require('joi');

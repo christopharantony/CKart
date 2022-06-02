@@ -1,40 +1,18 @@
 const express = require("express");
 const userRoute = express.Router();
-const favDb = require('../model/favModel')
-const cartDb = require('../model/cartModel')
-const offerDb = require("../model/offerModel")
-const orderDb = require('../model/orderModel')
-const bannerDb = require("../model/bannerModel")
+
+const orderDb = require('../model/orderModel');
 const productDb = require("../model/productModel");
-const couponUsedDb = require("../model/couponUsedModel")
-const savedAddressDb = require("../model/savedAddressModel")
 
 const controller = require("../controller/controller");
-const otpcontroller = require("../controller/otpController")
-const favController = require("../controller/favController")
+const otpcontroller = require("../controller/otpController");
+const favController = require("../controller/favController");
 const cartcontroller = require('../controller/CartController');
-const savedController = require("../controller/savedController")
-const orderController = require('../controller/orderController')
-const walletController = require("../controller/walletController")
-const couponController = require('../controller/couponController')
-const productController = require('../controller/productController')
-
-
-const Razorpay = require('razorpay')
-var instance = new Razorpay({
-    key_id: process.env.RAZORPAY_KEY_ID,
-    key_secret: process.env.RAZORPAY_KEY_SECRET,
-    });
-
-const crypto = require('crypto');
-
-var ObjectId = require('mongoose').Types.ObjectId;
-
-var accountSid = process.env.TWILIO_ACCOUNT_SID;
-var authToken = process.env.TWILIO_AUTH_TOKEN;
-var serviceSid = process.env.TWILIO_SERVICE_SID;
-
-const client = require("twilio")(accountSid, authToken);
+const savedController = require("../controller/savedController");
+const orderController = require('../controller/orderController');
+const walletController = require("../controller/walletController");
+const couponController = require('../controller/couponController');
+const productController = require('../controller/productController');
 
 // --------------------------------------------- User Landing -----------------------------------------------
 userRoute.get("/", controller.landing);
@@ -42,7 +20,7 @@ userRoute.get("/", controller.landing);
 // --------------------------------------------- User Login -----------------------------------------------
 
 userRoute.get("/login", (req, res) => {
-    if (req.session.isUserLogin){
+    if (req.session.isUserLogin) {
         res.redirect('/')
     }
     res.status(200).render("user/user_login", { error: "" });
@@ -50,7 +28,7 @@ userRoute.get("/login", (req, res) => {
 
 // ------------------ Login with Mobile Number -----------------
 userRoute.get("/loginotp", (req, res) => {
-    if (req.session.isUserLogin){
+    if (req.session.isUserLogin) {
         res.redirect('/')
     }
     res.status(200).render("user/user_loginotp", { error: "" });
@@ -59,15 +37,15 @@ userRoute.get("/loginotp", (req, res) => {
 userRoute.post("/mobile", otpcontroller.mobileNum);
 
 userRoute.get("/blockedLogin", (req, res) => {
-    res.render('user/user_loginotp',{error:"Your account is blocked"})
+    res.render('user/user_loginotp', { error: "Your account is blocked" })
 })
 userRoute.get('/notFound', (req, res) => {
-    res.render('user/user_loginotp',{error:"This Number is not registered"})
+    res.render('user/user_loginotp', { error: "This Number is not registered" })
 })
 
 // ------------------- OTP Submit -----------------
 userRoute.post("/otp", otpcontroller.otp);
-userRoute.post('/resend',otpcontroller.resend)
+userRoute.post('/resend', otpcontroller.resend)
 
 // -------------------------------------------------- User SignUp ---------------------------------------------------------
 userRoute.get("/signup", (req, res) => {
@@ -76,16 +54,16 @@ userRoute.get("/signup", (req, res) => {
 
 userRoute.post("/signup", controller.Create);
 
-userRoute.get('/signupError',(req, res) => {
+userRoute.get('/signupError', (req, res) => {
     const error = req.session.error;
     req.session.error = null;
-    res.render('user/user_signup',{ error });
+    res.render('user/user_signup', { error });
 })
 
 
 
 // ----------- User Home ---------------
-userRoute.post("/home",controller.Find);
+userRoute.post("/home", controller.Find);
 
 userRoute.get('/loginError', (req, res) => {
     const error = req.session.error;
@@ -104,83 +82,81 @@ userRoute.use((req, res, next) => {
     } else next();
 });
 // ---------------- Buy Now  -----------------
-userRoute.get('/buy-now',orderController.buynowPage)
+userRoute.get('/buy-now', orderController.buynowPage)
 
-userRoute.post('/save-address',savedController.saveAddress)
+userRoute.post('/save-address', savedController.saveAddress)
 
-userRoute.post('/buyplace-order/:price/:proId',orderController.buynow)
+userRoute.post('/buyplace-order/:price/:proId', orderController.buynow)
 
 // ------------------ Cart -------------------
-userRoute.get('/cart',cartcontroller.userCart)
+userRoute.get('/cart', cartcontroller.userCart)
 
-// Control quantity in cart
-userRoute.post("/change-product-quantity",cartcontroller.changeProductQuantity)
+userRoute.post("/change-product-quantity", cartcontroller.changeProductQuantity)
 
-userRoute.post("/remove-product-cart",cartcontroller.removeProcart)
+userRoute.post("/remove-product-cart", cartcontroller.removeProcart)
 
-userRoute.get('/place-order',orderController.myOrders)
+userRoute.get('/place-order', orderController.myOrders)
 
-userRoute.post('/place-order/:price',orderController.orderPlacing)
+userRoute.post('/place-order/:price', orderController.orderPlacing)
 
-userRoute.post('/verify-payment',orderController.paymentVerification)
+userRoute.post('/verify-payment', orderController.paymentVerification)
+
+// ------------------ Coupon ------------------------
+userRoute.post("/applycoupon/:coupon/:total", couponController.applyCoupon)
 
 // ------------------ Order Placed ------------------------
-userRoute.get('/order-success',async(req,res)=>{
+userRoute.get('/order-success', async (req, res) => {
     const address = req.session.address;
     const proId = req.session.products;
-    console.log("req.session.orderDate",req.session.orderDate);
-    const order = await orderDb.findOne({date:req.session.orderDate})
-await orderDb.updateOne({date:req.session.orderDate}, { $set: {status:'Ordered'} })
-    const products = await productDb.find( {_id: { $in: proId } } )
-    res.render('user/order_success',{user:req.session.user,address,cartItems:products})
+    console.log("req.session.orderDate", req.session.orderDate);
+    const order = await orderDb.findOne({ date: req.session.orderDate })
+    await orderDb.updateOne({ date: req.session.orderDate }, { $set: { status: 'Ordered' } })
+    const products = await productDb.find({ _id: { $in: proId } })
+    res.render('user/order_success', { user: req.session.user, address, cartItems: products })
 })
 
 // Add to cart
-userRoute.get("/add-to-cart:id",cartcontroller.addToCart)
-// userRoute.get("/add-to-cartOff:id",cartcontroller.addToCartOff)
+userRoute.get("/add-to-cart:id", cartcontroller.addToCart)
 
 
-//--------------------------------------------------------------------------------------------------------------------------------------------
-// ------------------ Add Favorites ------------------------
-userRoute.post("/add-to-fav:id",favController.fav)
+// ------------------ Favorites ------------------------
+userRoute.post("/add-to-fav:id", favController.fav)
 
-userRoute.get('/user-fav',favController.find)
+userRoute.get('/user-fav', favController.find)
 
-userRoute.post("/remove-product-fav",favController.removeProfav)
+userRoute.post("/remove-product-fav", favController.removeProfav)
 
-// Show the orders
-userRoute.get('/user-orders',orderController.Find)
+// ------------------ Orders ------------------------
+userRoute.get('/user-orders', orderController.Find)
 
-userRoute.get('/user-profile',async(req,res)=>{
+userRoute.get('/cancel/:id', orderController.cancel)
+
+// ------------------ Profile ------------------------
+userRoute.get('/user-profile', async (req, res) => {
     const user = req.session.user
-    res.render('user/profile',{user,error:"",passworderror:""})
+    res.render('user/profile', { user, error: "", passworderror: "" })
 })
-userRoute.post('/profile-edit',controller.profileEdit)
+userRoute.post('/profile-edit', controller.profileEdit)
 
-userRoute.get('/profileError',(req, res) => {
+userRoute.get('/profileError', (req, res) => {
     const user = req.session.user
     const error = req.session.error;
     req.session.error = null;
-    res.render('user/profile',{ user,error,passworderror:"" });
+    res.render('user/profile', { user, error, passworderror: "" });
 })
 
-userRoute.post('/password-change',controller.passwordChange)
-userRoute.get('/pswdChangeErr', (req, res)=>{
+// ------------------ Password Change ------------------------
+userRoute.post('/password-change', controller.passwordChange)
+userRoute.get('/pswdChangeErr', (req, res) => {
     const user = req.session.user;
     const passworderror = req.session.passwordError;
-    res.render('user/profile',{ user,error:"",passworderror });
+    res.render('user/profile', { user, error: "", passworderror });
 })
 
-userRoute.get('/user-wallet',walletController.getBalance)
+// ------------------ Wallet ------------------------
+userRoute.get('/user-wallet', walletController.getBalance)
 
-userRoute.get('/checkwallet/:total',walletController.checkWallet)
-
-// Cancel the orders
-userRoute.get('/cancel/:id',orderController.cancel)
-
-// ------===========================------------Apply Coupons -----------======================-------------
-
-userRoute.post("/applycoupon/:coupon/:total",couponController.applyCoupon)
+userRoute.get('/checkwallet/:total', walletController.checkWallet)
 
 
 userRoute.get("/logout_user", (req, res) => {

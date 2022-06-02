@@ -2,7 +2,6 @@ const { json } = require('express/lib/response');
 const cartDb = require('../model/cartModel')
 var ObjectId = require('mongoose').Types.ObjectId;
 
-
 exports.addToCart = async(req,res)=>{
     const userId = req.session.user?._id;
     const proId = req.params.id;
@@ -32,24 +31,15 @@ exports.addToCart = async(req,res)=>{
         }else{
             await cartDb.updateOne({user:ObjectId(userId)},{$push: {products:proObj}})
         }
-        // 
-        // await cartDb.updateOne({user:userId},{$push: {products:proId}})
     } else {
         let cartObj = new cartDb({
             user:userId,
             products:[proObj]
         })
         cartObj.save()
-        // console.log('Added to Cart sucessfully');
     }
     res.json({status:true})
 }
-
-
-
-
-
-// ----------------------------- Cart Quantity --------------------------
 
 exports.changeProductQuantity =async (req,res,next)=>{
     const cartId = req.body.cart;
@@ -59,7 +49,6 @@ exports.changeProductQuantity =async (req,res,next)=>{
     let quantity = req.body.quantity;
     count = parseInt(count)
     quantity = parseInt(quantity)
-    // console.log(`Cart ID : ${cartId} proId : ${proId} count:${count} Quantity:${quantity} UserID: ${userId}`);
     if ( count == -1 && quantity == 1) {
         let product = await cartDb.updateOne({_id:ObjectId(cartId)},
         {
@@ -145,7 +134,6 @@ exports.changeProductQuantity =async (req,res,next)=>{
     }
 }
 
-// --------------------- Remove from Cart -------------
 exports.removeProcart =async (req,res)=>{
     const cartId = req.body.cart;
     const proId = req.body.product;
@@ -156,12 +144,9 @@ exports.removeProcart =async (req,res)=>{
     res.json(product)
 }
 
-
-// --------------------------------------------- View Cart {User} -----------------------------------------------
-
+// --------------------------------------------- View Cart -----------------------------------------------
 exports.userCart = async(req,res)=>{
     try {
-        
         const userId = req.session.user?._id;
         let cartItems = await cartDb.aggregate([
         {
@@ -190,7 +175,6 @@ exports.userCart = async(req,res)=>{
             }
         }
     ])
-
     let offerPrice = await cartDb.aggregate([
         {
             $match:{user:ObjectId(userId)}
@@ -258,7 +242,6 @@ exports.userCart = async(req,res)=>{
     const totalOffer = offerPrice.map(data => data.offerPrice).reduce((total, save)=>{
         return total + save;
     },0)
-    // console.log(saving);
     let totalValue = await cartDb.aggregate([
         {
             $match:{user:ObjectId(userId)}
@@ -293,7 +276,6 @@ exports.userCart = async(req,res)=>{
             }
         }
     ])
-    // console.log(totalValue[0]);
     let totalNo = 0
     for (const cart of cartItems) {
         totalNo = cart.quantity + totalNo;
@@ -305,13 +287,3 @@ exports.userCart = async(req,res)=>{
     res.status(400).send("Error"+error.message)
 }
 }
-
-
-
-
-
-
-
-
-
-

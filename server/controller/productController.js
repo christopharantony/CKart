@@ -3,8 +3,6 @@ const productDb = require('../model/productModel')
 const offerDb = require('../model/offerModel')
 const brandDb = require('../model/brandModel')
 const cartDb = require('../model/cartModel')
-const objectId = require('mongoose').Types.ObjectId
-const path = require('path');
 const Joi = require('joi');
 
 // --------------------------------------------- New Product -----------------------------------------------
@@ -50,6 +48,7 @@ exports.create = async(req,res)=>{
         console.log(err.message);
     });
 }
+
 const validate = (data) => {
     const schema = Joi.object({
         Name: Joi.string().required().label("Name"),
@@ -74,7 +73,6 @@ exports.find = (req,res)=>{
 }
 
 // --------------------------------------------- Edit Product -----------------------------------------------
-//  Edit Page
 exports.updatepage = async(req,res)=>{
     console.log('Product Id : ',req.query.id);
         const product =await productDb.findOne({_id:req.query.id})
@@ -82,7 +80,7 @@ exports.updatepage = async(req,res)=>{
         const cate =await categoryDb.find()
             res.render('admin/product_update',{error:"",product,cate,brand})
 }
-//  Edit Product
+
 exports.update = async(req,res)=>{
     try {
         const id = req.params.id;
@@ -141,7 +139,6 @@ exports.update = async(req,res)=>{
             req.session.error = error.details[0].message;
             res.redirect('/admin/updateProErr')
         }else{
-        // productDb.findByIdAndUpdate(id,product)
         productDb.updateOne({_id:id},{$set: product })
         .then(()=>{
             res.redirect('/admin/admin-products')
@@ -156,7 +153,6 @@ exports.update = async(req,res)=>{
     res.send("Error in updating",error.message);
 }
 }
-// )}
 
 // --------------------------------------------- Delete Product -----------------------------------------------
 exports.delete = (req,res)=>{
@@ -166,10 +162,6 @@ exports.delete = (req,res)=>{
         res.redirect('/admin/admin-products')
     })
 }
-
-
-// ==================================================================================================
-// ==================================================================================================
 
 exports.productDetails = async (req,res)=>{
     const username = req.session.user?.name;

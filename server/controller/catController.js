@@ -1,6 +1,5 @@
 var categoryDb = require('../model/categoryModel');
 const productDb = require('../model/productModel');
-const orderDb = require('../model/orderModel');
 
 exports.create =async (req,res)=>{
     try{

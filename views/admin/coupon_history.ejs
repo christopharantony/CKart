@@ -1,56 +1,64 @@
 <%-include('../include/_adminhead')%>
+    <section>
+        <div class="container" style="color:white;">
+            <br>
+            <table class="table mt-5" id="myTable" style="padding-top: 2.5rem;">
+                <thead class="thead">
+                    <tr>
+                        <th scope="col">Sl.</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Coupon-Code</th>
+                        <th scope="col">Discounted Price</th>
+                        <th scope="col">Date</th>
+                    </tr>
+                </thead>
 
-<section>
-    <div class="container" style="color:white;">
-        <br>
-        <table class="table mt-5" id="myTable" style="padding-top: 2.5rem;">
-            <thead class="thead">
-                <tr>
-                    <th scope="col">Sl.</th>
-                    <th scope="col">Name</th>
-                    <th scope="col">Coupon-Code</th>
-                    <th scope="col">Discounted Price</th>
-                    <th scope="col">Date</th>
-                </tr>
-            </thead>
-            
-            <tbody>
-                <% for ( let i = 0; i < couponUsed.length; i++){ %>
-                <tr>
-                    <th scope="row"><%=i+1%></th>
-                    <td><%=couponUsed[i].user.name%></td>
-                    <td><%=couponUsed[i].coupon.Code%></td>
-                    <td style="padding-left:3rem">$ <%=parseInt(couponUsed[i].discount)%></td>
-                    <td><%=couponUsed[i].date%></td>
-                </tr>
-                <% } %>
-            </tbody>
-        </table>
-    </div>
-</section>
-<script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
-<script src="https://cdn.datatables.net/buttons/2.2.2/js/dataTables.buttons.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
-<script src="https://cdn.datatables.net/buttons/2.2.2/js/buttons.html5.min.js"></script>
-<script src="https://cdn.datatables.net/buttons/2.2.2/js/buttons.print.min.js"></script>
-<script type="text/javascript" charset="utf-8">
-    $(document).ready(function () {
-        $('#myTable').DataTable({
-            dom: 'Bfrtip',
-            buttons: [
-                'copy', 'csv', 'excel', 'pdf', 'print'
-            ]
+                <tbody>
+                    <% for ( let i=0; i < couponUsed.length; i++){ %>
+                        <tr>
+                            <th scope="row">
+                                <%=i+1%>
+                            </th>
+                            <td>
+                                <%=couponUsed[i].user.name%>
+                            </td>
+                            <td>
+                                <%=couponUsed[i].coupon.Code%>
+                            </td>
+                            <td style="padding-left:3rem">$ <%=parseInt(couponUsed[i].discount)%>
+                            </td>
+                            <td>
+                                <%=couponUsed[i].date%>
+                            </td>
+                        </tr>
+                        <% } %>
+                </tbody>
+            </table>
+        </div>
+    </section>
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.2.2/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.2.2/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.2.2/js/buttons.print.min.js"></script>
+    <script type="text/javascript" charset="utf-8">
+        $(document).ready(function () {
+            $('#myTable').DataTable({
+                dom: 'Bfrtip',
+                buttons: [
+                    'copy', 'csv', 'excel', 'pdf', 'print'
+                ]
+            });
         });
-    });
-</script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"
-integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p"
-crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"
-integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF"
-crossorigin="anonymous"></script>
-</body>
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"
+        integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"
+        integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF"
+        crossorigin="anonymous"></script>
+    </body>
 
-</html>
+    </html>

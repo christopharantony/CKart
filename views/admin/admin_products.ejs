@@ -18,27 +18,41 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <% for ( let i = 0; i < products.length; i++){ %>
-                    <tr>
-                        <th scope="row"><%=i+1%></th>
-                        <td><%=products[i].Name%></td>
-                        <td><img style="width:50px;height:50px" src="<%=products[i].Image[0]%>" alt="product image"> </td>
-                        <td><%=products[i].Price%></td>
-                        <td><%=products[i].Quantity%></td>
-                        <td><%=products[i].Brand%></td>
-                        <td><%=products[i].Category%></td>
-                        <td>
-                            <a href="/admin/update?id=<%= products[i]._id %>" class="btn border-shadow update">
-                                <i class="fa-solid fa-pencil"></i>
-                            </a>
-                            <div>
-                            <button onclick="deleteProduct('<%= products[i]._id %>')" class="btn border-shadow update" >
-                                <i class="fa-solid fa-trash-can"></i>
-                            </button>
-                            </div>
-                        </td>
-                    </tr>
-                    <% } %>
+                    <% for ( let i=0; i < products.length; i++){ %>
+                        <tr>
+                            <th scope="row">
+                                <%=i+1%>
+                            </th>
+                            <td>
+                                <%=products[i].Name%>
+                            </td>
+                            <td><img style="width:50px;height:50px" src="<%=products[i].Image[0]%>" alt="product image">
+                            </td>
+                            <td>
+                                <%=products[i].Price%>
+                            </td>
+                            <td>
+                                <%=products[i].Quantity%>
+                            </td>
+                            <td>
+                                <%=products[i].Brand%>
+                            </td>
+                            <td>
+                                <%=products[i].Category%>
+                            </td>
+                            <td>
+                                <a href="/admin/update?id=<%= products[i]._id %>" class="btn border-shadow update">
+                                    <i class="fa-solid fa-pencil"></i>
+                                </a>
+                                <div>
+                                    <button onclick="deleteProduct('<%= products[i]._id %>')"
+                                        class="btn border-shadow update">
+                                        <i class="fa-solid fa-trash-can"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <% } %>
                 </tbody>
             </table>
         </div>
@@ -68,6 +82,6 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"
         integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF"
         crossorigin="anonymous"></script>
-</body>
+    </body>
 
-</html>
+    </html>

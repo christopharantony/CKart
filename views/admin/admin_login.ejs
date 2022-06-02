@@ -1,40 +1,29 @@
-
 <%-include('../include/_header')%>
-
-<!--Main-->
-
-<main id="main">
-    <div id="container">
-        
-        <div class="form-title text-center">
-            <h2 class="new_userH">Admin Login</h2>
-            <span>Fill the form to enter Admin Page</span>
-        </div>
-
-        <!-- Form -->
-        <form action="/admin/admin-home" method="POST" id="login_admin">
-            <div class="new_user">
-
-                <!-- <% if (error) { %> -->
-                    <p class="wrong"> <%=error%> </p>
-                <!-- <% } %> -->
-
-                <div class="form-group">
-                    <input type="text" name="email" value="" placeholder="Enter Admin Email">
-                </div>
-                <div class="form-group">
-                    <input type="password" name="password" value="" placeholder=" Password">
-                </div>
-                
-                <div class="form-group">
-                    <button type="submit" class="save_btn">Login</button>
-                </div>
+    <!--Main-->
+    <main id="main">
+        <div id="container">
+            <div class="form-title text-center">
+                <h2 class="new_userH">Admin Login</h2>
+                <span>Fill the form to enter Admin Page</span>
             </div>
-        </form>
-        
-    </div>
-</main>
-
-<!--/Main-->
-
-<%-include('../include/_footer')%>
+            <!-- Form -->
+            <form action="/admin/admin-home" method="POST" id="login_admin">
+                <div class="new_user">
+                    <p class="wrong">
+                        <%=error%>
+                    </p>
+                    <div class="form-group">
+                        <input type="text" name="email" value="" placeholder="Enter Admin Email">
+                    </div>
+                    <div class="form-group">
+                        <input type="password" name="password" value="" placeholder=" Password">
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="save_btn">Login</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </main>
+    <!--/Main-->
+    <%-include('../include/_footer')%>

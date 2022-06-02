@@ -1,21 +1,16 @@
 <%-include('../include/_adminhead')%>
-
-
   <!--Main-->
-
   <section>
     <div class="container mt-4">
       <div class="row">
         <div class="col-md-6">
           <h2 class="text-center">Add Product</h2>
-          <p class="wrong"> <%=error%> </p>
+          <p class="wrong">
+            <%=error%>
+          </p>
           <form action="/admin/add-product" method="post" enctype="multipart/form-data">
             <label for="">Name</label>
             <input type="text" name="Name" value="" class="form-control">
-
-            <!-- <label for="">Category</label>
-                    <input type="" name="Category" value="" class="form-control"> -->
-
 
             <label for="">Price</label>
             <input type="number" name="Price" value="" class="form-control">
@@ -27,90 +22,44 @@
             <input type="text" name="Description" value="" class="form-control">
 
             <label for="">Image</label>
-            <!-- <input type="file" name="Image" value="" class="form-control" multiple > -->
-            <!-- <br> -->
 
             <!-- cropping -->
 
             <div class="mb-3  col-lg-3 mt-4" style="display:flex; justify-content:space-between; width:100%;">
-              <!-- <div class="firstDiv"> -->
-                <img src="" id="imgView1" alt="" style="height:100px">
-                <input type="file" id="id_image1" name="Image1" accept="image/*" onchange="viewImage1(event)"
-                  style="width:100%;"><br>
-                <div class="vald-info" id="info"></div>
-                <h5 class="error_form text-danger" id="image1_error_message"></h5>
-                <div style="display:flex">
-                  <div id="image-box1" class="image-container" style="height: 300px; width:20%"></div>
+              <!------ firstDiv ------>
+              <img src="" id="imgView1" alt="" style="height:100px">
+              <input type="file" id="id_image1" name="Image1" accept="image/*" onchange="viewImage1(event)"
+                style="width:100%;"><br>
+              <div class="vald-info" id="info"></div>
+              <h5 class="error_form text-danger" id="image1_error_message"></h5>
+              <div style="display:flex">
+                <div id="image-box1" class="image-container" style="height: 300px; width:20%"></div>
                 <button type="button" class="btn btn-outline-info" id="crop-btn1" style=" margin-top: 10px; display: none;
                       width:  50% ; margin: 20rem 0rem 0rem 0rem;">Crop</button>
-                </div>
-                
-              <!-- </div> -->
-              <!-------------------------------------------------->
-
-              <!-- <div class="secondDiv"> -->
-                <img src="" id="imgView2" alt="" style="height:100px">
-                <input type="file" id="id_image2" name="Image2" accept="image/*" onchange="viewImage2(event)"
-                  style="width:100%;"><br>
-                <div class="vald-info" id="info"></div>
-                <h5 class="error_form text-danger" id="image2_error_message"></h5>
-                <div style="display:flex">
-                  <div id="image-box2" class="image-container" style="height: 300px; width:20%"></div>
+              </div>
+              <!------ secondDiv ------>
+              <img src="" id="imgView2" alt="" style="height:100px">
+              <input type="file" id="id_image2" name="Image2" accept="image/*" onchange="viewImage2(event)"
+                style="width:100%;"><br>
+              <div class="vald-info" id="info"></div>
+              <h5 class="error_form text-danger" id="image2_error_message"></h5>
+              <div style="display:flex">
+                <div id="image-box2" class="image-container" style="height: 300px; width:20%"></div>
                 <button type="button" class="btn btn-outline-info" id="crop-btn2" style=" margin-top: 10px; display: none;
                       width:  50% ; margin: 20rem 0rem 0rem 0rem;">Crop</button>
-                </div>
-              <!-- </div> -->
-              <!-------------------------------------------------->
-              <!-- <div class="thirdDiv"> -->
-                <img src="" id="imgView3" alt="" style="height:100px">
-                <input type="file" id="id_image3" name="Image3" accept="image/*" onchange="viewImage3(event)"
-                  style="width:100%;"><br>
-                <div class="vald-info" id="info"></div>
-                <h5 class="error_form text-danger" id="image3_error_message"></h5>
-                <div style="display:flex">
-                  <div id="image-box3" class="image-container" style="height: 300px; width:20%"></div>
+              </div>
+              <!------ thirdDiv ------>
+              <img src="" id="imgView3" alt="" style="height:100px">
+              <input type="file" id="id_image3" name="Image3" accept="image/*" onchange="viewImage3(event)"
+                style="width:100%;"><br>
+              <div class="vald-info" id="info"></div>
+              <h5 class="error_form text-danger" id="image3_error_message"></h5>
+              <div style="display:flex">
+                <div id="image-box3" class="image-container" style="height: 300px; width:20%"></div>
                 <button type="button" class="btn btn-outline-info" id="crop-btn3" style=" margin-top: 10px; display: none;
                       width:  50% ; margin: 20rem 0rem 0rem 0rem;">Crop</button>
-                </div>
-              <!-- </div> -->
+              </div>
             </div>
-
-            <!-- EXAMPLE
-                            <div class="container">
-                            <h1>Crop on canvas with Cropper</h1>
-                            <h3>Image</h3>
-                            <div class="img-container">
-                              <img id="image" src="productsImg/1649831802186.jpeg" alt="Picture">
-                            </div>
-                            <h3>Canvas</h3>
-                            <div class="img-container">
-                              <canvas id="canvas"></canvas>
-                            </div>
-                          </div> -->
-
-
-
-            <!-- <div class="mb-3  col-lg-3 mt-4">
-                            <img src="" id="imgView1" alt="" style="width:100px">
-                    <input type="file" id="id_image1" name="Image" accept="image/*" onchange="viewImage1(event)"><br>
-                    <div class="vald-info" id="info"></div>
-                    <h5 class="error_form text-danger" id="image1_error_message"></h5>
-                    <div id="image-box1" class="image-container" style="height: 300px;width:300px"  ></div>
-                    <button class="btn btn-outline-info" id="crop-btn1" style="width: 100%; margin-top: 10px; display: none;"
-                        type="button">Crop</button>
-                        </div> -->
-
-
-            <!-- <div class='row'>
-                            <div class='column p10'>
-                                <div id='image-cropper' style='border:1px solid #ccc'></div>
-                            </div><div class='column f1 p10'>
-                                <div id='image-cropper-result'><img style='width:120px;height:120px;'></div>
-                            </div>
-                        </div>
-                        
-                        <input type='button' value='Get cropped image' id='image-getter' class='jbutton dark'> -->
-            <!-- /cropping -->
 
             <div class="m-2">
               <label for="brandOptions" class="form-label">Brand :</label>
@@ -143,9 +92,6 @@
     </div>
   </section>
 
-  <!--/Main-->
-
-<!-- Image Cropping -->
   <script>
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     const imagebox1 = document.getElementById('image-box1')

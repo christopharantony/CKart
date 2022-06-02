@@ -5,16 +5,19 @@
             <div class="row">
                 <div class="col-md-6">
                     <h2 class="text-center">Add Offer</h2>
-                    <p class="wrong"> <%=error%> </p>
+                    <p class="wrong">
+                        <%=error%>
+                    </p>
                     <form action="/admin/offer-add" method="post">
                         <div class="m-2 mt-5">
                             <label for="products" class="form-label">Product </label>
-                            <select value="" id="products" name="product" style="width: 29rem;text-align: center;margin-left: 6px;height: 38px;border:outline">
+                            <select value="" id="products" name="product"
+                                style="width: 29rem;text-align: center;margin-left: 6px;height: 38px;border:outline">
                                 <% for ( const pro of pros){ %>
-                                        <option value="<%=pro._id%>">
-                                            <%=pro.Name%>
-                                        </option>
-                                <% } %>
+                                    <option value="<%=pro._id%>">
+                                        <%=pro.Name%>
+                                    </option>
+                                    <% } %>
                             </select>
                         </div>
                         <label for="">Percentage</label>
@@ -39,4 +42,5 @@
         integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF"
         crossorigin="anonymous"></script>
     </body>
+
     </html>

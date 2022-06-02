@@ -1,7 +1,5 @@
 <%-include('../include/_adminhead')%>
-
     <!-- Products -->
-
     <section>
         <div class="container">
             <div class="row mt-4">
@@ -15,36 +13,33 @@
                         <th scope="col">Action</th>
                     </tr>
                 </thead>
-                
+
                 <tbody>
-                    <% for ( let i = 0; i < cate.length; i++){ %>
-                    <tr>
-                        <th scope="row"><%=i+1%></th>
-                        <td><%=cate[i].name%></td>
-                        <td>
-                            <a href="/admin/update-cate?id=<%= cate[i]._id %>" class="btn border-shadow update">
-                                <i class="fa-solid fa-pencil"></i>
-                            </a>
-                            <div>
-                            <!-- <form action="/delete-cate/<%= cate[i]._id %>?_method=DELETE" method="post">
-                                <a href="" onclick="return confirm('Are want to delete <%=cate[i].name%> ?')">
-                                    <button class="btn border-shadow update" type="submit">
+                    <% for ( let i=0; i < cate.length; i++){ %>
+                        <tr>
+                            <th scope="row">
+                                <%=i+1%>
+                            </th>
+                            <td>
+                                <%=cate[i].name%>
+                            </td>
+                            <td>
+                                <a href="/admin/update-cate?id=<%= cate[i]._id %>" class="btn border-shadow update">
+                                    <i class="fa-solid fa-pencil"></i>
+                                </a>
+                                <div>
+                                    <button onclick="deleteCategory('<%= cate[i]._id %>')"
+                                        class="btn border-shadow update">
                                         <i class="fa-solid fa-trash-can"></i>
                                     </button>
-                                </a>
-                            </form> -->
-                            <button onclick="deleteCategory('<%= cate[i]._id %>')" class="btn border-shadow update" >
-                                <i class="fa-solid fa-trash-can"></i>
-                            </button>
-                            </div>
-                        </td>
-                    </tr>
-                    <% } %>
+                                </div>
+                            </td>
+                        </tr>
+                        <% } %>
                 </tbody>
             </table>
         </div>
     </section>
-
     <!-- /Products -->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"
         integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p"
@@ -52,6 +47,6 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"
         integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF"
         crossorigin="anonymous"></script>
-</body>
+    </body>
 
-</html>
+    </html>

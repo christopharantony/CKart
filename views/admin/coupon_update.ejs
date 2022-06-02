@@ -5,12 +5,16 @@
             <div class="row">
                 <div class="col-md-6">
                     <h2 class="text-center">Edit Coupon</h2>
-                    <p class="wrong" style="color: red"> <%=error%> </p>
+                    <p class="wrong" style="color: red">
+                        <%=error%>
+                    </p>
                     <form action="/admin/coupon-update/<%=coupon._id%>?_method=PUT" method="post">
                         <label for="">Coupon-Code</label>
-                        <input type="text" name="Code" value="<%=coupon.Code%>" placeholder="COUPON CODE" class="form-control">
+                        <input type="text" name="Code" value="<%=coupon.Code%>" placeholder="COUPON CODE"
+                            class="form-control">
                         <label for="">Percentage</label>
-                        <input type="number" name="percentage" value="<%=coupon.percentage%>" placeholder="0" class="form-control">
+                        <input type="number" name="percentage" value="<%=coupon.percentage%>" placeholder="0"
+                            class="form-control">
                         <label for="">Minimum Price</label>
                         <input type="number" name="min" value="<%=coupon.min%>" placeholder="0" class="form-control">
                         <label for="">From</label>
@@ -33,4 +37,5 @@
         integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF"
         crossorigin="anonymous"></script>
     </body>
+
     </html>

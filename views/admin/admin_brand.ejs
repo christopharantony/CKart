@@ -1,7 +1,5 @@
 <%-include('../include/_adminhead')%>
-
     <!-- Products -->
-
     <section>
         <div class="container">
             <div class="row mt-4">
@@ -15,29 +13,33 @@
                         <th scope="col">Action</th>
                     </tr>
                 </thead>
-                
+
                 <tbody>
-                    <% for ( let i = 0; i < brand.length; i++){ %>
-                    <tr>
-                        <th scope="row"><%=i+1%></th>
-                        <td><%=brand[i].name%></td>
-                        <td>
-                            <a href="/admin/update-brand?id=<%= brand[i]._id %>" class="btn border-shadow update">
-                                <i class="fa-solid fa-pencil"></i>
-                            </a>
-                            <div>
-                            <button onclick="deleteBrand('<%=brand[i]._id %>')" class="btn border-shadow update" >
-                                <i class="fa-solid fa-trash-can"></i>
-                            </button>
-                            </div>
-                        </td>
-                    </tr>
-                    <% } %>
+                    <% for ( let i=0; i < brand.length; i++){ %>
+                        <tr>
+                            <th scope="row">
+                                <%=i+1%>
+                            </th>
+                            <td>
+                                <%=brand[i].name%>
+                            </td>
+                            <td>
+                                <a href="/admin/update-brand?id=<%= brand[i]._id %>" class="btn border-shadow update">
+                                    <i class="fa-solid fa-pencil"></i>
+                                </a>
+                                <div>
+                                    <button onclick="deleteBrand('<%=brand[i]._id %>')"
+                                        class="btn border-shadow update">
+                                        <i class="fa-solid fa-trash-can"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <% } %>
                 </tbody>
             </table>
         </div>
     </section>
-
     <!-- /Products -->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"
         integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p"
@@ -45,6 +47,6 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"
         integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF"
         crossorigin="anonymous"></script>
-</body>
+    </body>
 
-</html>
+    </html>

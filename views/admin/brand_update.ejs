@@ -1,28 +1,25 @@
 <%-include('../include/_adminhead')%>
-
-
     <!--Main-->
-
     <section>
         <div class="container mt-4">
             <div class="row">
                 <div class="col-md-6">
                     <h2 class="text-center">Edit Brand</h2>
-                    <p class="wrong"> <%=error%> </p>
-                    <form action="/admin/update-brand/<%=brand._id%>?_method=PUT" method="post" enctype="multipart/form-data">
+                    <p class="wrong">
+                        <%=error%>
+                    </p>
+                    <form action="/admin/update-brand/<%=brand._id%>?_method=PUT" method="post"
+                        enctype="multipart/form-data">
                         <input type="hidden" name="id" value="<%= brand._id%>">
                         <label for="">Name</label>
                         <input type="text" name="name" value="<%=brand.name%>" class="form-control">
-                    <button type="submit" class="btn btn-success mt-4">Submit</button>
+                        <button type="submit" class="btn btn-success mt-4">Submit</button>
                     </form>
                 </div>
             </div>
         </div>
     </section>
-
     <!--/Main-->
-
-
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"
         integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p"
         crossorigin="anonymous"></script>

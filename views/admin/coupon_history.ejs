@@ -20,7 +20,7 @@
                     <th scope="row"><%=i+1%></th>
                     <td><%=couponUsed[i].user.name%></td>
                     <td><%=couponUsed[i].coupon.Code%></td>
-                    <td style="padding-left:3rem">$ <%=couponUsed[i].discount%></td>
+                    <td style="padding-left:3rem">$ <%=parseInt(couponUsed[i].discount)%></td>
                     <td><%=couponUsed[i].date%></td>
                 </tr>
                 <% } %>

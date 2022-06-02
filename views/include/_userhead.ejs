@@ -16,7 +16,6 @@
    <!-- my custom css -->
    <link rel="stylesheet" href="css/usercss.css">
    <!-- Cart css -->
-   <!-- <link rel="stylesheet" href="css/cart.css"> -->
    <!-- bootstrap css -->
    <link rel="stylesheet" href="css/bootstrap.min.css">
    <!-- style css -->
@@ -35,12 +34,11 @@
    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css"
       media="screen">
-      <!-- font awesome -->
-      <!-- <link rel="stylesheet" href="css/font-awesome.min.css"> -->
-      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
-        integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g=="
-        crossorigin="anonymous" referrerpolicy="no-referrer" />
-      <script src="https://kit.fontawesome.com/b6d1371885.js" crossorigin="anonymous"></script>
+   <!-- font awesome -->
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
+      integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g=="
+      crossorigin="anonymous" referrerpolicy="no-referrer" />
+   <script src="https://kit.fontawesome.com/b6d1371885.js" crossorigin="anonymous"></script>
    <!-- Zooming -->
    <link type="text/css" rel="stylesheet" href="css/magiczoomplus.css" />
    <script type="text/javascript" src="js/magiczoomplus.js"></script>
@@ -51,16 +49,13 @@
       integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g=="
       crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-   <!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script><![endif]-->
 </head>
 <!-- body -->
 
 <body class="main-layout inner_posituong computer_page">
    <!-- loader  -->
    <div class="loader_bg">
-      <div class="loader"><img src="images/loading.gif" alt="#" /></div>
+      <div class="loader"><img src="images/loading.gif" alt="Loading..." /></div>
    </div>
    <!-- end loader -->
    <!-- header -->
@@ -72,7 +67,8 @@
                <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col logo_section">
                   <div class="full">
                      <div class="center-desk">
-                           <a class="navbar-brand" href="/" style="font-size: xx-large; font-weight: bold; color: white;">CKart</a>
+                        <a class="navbar-brand" href="/"
+                           style="font-size: xx-large; font-weight: bold; color: white;">CKart</a>
                      </div>
                   </div>
                </div>
@@ -86,16 +82,17 @@
                         <ul class="navbar-nav mr-auto">
                            <% if (isUserLogin) { %>
                               <li class="nav-item dropdown">
-                                 <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                       <%= username %> <i class="fa fa-user" ></i> 
-                                    </a>
-                                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                       <a class="dropdown-item" href="/user-orders">My Orders</a>
-                                       <a class="dropdown-item" href="/user-fav">My Wishlist</a>
-                                       <a class="dropdown-item" href="/user-profile">My Profile</a>
-                                       <a class="dropdown-item" href="/user-wallet">My Wallet</a>
-                                    </div>
-                                 </li>
+                                 <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button"
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <%= username %> <i class="fa fa-user"></i>
+                                 </a>
+                                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" href="/user-orders">My Orders</a>
+                                    <a class="dropdown-item" href="/user-fav">My Wishlist</a>
+                                    <a class="dropdown-item" href="/user-profile">My Profile</a>
+                                    <a class="dropdown-item" href="/user-wallet">My Wallet</a>
+                                 </div>
+                              </li>
                               <li class="nav-item ">
                                  <a class="nav-link" href="/cart"><i class="fa fa-shopping-cart"
                                        aria-hidden="true"></i><sup><span class="badge" id="cart-count">

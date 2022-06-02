@@ -155,3 +155,17 @@ table{
 #Timer{
     padding-top: 6px;
 }
+.orderProName {
+    text-align: center;
+    color: black;
+    font-size: 15px;
+    font-weight: bolder;
+    margin: auto;
+    margin-top: 6px;
+}
+thead, tr {
+    border-color: inherit;
+    border-style: solid;
+    border-width: 0;
+    font-size: 15px;
+}

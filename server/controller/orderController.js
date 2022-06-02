@@ -12,6 +12,7 @@ const Joi = require('joi');
 
 const Razorpay = require('razorpay');
 const { string } = require('joi');
+
 var instance = new Razorpay({
     key_id: 'rzp_test_GHZ8qfO5RgHRDG',
     key_secret: '96OZZd2cbBqVjnR6ZLeQrGOU',
@@ -193,7 +194,6 @@ exports.myOrders = async(req,res)=>{
                 productPrice: {$multiply: ['$products.Price', '$quantity'] },
             }
         },
-
     ])
     let totalValue = await cartDb.aggregate([
         {
@@ -283,11 +283,13 @@ exports.buynow = async (req, res)=>{
     {
         $inc: { Quantity : -1 }
     });
-    if(req.body['payment-method']=='COD'){
+    if (req.body['payment-method'] == 'WALLET'){
+            await walletDb.updateOne({user:ObjectId(userId)},{$inc: { balance: -total }})
+            res.json({codSuccess:true,address:deliveryDetails})
+    }else if(req.body['payment-method']=='COD'){
         res.json({codSuccess:true,address:deliveryDetails})
     }else if(req.body['payment-method']=='ONLINE'){
         await orderDb.updateOne({date:req.session.orderDate}, { $set: {status:'Failed'} })
-        console.log(`total : ${total} Product : ${products[0].item}`)
         var options = {
             amount: total*100,
             currency: "INR",
@@ -300,7 +302,6 @@ exports.buynow = async (req, res)=>{
         instance.orders.create(options, function(err, order) {
             if (err) {
                 console.log('error',err);
-                
             }else {
                 console.log("New Order",order);
                 res.json(order);
@@ -312,7 +313,6 @@ exports.buynow = async (req, res)=>{
 // --------------------------------------------- Order Placing -----------------------------------------------
 exports.orderPlacing = async(req,res)=>{
     const userId = req.body.userId
-    console.log(userId);
     let cart = await cartDb.findOne({user:ObjectId(userId)});
     let offerPrice = await cartDb.aggregate([
         {
@@ -370,14 +370,12 @@ exports.orderPlacing = async(req,res)=>{
                 quantity: 1,
                 offerPrice:{ $divide: [{$multiply: ['$quantity','$products.Price','$percentage']},100 ]},
                 productPrice: {$multiply: ['$products.Price', '$quantity'] },
-                // saving:{ $subtract: [ '$products.Price', { $divide: [{$multiply: ['$products.Price','$quantity','$percentage']},100 ]} ] }
             }
         },
-
     ]);
+
     let totalValue = parseInt(req.params.price);
 
-    console.log("OoooooferPrice",offerPrice);
     const totalOffer = offerPrice.map(data => data.offerPrice).reduce((total, save)=>{
         return total + save;
     },0)
@@ -392,7 +390,6 @@ exports.orderPlacing = async(req,res)=>{
         pincode:order.Pincode
     }
     req.session.address = deliveryDetails;
-    // const proIds = await cartDb.find({user:userId})
     
     const proIds = await cartDb.aggregate([
         {
@@ -405,19 +402,11 @@ exports.orderPlacing = async(req,res)=>{
             $project:{_id:0,Id:'$products.item'}
         }
         ])
-        console.log("ProId is here",proIds);
         const productIds = [];
         for (const proId of proIds){
             productIds.push(proId.Id)
         }
-        console.log("Product",productIds);
     req.session.products = productIds;
-    // const { error } = validate(deliveryDetails) 
-    // if (error){
-        // return res.render('user/place_order',{error: error.details[0].message,user:userId,total})
-        // res.json({error: error.details[0].message,user:userId,total:total})
-    // }else{
-
 
     let status = 'pending';
 
@@ -438,13 +427,14 @@ exports.orderPlacing = async(req,res)=>{
             $inc: { Quantity : -products[0].quantity }
         })
         await cartDb.deleteOne({user:ObjectId(order.userId)})
-        if(req.body['payment-method']=='COD'){
+        if (req.body['payment-method'] == 'WALLET'){
+            await walletDb.updateOne({user:ObjectId(userId)},{$inc: { balance: -total }})
+            res.json({codSuccess:true,address:deliveryDetails})
+        }else if(req.body['payment-method']=='COD'){
             res.json({codSuccess:true})  
         }
         else if(req.body['payment-method']=='ONLINE') {
             await orderDb.updateOne({date:req.session.orderDate}, { $set: {status:'Failed'} })
-            // }
-            // else{
                 var options = {
                     amount: total*100,
                     currency: "INR",
@@ -486,12 +476,3 @@ if(hmac==req.body.payment.razorpay_signature){
     res.json({status: false,errMsg:''})
 }
 }
-    // const validate = (data) => {
-    //     const schema = Joi.object({
-    //         name: Joi.string().required().label("Name"),
-    //         mobile:Joi.string().length(10).pattern(/^[0-9]+$/).required().label("Mobile number"),
-    //         address: Joi.string().required().min(10).label("Address"),
-    //         pincode:Joi.string().length(6).pattern(/^[0-9]+$/).required().label("Pincode"),
-    //     })
-    //     return schema.validate(data)
-    // }

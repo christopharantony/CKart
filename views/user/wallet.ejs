@@ -35,12 +35,12 @@
     </div>
     <div>
         <% if(!balance) { %>
-        <div class="container" style="margin-top:2rem;text-align:center;color:#4843a3">
-            <h2 style="font-weight: bold;"> You have no Wallet Balance </h2>
+        <div class="container" style="margin-top:2rem;text-align:center;color:#4843a3; border: 10px solid ;width: 50%;height: 32rem;">
+            <h2 style="font-weight: bold;color: black;"> You have no Wallet Balance </h2>
         </div>
         <% } else { %>
-        <div class="container" style="margin-top:2rem;text-align:center;color:#4843a3">
-            <h2 style="font-weight: bold;"> Wallet Balance: $ <%=balance%> </h2>
+        <div class="container" style="margin-top:2rem;text-align:center;color:#4843a3; border: 10px solid ;width: 50%;height: 32rem;background: #fff5e4;">
+            <pre style="font-size: 30px;font-weight: bold;color: black; background: #fff5e4;border: none;padding-top: 12rem;"> Wallet Balance :<span style="color: red;">              $ <%=balance%> </span> </pre>
         </div>
         <% } %>
     </div>

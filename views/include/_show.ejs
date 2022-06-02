@@ -1,20 +1,27 @@
-<% users.sort((a,b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0)) %>
-<% for ( let i = 0; i < users.length; i++){ %>
-<tr>
-<td><%= i+1 %></td>
-<td><%= users[i].name %></td>
-<td><%= users[i].email %></td>
-<td><%= users[i].gender %></td>
-<% if(users[i].isBlocked){ %>
-    <form action="/admin/status/<%= users[i]._id %>?_method=PATCH" method="post">
-    <td><button class="btn btn-outline-danger" type="submit">Block</button></td>
-    </form>
-<% }else{ %>
-    <form action="/admin/status/<%= users[i]._id %>?_method=PATCH" method="post">
-    <td><button class="btn btn-outline-success" type="submit">Active</button></td>
-</form>
-<% } %>
+<% users.sort((a,b)=> (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0)) %>
+    <% for ( let i=0; i < users.length; i++){ %>
+        <tr>
+            <td>
+                <%= i+1 %>
+            </td>
+            <td>
+                <%= users[i].name %>
+            </td>
+            <td>
+                <%= users[i].email %>
+            </td>
+            <td>
+                <%= users[i].gender %>
+            </td>
+            <% if(users[i].isBlocked){ %>
+                <form action="/admin/status/<%= users[i]._id %>?_method=PATCH" method="post">
+                    <td><button class="btn btn-outline-danger" type="submit">Block</button></td>
+                </form>
+                <% }else{ %>
+                    <form action="/admin/status/<%= users[i]._id %>?_method=PATCH" method="post">
+                        <td><button class="btn btn-outline-success" type="submit">Active</button></td>
+                    </form>
+                    <% } %>
 
-</tr>
-<% } %>
-
+        </tr>
+        <% } %>

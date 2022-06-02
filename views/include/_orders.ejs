@@ -1,77 +1,101 @@
-<% for ( let i = 0; i < orderData.length; i++){ %>
-    <% if ( orderData[i].userData[0]?.name && orderData[i].productData[0]?.Name  ) { %>
-    <tr>
-    <td><%= i+1 %></td>
-    <td><%= orderData[i].userData[0]?.name %></td>
-    <td><%= orderData[i].productData[0]?.Name %></td>
-    <td><%= orderData[i].products.quantity %></td>
-    <td><%= orderData[i].deliveryDetails.mobile %></td>
-    <td><%= orderData[i].deliveryDetails.address %></td>
-    <td><%= orderData[i].date.toDateString() %></td>
-    <td><%= orderData[i].totalAmount %></td>
-    <td><%= orderData[i].paymentMethod %></td>
-    <% if (orderData[i].status == 'Canceled' || orderData[i].status == 'Failed' || orderData[i].status == 'Deliverd') { %>
-    <td><%= orderData[i].status %></td>
-    <% } else { %>
-    <td> <select name="status" onchange="deliveryStatus(value,'<%=orderData[i]._id%>')">
-        <option value="<%= orderData[i].status %>" selected disabled> <%= orderData[i].status %></option>
-        <option value="Pending">Pending</option>
-        <option value="Dispached">Dispached</option>
-        <option value="Shipped">Shipped</option>
-        <option value="Deliverd">Delivered</option>
-        <option value="Cancel">Cancel</option>
-    </select> </td>
-    <% } %>
-    <% if(orderData[i].status == "Canceled"  || orderData[i].status == 'Failed' || orderData[i].status == 'Deliverd') { %>
-        <td><button class="btn btn-outline-danger" disabled>Cancel</button></td>
-    <% }else{ %>
-    <!-- <td><form action="/cancel-admin/<%= orderData[i]._id %>?_method=PUT" method="post"> -->
-        <!-- <a href="" onclick="return confirm('Are want to cancel <%= orderData[i].productData[0].Name %> ?')"> -->
-            <td><button class="btn btn-outline-danger" aria-current="page" onclick="orderCancel('<%= orderData[i]._id %>')" >Cancel</button></td>
-        <!-- </a> -->
-    <!-- </form></td> -->
-    <% } %>
-
-    
-    
-    </tr>
-    <% } %>
-    <% } %>
-
-    <script>
-        function deliveryStatus(value,orderId){
-            $.ajax({
-                url:'/admin/statusUpdate',
-                method:'post',
-                data:{
-                    status:value,
-                    orderId:orderId
-                },
-                success:(response)=>{
-                    if(response){
-                    location.reload() 
+<% for ( let i=0; i < orderData.length; i++){ %>
+    <% if ( orderData[i].userData[0]?.name && orderData[i].productData[0]?.Name ) { %>
+        <tr>
+            <td>
+                <%= i+1 %>
+            </td>
+            <td>
+                <%= orderData[i].userData[0]?.name %>
+            </td>
+            <td>
+                <a>
+                    <img style="width: 100px;height: 100px;" src="<%= orderData[i].productData[0]?.Image[0] %>"
+                        alt="images">
+                    <p class="orderProName">
+                        <%= orderData[i].productData[0]?.Name %>
+                    </p>
+                </a>
+            </td>
+            <td>
+                <%= orderData[i].products.quantity %>
+            </td>
+            <td>
+                <%= orderData[i].deliveryDetails.mobile %>
+            </td>
+            <td>
+                <%= orderData[i].deliveryDetails.address %>
+            </td>
+            <td>
+                <%= orderData[i].date.toDateString() %>
+            </td>
+            <td>
+                <%= parseInt(orderData[i].totalAmount) %>
+            </td>
+            <td>
+                <%= orderData[i].paymentMethod %>
+            </td>
+            <% if (orderData[i].status=='Canceled' || orderData[i].status=='Failed' || orderData[i].status=='Deliverd' )
+                { %>
+                <td>
+                    <%= orderData[i].status %>
+                </td>
+                <% } else { %>
+                    <td> <select name="status" onchange="deliveryStatus(value,'<%=orderData[i]._id%>')">
+                            <option value="<%= orderData[i].status %>" selected disabled>
+                                <%= orderData[i].status %>
+                            </option>
+                            <option value="Pending">Pending</option>
+                            <option value="Dispached">Dispached</option>
+                            <option value="Shipped">Shipped</option>
+                            <option value="Deliverd">Delivered</option>
+                            <option value="Cancel">Cancel</option>
+                        </select> </td>
+                    <% } %>
+                        <% if(orderData[i].status=="Canceled" || orderData[i].status=='Failed' ||
+                            orderData[i].status=='Deliverd' ) { %>
+                            <td><button class="btn btn-outline-danger" disabled>Cancel</button></td>
+                            <% }else{ %>
+                                <td><button class="btn btn-outline-danger" aria-current="page"
+                                        onclick="orderCancel('<%= orderData[i]._id %>')">Cancel</button></td>
+                                <% } %>
+        </tr>
+        <% } %>
+            <% } %>
+                <script>
+                    function deliveryStatus(value, orderId) {
+                        $.ajax({
+                            url: '/admin/statusUpdate',
+                            method: 'post',
+                            data: {
+                                status: value,
+                                orderId: orderId
+                            },
+                            success: (response) => {
+                                if (response) {
+                                    location.reload()
+                                }
+                            }
+                        })
                     }
-                }
-            })
-        }
-        function orderCancel(id){
-            Swal.fire({
-                title: 'Are you want to Cancel ?',
-                icon: 'error',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Order Cancel'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    type="put",
-                    location.href = `/admin/cancel-admin/${id}?_method=PUT`
-                    Swal.fire(
-                        'Order Canceled!',
-                        'Your order has been canceled.',
-                        'success'
-                    )
-                }
-            })
-        }
-    </script>
+
+                    function orderCancel(id) {
+                        Swal.fire({
+                            title: 'Are you want to Cancel ?',
+                            icon: 'error',
+                            showCancelButton: true,
+                            confirmButtonColor: '#3085d6',
+                            cancelButtonColor: '#d33',
+                            confirmButtonText: 'Order Cancel'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                type = "put",
+                                    location.href = `/admin/cancel-admin/${id}?_method=PUT`
+                                Swal.fire(
+                                    'Order Canceled!',
+                                    'Your order has been canceled.',
+                                    'success'
+                                )
+                            }
+                        })
+                    }
+                </script>

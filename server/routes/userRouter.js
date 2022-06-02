@@ -22,14 +22,11 @@ const productController = require('../controller/productController')
 
 const Razorpay = require('razorpay')
 var instance = new Razorpay({
-    key_id: 'rzp_test_GHZ8qfO5RgHRDG',
-    key_secret: '96OZZd2cbBqVjnR6ZLeQrGOU',
+    key_id: process.env.RAZORPAY_KEY_ID,
+    key_secret: process.env.RAZORPAY_KEY_SECRET,
     });
 
 const crypto = require('crypto');
-// const { check, validationResult } = require("express-validator");
-// const { redirect } = require("express/lib/response");
-// const { findById } = require("../model/cartModel");
 
 var ObjectId = require('mongoose').Types.ObjectId;
 
@@ -175,6 +172,8 @@ userRoute.get('/pswdChangeErr', (req, res)=>{
 })
 
 userRoute.get('/user-wallet',walletController.getBalance)
+
+userRoute.get('/checkwallet/:total',walletController.checkWallet)
 
 // Cancel the orders
 userRoute.get('/cancel/:id',orderController.cancel)

@@ -105,15 +105,21 @@
                                             <div class="col-md-5">
                                                 <label for="payment" style="font-weight:700">Payment method </label><br>
                                                 <div class="radio inline">
-                                                    <input type="radio" id="radio-2" name="payment-method" value="COD"
+                                                    <input type="radio" id="radio-2" name="payment-method" value="COD" oninput="checkwallet(document.getElementById('tot').value)"
                                                         checked>
                                                     <label for="radio-2">Pay on Delivery</label>
                                                 </div>
                                                 <div class="radio inline">
-                                                    <input type="radio" id="radio-3" name="payment-method"
+                                                    <input type="radio" id="radio-3" name="payment-method" oninput="checkwallet(document.getElementById('tot').value)"
                                                         value="ONLINE">
                                                     <label for="radio-3">Online Payment</label>
                                                 </div>
+                                                <div class="radio inline">
+                                                    <input type="radio" id="radio-4" name="payment-method" oninput="checkwallet(document.getElementById('tot').value)"
+                                                        value="WALLET">
+                                                    <label for="radio-4">CKart Wallet</label>
+                                                </div>
+                                                <p class="help-block" id="pwallet"></p>
                                             </div>
                                             <div class="col-md-7 mt-1">
                                                 <button class="send_btn" type="submit"
@@ -234,7 +240,7 @@
 
                     $("#buyrequest").submit((e) => {
                         e.preventDefault()
-                        if (value1 && value2 && value3 && value4 && value5) {
+                        if (value1 && value2 && value3 && value4 && value5 && value6) {
                             console.log(document.getElementById("tot").value)
                             price = parseInt(document.getElementById("tot").value)
                             product = document.getElementById("proId").value

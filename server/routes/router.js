@@ -254,15 +254,6 @@ route.get('/coupon-history',couponController.showHistory)
 // --------------------------------------------- LogOut -----------------------------------------------
 // Admin Logout
 route.get("/logout_admin", (req, res) => {
-    // req.session.destroy(function (err) {
-    //     res.clearCookie();
-    //     console.log(req.session);
-    //     if (err) {
-    //         res.status(403).send("Hai Admin, Error while logingout");
-    //     } else {
-    //         res.status(200).redirect("/");
-    //     }
-    // });
     req.session.isAdminLogin = false;
     res.redirect('/')
 });

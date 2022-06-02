@@ -1,5 +1,4 @@
 
-
 function namevalid(){
     value1 = false;
     if ($("#fname").val().match(/^[A-Za-z][A-Za-z ]*$/)) {
@@ -56,6 +55,30 @@ function addressvalid(){
         document.getElementById("paddress").style.display = "block";
         document.getElementById("paddress").innerText = "Enter a valid Address";
         value5 = false;
+    }
+}
+
+function checkwallet(total){
+    value6 = false;
+    if (document.getElementById("radio-4").checked) {
+        $.ajax({
+            url:`/checkwallet/${total}`,
+            method: "get",
+            success: (response)=>{
+                if (response.status == "success"){
+                    value6 = true;
+                    document.getElementById("pwallet").style.display = "none";
+                }else{
+                    value6 = false;
+                    document.getElementById("pwallet").style.display = "block";
+                    document.getElementById("pwallet").innerText = "Insufficient Balance";
+                }
+            }
+        })
+    }else{
+        value6 = true;
+        document.getElementById("pwallet").style.display = "none";
+        
     }
 }
 

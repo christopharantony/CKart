@@ -217,3 +217,49 @@ exports.productDetails = async (req,res)=>{
         res.render('user/product_details',{username,image, products,cartCount,isUserLogin:req.session.isUserLogin})
     }
 }
+
+exports.adminProductDetails = async (req,res)=>{
+    image = req.query.image.split(',')
+    const products = await productDb.findOne({Image:image})
+    const offerPrice = await offerDb.findOne({proId:products?._id,status:true})
+    let cartCount = 0
+            let cart = await cartDb.findOne({user:req.session.user?._id})
+            console.log('cart',cart);
+            if (cart) {
+                cartCount = cart.products.length
+            }
+    if (offerPrice){
+        const offers = await offerDb.aggregate([
+            {
+                $match:{
+                    status: true,
+                    proId:products._id
+                }
+            },
+            {
+                $lookup:{
+                    from: 'productdbs',
+                    localField:'proId',
+                    foreignField:'_id',
+                    as:'products'
+                }
+            },
+            {
+                $unwind:'$products'
+            },
+            {
+                $project:{
+                    id:'$products._id',
+                    price:'$products.Price',
+                    products:'$products',
+                    percentage:'$percentage',
+                    offerPrice:{ $subtract: [ '$products.Price', { $divide: [{$multiply: ['$products.Price','$percentage']},100 ]} ] }
+                }
+            }
+        ])
+        const offerPrice = offers[0].offerPrice;
+        res.render('admin/offerProduct_details',{offerPrice,image, products,cartCount})
+    }else{
+        res.render('admin/product_details',{image, products,cartCount})
+    }
+}

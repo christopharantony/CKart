@@ -91,8 +91,7 @@ exports.statusUpdate = async(req, res) => {
     res.json(true);
 }
 
-// --------------------------------------------------------------- Cancel Orders  ---------------------------------------------------------
-
+// -------------------------------------------- Cancel Orders  ---------------------------------------------------------
 exports.cancel = async(req,res)=>{
         const id = req.params.id;
         const user = req.session.user;
@@ -131,7 +130,7 @@ exports.cancelOrder = async(req,res)=>{
     res.redirect('/admin/admin-orders')
 }
 
-// --------------------------------------------- My Order -----------------------------------------------
+// --------------------------------------------- Order from Cart -----------------------------------------------
 exports.myOrders = async(req,res)=>{
     const userId = req.session.user?._id;
     let offerPrice = await cartDb.aggregate([

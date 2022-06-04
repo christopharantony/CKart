@@ -6,8 +6,10 @@ const cartDb = require('../model/cartModel')
 
 exports.dash = async (req, res) => {
     if (req.session.isAdminLogin) {
-        const orders = await orderDb.find()
+        const orders = await orderDb.find({status: {$ne: 'Canceled'}})
+        console.log(orders);
         const products = await productDb.find()
+
         const USERS = await userDb.aggregate([
             {
                 $project: {
@@ -15,6 +17,7 @@ exports.dash = async (req, res) => {
                 }
             }
         ])
+
         let blockedCount = 0
         let activeCount = 0
         for (const user of USERS) {
@@ -62,7 +65,7 @@ exports.dash = async (req, res) => {
         const sales = await orderDb.aggregate([
             {
                 $match: {
-                    status: { $ne: "Canceled" }
+                    status: { $eq: "Deliverd" }
                 }
             },
             {
@@ -75,16 +78,17 @@ exports.dash = async (req, res) => {
         ])
         let Revenue = 0;
         let codCount = 0;
+        let walletCount = 0;
         let onlineCount = 0;
         for (const sale of sales) {
             Revenue += sale.totalAmount
         }
         const revenue = parseInt(Revenue);
         for (const sale of sales) {
-            sale.paymentMethod === 'COD' ? codCount++ : onlineCount++
+            sale.paymentMethod === 'COD' ? codCount++ :( sale.paymentMethod === 'WALLET' ? walletCount++ : onlineCount++ )
         }
         console.log(uniqueCategories);
-        res.status(200).render('admin/dashboard', { codCount, onlineCount, revenue, activeCount, blockedCount, catCounts, uniqueCategories, counts, uniqueDates: Days, ordercount: orders.length, usercount: USERS.length, productcount: products.length })
+        res.status(200).render('admin/dashboard', { codCount, walletCount, onlineCount, revenue, activeCount, blockedCount, catCounts, uniqueCategories, counts, uniqueDates: Days, ordercount: orders.length, usercount: USERS.length, productcount: products.length })
     } else {
         req.session.isAdminLogin = false;
         res.render('admin/admin_login', { error: "" });

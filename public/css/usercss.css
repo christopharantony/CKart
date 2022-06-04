@@ -1,6 +1,21 @@
 .bannerimg {
     position: relative;
     color: #fff;
+    width: 100%;
+    height: 380px;
+}
+@media only screen and (max-width: 600px) {
+    .bannerimg {
+        position: relative;
+        color: #fff;
+        width: 100%;
+        height: 180px;
+    }
+}
+@media only screen and (min-width : 1200px) {
+
+    .container { width: 1500px; } 
+
 }
 .centertxt{
     position: absolute;

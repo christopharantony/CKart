@@ -72,6 +72,10 @@ userRoute.get('/loginError', (req, res) => {
 })
 
 // ------------------ Product Details ---------------------------
+// userRoute.get('/productDetail',async (req,res)=>{
+//     console.log("Im in...",req.body);
+//     })
+// userRoute.get('/productDetail/:image', productController.productDetails)
 userRoute.get('/productDetail', productController.productDetails)
 
 // Check User using Middleware

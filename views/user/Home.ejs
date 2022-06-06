@@ -1,7 +1,7 @@
 <%-include('../include/_userhead')%>
 
    <!---------------------- Banner--------------------------------------------------- -->
-   <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel" data-interval="300000">
+   <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel" data-interval="3000">
       <ol class="carousel-indicators">
          <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
          <% for ( let j=1; j < banners.length; j++ ) { %>
@@ -17,7 +17,7 @@
                      <div class="carousel-item">
                         <% } %>
 
-                           <img class="d-block w-100 bannerimg img-fluid"
+                           <img class="d-block w-100 bannerimg img-fluid" style="height: 350px;"
                               src="<%=banners[i].image%>" alt="<%=i+1%> slide">
                            <div class="carousel-caption d-none d-md-block centertxt"
                               style=" font-size: 1rem;position: absolute;top: 28%;bottom: 52%;left: 26%;transform: translate(-50%, -50%);">
@@ -43,6 +43,7 @@
                   <span class="sr-only">Next</span>
                </a>
                </div>
+      </div>
       </div>
       <!----------------------  Offer --------------------------------------------------- -->
       <div class="products" style="margin-top:25px;">
@@ -129,6 +130,7 @@
                         <% for ( let i=0; i < products.length; i++){ %>
                            <div class="col-md-4 margin_bottom1">
                               <div class="product_box">
+                                 <!-- <a onclick="prodetails('<%=products[i].Image%>')"> -->
                                  <a href="/productDetail?image=<%=products[i].Image %>">
                                     <% if (products[i].Quantity==0) { %>
                                        <figure>
@@ -177,7 +179,6 @@
             </div>
          </div>
       </div>
-
    </div>
 
    <%-include('../include/_userfooter')%>

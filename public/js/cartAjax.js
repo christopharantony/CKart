@@ -1,5 +1,15 @@
+// function prodetails(image) {
+//     console.log(image);
+//     $.ajax({
+//         url: `/productDetail`,
+//         method: "get",
+//         data: image,
+//         success: (response) => {
+//         }
+//     })
+// }
+
 function addToCart(proId) {
-    console.log(proId);
     $.ajax({
         url: `/add-to-cart${proId}`,
         method: "get",
@@ -33,7 +43,6 @@ function addToFav(proId) {
         url: `/add-to-fav${proId}`,
         method: "post",
         success: (response) => {
-            console.log(response)
             if (response.status) {
                 $(`#${proId}`).css('color', 'red')
             } else {

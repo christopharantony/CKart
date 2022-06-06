@@ -165,6 +165,7 @@ exports.delete = (req,res)=>{
 
 exports.productDetails = async (req,res)=>{
     const username = req.session.user?.name;
+    // image = req.params.image.split(',')
     image = req.query.image.split(',')
     const products = await productDb.findOne({Image:image})
     const offerPrice = await offerDb.findOne({proId:products?._id,status:true})

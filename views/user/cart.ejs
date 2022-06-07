@@ -194,7 +194,7 @@
             },
             dataType: 'json',
             success: (response) => {
-                if (response.removeProduct) {
+                if ($.trim(response.removeProduct)) {
                     const Toast = Swal.mixin({
                         toast: true,
                         position: 'top-end',

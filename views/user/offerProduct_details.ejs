@@ -44,15 +44,24 @@
                <div class="col-md-7 pt-5" style="margin-left: 11%;">
                   <h2 style="color: red;">Out of Stock</h2>
                </div>
-               <% } else { %>
+               <% } else if (isUserLogin) { %>
                   <div class="col-md-7 pt-5" style="margin-left: 11%;">
                      <button onclick="addToCart('<%=products._id%>')" class="btc_home" style="margin-left: 13.5rem;">
                         Add to cart</button>
-                     <a href="/buy-now?id=<%= products._id%> ">
-                        <h3 class="atc_home" style="margin-left: 13.5rem;">Buy Now</h3>
-                     </a>
-                  </div>
-                  <% } %>
+                        <a href="/buy-now?id=<%= products._id%> ">
+                           <h3 class="atc_home" style="margin-left: 13.5rem;">Buy Now</h3>
+                        </a>
+                     </div>
+                     <% } else {%>
+                        <div class="col-md-7 pt-5" style="margin-left: 11%;">
+                           <button class="btc_home" onclick="addCartButton()" style="margin-left: 13.5rem;">
+                              Add to cart
+                           </button>
+                           <a onclick="addCartButton()">
+                              <h3 class="atc_home" style="margin-left: 13.5rem;">Buy Now</h3>
+                           </a>
+                        </div>
+                     <% } %>
          </div>
       </div>
    </div>

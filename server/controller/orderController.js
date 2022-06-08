@@ -96,8 +96,10 @@ exports.cancel = async(req,res)=>{
         const id = req.params.id;
         const user = req.session.user;
         const order = await orderDb.findOne({_id:ObjectId(id)})
-        const balance = order.totalAmount;
+        const noCODorder = await orderDb.findOne({_id:ObjectId(id),paymentMethod:{$ne:'COD'}})
         const wallet = await walletDb.findOne({user:user._id});
+        if (noCODorder) {
+        const balance = noCODorder.totalAmount;
         if (wallet){
             wallet.user = user._id,
             wallet.balance += parseInt(balance);
@@ -109,6 +111,7 @@ exports.cancel = async(req,res)=>{
             })            
             await wallet.save();
         }
+    }
         const proId = order.products[0].item
         await productDb.updateOne({"_id": ObjectId(proId)},
         {

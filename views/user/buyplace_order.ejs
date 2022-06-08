@@ -248,9 +248,7 @@
                                 method: 'post',
                                 data: $('#buyrequest').serialize(),
                                 success: (response) => {
-                                    console.log('Response', response);
                                     if (response.codSuccess) {
-                                        console.log(response.address);
                                         location.href = '/order-success'
                                     } else {
                                         razorpayPayment(response)

@@ -462,14 +462,6 @@ exports.paymentVerification = async(req, res)=>{
     hmac.update(req.body.payment.razorpay_order_id+'|'+req.body.payment.razorpay_payment_id);
     hmac = hmac.digest('hex')
 if(hmac==req.body.payment.razorpay_signature){
-    // userHelpers.chagePaymentStatus (req.body [' receipt']).then(() =>{
-    //     console.log("Payment successfull"); 
-    //     res.json({status:true})
-    // const orderId = req.body.order.receipt
-    // await orderDb.updateOne({_id:ObjectId(orderId)},
-    // {
-    //     $set:{ status:'pending'}
-    // })
     res.json({status:true})
 }else{
     console.log(err);

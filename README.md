@@ -12,7 +12,6 @@ Install [Node](https://nodejs.org/en/)    (  [Documentation](https://medium.com/
 Use the package manager [npm](https://www.npmjs.com/) to install dependencies.
 
 ```bash
-npm init
 npm i
 ```
 Create one file name as ".env" and add the below contents
